@@ -7,7 +7,7 @@ using System.Net;
  * Class:        | FTP
  * Project:      | MultiAPI
  * Author:       | Plufik
- * Version:      | 0.1.1.32
+ * Version:      | 0.0.0.0
  * VerType:      | major_version.minor_version.patch_version.builds
  * Main file:    | Main.cs
  * [OPEN SOURCE] | +True

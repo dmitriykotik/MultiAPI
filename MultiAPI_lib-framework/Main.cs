@@ -7,7 +7,7 @@ using System.Threading;
  * Class:        | Basic
  * Project:      | MultiAPI
  * Author:       | Plufik
- * Version:      | 0.1.1.32
+ * Version:      | 0.1.1.48
  * VerType:      | major_version.minor_version.patch_version.builds
  * Main file:    | Main.cs
  * [OPEN SOURCE] | +True

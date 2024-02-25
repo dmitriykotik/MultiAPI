@@ -105,4 +105,28 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>echo.
+echo - Создание папки $(SolutionDir)build...
+mkdir $(SolutionDir)build
+echo - Компиляция всех библиотек в одну...
+$(SolutionDir)ILMerge\ILMerge.exe $(TargetPath) $(SolutionDir)packages\ini-parser.2.5.2\lib\net20\INIFileParser.dll $(SolutionDir)packages\WMPLib.1.0.0\lib\AxInterop.WMPLib.dll $(SolutionDir)packages\WMPLib.1.0.0\lib\Interop.WMPLib.dll /out:$(SolutionDir)build\$(TargetFileName) /allowDup
+echo - Удаление файлов в папке $(TargetDir)...
+del $(TargetDir) /f /s /q
+echo -= Компиляция завершена =-
+echo.
+echo ! Библиотека сохранена по пути $(SolutionDir)build\$(TargetFileName)
+echo ! Библиотека сохранена по пути $(SolutionDir)build\$(TargetFileName)
+echo ! Библиотека сохранена по пути $(SolutionDir)build\$(TargetFileName)
+echo ! Библиотека сохранена по пути $(SolutionDir)build\$(TargetFileName)
+echo ! Библиотека сохранена по пути $(SolutionDir)build\$(TargetFileName)
+echo.</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>echo -= Компилятор =-
+echo - Удаление скомпилированных файлов...
+del $(SolutionDir)build /f /s /q
+rmdir $(SolutionDir)build /s /q
+del $(TargetDir) /f /s /q</PreBuildEvent>
+  </PropertyGroup>
 </Project>

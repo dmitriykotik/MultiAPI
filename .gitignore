@@ -17,9 +17,9 @@
 mono_crash.*
 
 # Build results
-[Bb]uld/*.dll
-[Bb]uld/*.xml
-[Bb]uld/*.exe
+[Bb]uild/*.dll
+[Bb]uild/*.xml
+[Bb]uild/*.exe
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/

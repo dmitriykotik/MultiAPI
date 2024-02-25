@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using MultiAPI;
+using Microsoft.Win32;
 
 namespace MultiAPI_Tester
 {
@@ -11,10 +14,9 @@ namespace MultiAPI_Tester
     {
         static void Main(string[] args)
         {
-            Console.WriteLine($@"getCurrentFolder: {Basic.getCurrentFolder()}
-getPathAppData: {Basic.getPathAppData()}");
-            
             Console.ReadLine();
         }
+
+
     }
 }

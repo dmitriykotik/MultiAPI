@@ -1,0 +1,1 @@
+$(ProjectDir)bin\Release\$(TargetName).dll $(SolutionDir)packages\ini-parser.2.5.2\lib\net20\INIFileParser.dll $(SolutionDir)packages\WMPLib.1.0.0\lib\AxInterop.WMPLib.dll $(SolutionDir)packages\WMPLib.1.0.0\lib\Interop.WMPLib.dll /out:$(SolutionDir)build\$(TargetName).dll /allowDup

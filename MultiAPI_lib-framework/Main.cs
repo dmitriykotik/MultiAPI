@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 /* 
@@ -7,8 +9,8 @@ using System.Threading;
  * Class:        | Basic
  * Project:      | MultiAPI
  * Author:       | Plufik
- * Version:      | 0.1.1.48
- * VerType:      | major_version.minor_version.patch_version.builds
+ * Version:      | 0.1.1.82
+ * VerType:      | major_version.minor_version.patch_version.build
  * Main file:    | Main.cs
  * [OPEN SOURCE] | +True
   ============================================
@@ -16,6 +18,13 @@ using System.Threading;
 
 namespace MultiAPI
 {
+    #region Assembly Info
+    internal class AssemblyI
+    {
+        internal const string version = "0.1.1.82";
+    }
+    #endregion
+
     #region CLASS | Basic
     /// <summary>
     /// Базовые функции

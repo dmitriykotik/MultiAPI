@@ -2,7 +2,7 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F6902BEE-F516-4888-849A-5FD96960CAC1}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -104,29 +104,27 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo.
-echo - Создание папки $(SolutionDir)build...
-mkdir $(SolutionDir)build
-echo - Компиляция всех библиотек в одну...
-$(SolutionDir)ILMerge\ILMerge.exe $(TargetPath) $(SolutionDir)packages\ini-parser.2.5.2\lib\net20\INIFileParser.dll $(SolutionDir)packages\WMPLib.1.0.0\lib\AxInterop.WMPLib.dll $(SolutionDir)packages\WMPLib.1.0.0\lib\Interop.WMPLib.dll /out:$(SolutionDir)build\$(TargetFileName) /allowDup
-echo - Удаление файлов в папке $(TargetDir)...
-del $(TargetDir) /f /s /q
-echo -= Компиляция завершена =-
-echo.
-echo ! Библиотека сохранена по пути $(SolutionDir)build\$(TargetFileName)
-echo ! Библиотека сохранена по пути $(SolutionDir)build\$(TargetFileName)
-echo ! Библиотека сохранена по пути $(SolutionDir)build\$(TargetFileName)
-echo ! Библиотека сохранена по пути $(SolutionDir)build\$(TargetFileName)
-echo ! Библиотека сохранена по пути $(SolutionDir)build\$(TargetFileName)
+echo - Выполнение событий после сборки...
+md $(ProjectDir)timefolder
+$(SolutionDir)ilmerge\ilmerge.exe $(TargetPath) $(SolutionDir)packages\ini-parser.2.5.2\lib\net20\INIFileParser.dll $(SolutionDir)packages\WMPLib.1.0.0\lib\AxInterop.WMPLib.dll $(SolutionDir)packages\WMPLib.1.0.0\lib\Interop.WMPLib.dll /out:$(ProjectDir)timefolder\$(TargetName).dll /allowDup
+rmdir  $(TargetDir) /s /q
+rmdir $(ProjectDir)bin /s /q
+mkdir $(ProjectDir)bin
+mkdir $(TargetDir)
+copy $(ProjectDir)timefolder\$(TargetName).dll $(TargetDir)
+rd $(ProjectDir)timefolder
+
+echo Сборка NuGet...
+$(SolutionDir)nuget\nuget.exe pack $(ProjectPath)
+$(SolutionDir)nuget\nuget_publisher.exe $(TargetDir) $(ProjectDir)Main.cs $(SolutionDir) $(TargetName)
+echo -= Компиляция завершена. Библиотека сохранена по пути $(TargetDir)  =-
 echo.</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>echo -= Компилятор =-
-echo - Удаление скомпилированных файлов...
-del $(SolutionDir)build /f /s /q
-rmdir $(SolutionDir)build /s /q
-del $(TargetDir) /f /s /q</PreBuildEvent>
+    <PreBuildEvent>rmdir $(ProjectDir)bin /s /q</PreBuildEvent>
   </PropertyGroup>
 </Project>

@@ -1,36 +1,36 @@
-﻿using System.Reflection;
+﻿using System.Resources;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using MultiAPI;
 
-// Общие сведения об этой сборке предоставляются следующим набором
-// набора атрибутов. Измените значения этих атрибутов для изменения сведений,
-// связанные со сборкой.
-[assembly: AssemblyTitle("MultiAPI_lib-framework")]
-[assembly: AssemblyDescription("")]
+// Управление общими сведениями о сборке осуществляется посредством следующего 
+// набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
+// общие сведения об этой сборке.
+[assembly: AssemblyTitle("MultiAPI Library")]
+[assembly: AssemblyDescription("Более усовершенствованная библиотека для разработчиков. Создана для выполнения основных базовых функций в сокращении.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MultiAPI_lib-framework")]
-[assembly: AssemblyCopyright("Copyright ©  2024")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("MultiPlayer")]
+[assembly: AssemblyProduct("MultiAPI")]
+[assembly: AssemblyCopyright("Copyright © MultiPlayer 2019-2024")]
+[assembly: AssemblyTrademark("MultiPlayer")]
 [assembly: AssemblyCulture("")]
 
-// Установка значения False для параметра ComVisible делает типы в этой сборке невидимыми
-// для компонентов COM. Если необходимо обратиться к типу в этой сборке через
+// Параметр ComVisible со значением FALSE делает типы в сборке невидимыми 
+// для COM-компонентов.  Если требуется обратиться к типу в этой сборке через 
 // COM, задайте атрибуту ComVisible значение TRUE для этого типа.
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("f6902bee-f516-4888-849a-5fd96960cac1")]
+[assembly: Guid("3c8dd66d-3ee7-4c7a-81a4-d06643fbd1d5")]
 
-// Сведения о версии сборки состоят из указанных ниже четырех значений:
+// Сведения о версии сборки состоят из следующих четырех значений:
 //
 //      Основной номер версии
-//      Дополнительный номер версии
-//      Номер сборки
+//      Дополнительный номер версии 
+//   Номер сборки
 //      Редакция
 //
-// Можно задать все значения или принять номера сборки и редакции по умолчанию 
-// используя "*", как показано ниже:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion(AssemblyI.version)]
+[assembly: AssemblyFileVersion(AssemblyI.version)]
+[assembly: NeutralResourcesLanguage("ru-RU")]

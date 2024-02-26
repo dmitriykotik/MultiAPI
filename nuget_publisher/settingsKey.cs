@@ -23,5 +23,11 @@ namespace nuget_publisher
             Program.va = "ret";
             this.Close();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Program.va = textBox1.Text;
+            this.Close();
+        }
     }
 }

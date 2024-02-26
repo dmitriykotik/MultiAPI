@@ -34,7 +34,7 @@ namespace nuget_publisher
                 
                 ProcessStartInfo psi = new ProcessStartInfo();
                 psi.FileName = args[2] + "nuget\\nuget.exe";
-                psi.Arguments = $"push {args[0]}\\{args[3]}.{textInBrackets}.nupkg {va} -Source https://api.nuget.org/v3/index.json";
+                psi.Arguments = $"push {args[0]}{args[3]}.{textInBrackets}.nupkg {va} -Source https://api.nuget.org/v3/index.json";
                 Process.Start(psi).WaitForExit();
                 Environment.Exit(0);
             }

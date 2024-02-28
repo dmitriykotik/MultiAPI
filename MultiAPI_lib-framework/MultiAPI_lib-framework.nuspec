@@ -10,7 +10,7 @@
     <license type="expression">GPL-3.0-only</license>
     <icon>images\icon.png</icon>
     <projectUrl>https://github.com/dmitriykotik/MultiAPI</projectUrl>
-    <description>MultiAPI - Это библиотека и сборка разного ПО (Далее "Библиотека") для разработчиков. Она содержит множество функций чтобы ускорить разработку ПО. Данная библиотека усовершенствованная версия библиотеки MultiLib, MultiAPI подойдёт как начинающим разработчикам, так и профессиональным разработчикам ПО.</description>
+    <description>MultiAPI - Это библиотека и сборка разного ПО (Далее "Библиотека") для разработчиков. Работает на .net Framework 4.7.2. Она содержит множество функций чтобы ускорить разработку ПО. Данная библиотека усовершенствованная версия библиотеки MultiLib, MultiAPI подойдёт как начинающим разработчикам, так и профессиональным разработчикам ПО.</description>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>MultiAPI MultiLib MultiAPI_Lib MultiAPI_Lib-framework dmitriykotik</tags>

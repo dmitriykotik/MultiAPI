@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MultiAPI_lib-framework\MultiAPI_lib-framework.csproj">
+      <Project>{f6902bee-f516-4888-849a-5fd96960cac1}</Project>
+      <Name>MultiAPI_lib-framework</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

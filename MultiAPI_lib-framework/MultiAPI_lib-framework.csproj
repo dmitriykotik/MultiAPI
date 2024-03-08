@@ -108,11 +108,24 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>echo.
+echo - Выполнение событий после сборки...
+md $(ProjectDir)timefolder
+$(SolutionDir)ilmerge\ilmerge.exe $(TargetPath) $(SolutionDir)packages\ini-parser.2.5.2\lib\net20\INIFileParser.dll $(SolutionDir)packages\WMPLib.1.0.0\lib\AxInterop.WMPLib.dll $(SolutionDir)packages\WMPLib.1.0.0\lib\Interop.WMPLib.dll /out:$(ProjectDir)timefolder\$(TargetName).dll /allowDup
+rmdir  $(TargetDir) /s /q
+rmdir $(ProjectDir)bin /s /q
+mkdir $(ProjectDir)bin
+mkdir $(TargetDir)
+copy $(ProjectDir)timefolder\$(TargetName).dll $(TargetDir)
+rd $(ProjectDir)timefolder /s /q
+
+echo Сборка NuGet...
+$(SolutionDir)nuget\nuget.exe pack $(ProjectPath)
+$(SolutionDir)nuget\nuget_publisher.exe $(TargetDir) $(ProjectDir)Main.cs $(SolutionDir) $(TargetName)
+echo -= Компиляция завершена. Библиотека сохранена по пути $(TargetDir)  =-
+echo.</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>rmdir $(ProjectDir)bin /s /q</PreBuildEvent>
   </PropertyGroup>
 </Project>

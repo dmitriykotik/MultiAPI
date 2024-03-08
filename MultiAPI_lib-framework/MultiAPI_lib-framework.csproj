@@ -121,7 +121,6 @@ rd $(ProjectDir)timefolder /s /q
 
 echo Сборка NuGet...
 $(SolutionDir)nuget\nuget.exe pack $(ProjectPath)
-$(SolutionDir)nuget\nuget_publisher.exe $(TargetDir) $(ProjectDir)Main.cs $(SolutionDir) $(TargetName)
 echo -= Компиляция завершена. Библиотека сохранена по пути $(TargetDir)  =-
 echo.</PostBuildEvent>
   </PropertyGroup>

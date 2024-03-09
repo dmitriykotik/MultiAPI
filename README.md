@@ -13,6 +13,69 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
 
 ## Древо классов и методов
 ``` bash
-
+.
+└── MultiAPI_Lib
+    ├── Main.cs - Basic
+    │   ├── int rnd(int startInt, int endInt)
+    │   ├── void terminate(int errorCode)
+    │   ├── string getCurrentFolder()
+    │   └── void writeMachine(string text, int countDown = 40, bool writeLine = true)
+    ├── FTP.cs - FTP
+    │   ├── FTP(string host, string userName, string password)
+    │   ├── void upload(string localFullPath)
+    │   ├── void download(string localPath)
+    │   ├── void delete()
+    │   └── bool exists()
+    ├── Generator.cs - Generator
+    │   ├── string GenPassword(int length)
+    │   └── string GenPassword(int length, string dictionary)
+    ├── INI.cs - INI
+    │   ├── INI(string iniFile)
+    │   ├── string getValue(string section, string variable)
+    │   ├── void setValue(string section, string variable, string text)
+    │   ├── bool existVariable(string section, string variable)
+    │   ├── void deleteVariable(string section, string variable)
+    │   └── void deleteAllVariables(string section)
+    ├── Internet.cs - Internet
+    │   ├── bool TestConnection()
+    │   └── bool ping(string url)
+    ├── Mail.cs - Mail
+    │   └── void send(string fromEmail, string fromName, string toEmail, string subject, string textOrHtml, string smtpServer, int smtpPort, string smtpPasswordMail)
+    ├── Music.cs - Music
+    │   ├── Music(string pathFile)
+    │   ├── void play()
+    │   ├── void stop()
+    │   ├── void pause()
+    │   ├── void setVolume(int volume)
+    │   ├── int getVolume()
+    │   ├── double getDuration()
+    │   ├── void setPosition(double position)
+    │   ├── double getPosition()
+    │   └── void updatePath(string pathFile)
+    ├── RegEdit.cs - RegEdit
+    │   ├── void create(RegistryKey key, string keyName)
+    │   ├── void delete(RegistryKey key, string keyName)
+    │   ├── void createVariable(RegistryKey key, string keyName, string varName, object varValue)
+    │   ├── object getValue(RegistryKey key, string keyName, string varName)
+    │   ├── void deleteVariable(RegistryKey key, string keyName, string varName)
+    │   ├── void editVariable(RegistryKey key, string keyName, string varName, object varValue)
+    │   └── bool existsVariable(RegistryKey key, string keyName, string varName)
+    ├── Zip.cs - Zip
+    │   ├── void EncryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
+    │   ├── void DecryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
+    │   ├── void create(string pathFoler, string outputArchive)
+    │   └── void unpacking(string pathArchive, string outputFolder)
+    └── WinAPI.cs - WinAPI
+        └── Window
+            ├── enum WindowStyles : uint
+            ├── enum WindowStylesEx : uint
+            ├── enum ShowWindowCommands : int
+            ├── IntPtr Create(WindowStylesEx windowStyleEx, WindowStyles windowStyle, string className, string windowName, int x, int y, int width, int height)
+            ├── bool Show(IntPtr hWindow, ShowWindowCommands command)
+            ├── IntPtr Find(string className, string windowName)
+            ├── bool Destroy(IntPtr hWnd)
+            ├── bool Move(IntPtr hWindow, int x, int y, int width, int height)
+            ├── bool Update(IntPtr hWindow)
+            └── bool SetText(IntPtr hWindow, string text)
 ```
 

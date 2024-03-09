@@ -89,7 +89,7 @@ string getCurrentFolder();
 void writeMachine(string text, int countDown = 40, bool writeLine = true);
 ```
 
-### rnd
+### - rnd
 ```csharp
 int rnd(int startInt, int endInt);
 ```

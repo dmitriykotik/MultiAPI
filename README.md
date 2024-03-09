@@ -195,4 +195,4 @@ MultiAPI.Basic.writeMachine("Hello World!", 40, false);
 Метод печатает в терминал символы из текста с определённой задержкой.
 
 Исключения: ` 0x00001 ` и ` 0x00002 `
-Обработка: [](![Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения))
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)

@@ -100,14 +100,119 @@ int rnd(int startInt, int endInt);
 
 Возврат: Случайное значение от ` startInt ` до ` endInt `
 
+
 Пример:
 ```csharp
 int random;
-random = Basic.rnd(1,10)
+random = MultiAPI.Basic.rnd(1,10)
 ```
 ```csharp
-Console.WriteLine(Basic.rnd(1, 10))
+Console.WriteLine(MultiAPI.Basic.rnd(1, 10))
 ```
 Описание: 
 
 Метод выводит случайное значение от ` startInt ` до ` endInt `. 
+
+### - terminate
+```csharp
+void terminate(int errorCode);
+```
+
+` errorCode ` - Код ошибки
+
+Пример:
+```csharp
+MultiAPI.Basic.terminate(0);
+```
+Описание:
+
+Метод завершает работу программы с определённым кодом ошибки
+
+### - getCurrentFolder
+```csharp
+string getCurrentFolder();
+```
+
+Возврат: Путь до папки с программой
+
+
+Пример:
+```csharp
+string path;
+path = MultiAPI.Basic.getCurrentFolder();
+```
+```csharp
+Console.WriteLine(MultiAPI.Basic.getCurrentFolder);
+```
+Описание:
+
+Метод возвращает путь к папке с программой
+
+### - writeMachine
+```csharp
+void writeMachine(string text, int countDown = 40, bool writeLine = true);
+```
+
+` text ` - Текст для вывода
+
+` countDown ` - Задержка между символами в миллисекундах (По умолчанию равно 40 миллисекунж)
+
+` writeLine ` - После завершения печати, перевести курсор на новую строку? (По умолчанию равно true (Да))
+
+Пример:
+```csharp
+MultiAPI.Basic.writeMachine("Hello World!");
+```
+```csharp
+MultiAPI.Basic.writeMachine("Hello World!", 100);
+```
+```csharp
+MultiAPI.Basic.writeMachine("Hello World!", 40, false);
+```
+Описание: 
+
+Метод печатает в терминал символы из текста с определённой задержкой.
+
+Исключение: 
+```csharp
+if (countDown == 0) throw new Exception("Промежуток времени равен нулю, что делает её бесполезной");
+...
+```
+Обработка:
+```csharp
+try
+{
+    MultiAPI.Basic.writeMachine("Привет, я шишибка :D", 0)
+}
+catch (Exception ex)
+{
+    if (ex.Message == "Промежуток времени равен нулю, что делает её бесполезной")
+    {
+        ...
+    }
+}
+```
+> [!INFO]  
+> Данное предвиденное исключение возникает, если разработчик в переменной ` countDown ` укажет значение 0. Предвиденное исключение создаётся, потому что, если промежуток времени между символами равен 0, то и смысла в методе нету.
+
+Исключение:
+```csharp
+...
+else if (countDown < 0) throw new Exception("Промежуток времени меньше или равен нулю");
+```
+Обработка:
+```csharp
+try
+{
+    MultiAPI.Basic.writeMachine("Привет, я шишибка :D", -40)
+}
+catch (Exception ex)
+{
+    if (ex.Message == "Промежуток времени меньше или равен нулю")
+    {
+        ...
+    }
+}
+```
+> [!INFO]  
+> Данное предвиденное исключение возникает, если разработчик в переменной ` countDown ` укажет значение меньше 0. Предвиденное исключение создаётся, потому что, промежуток времени не может быть отрицательным.

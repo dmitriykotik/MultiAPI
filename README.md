@@ -78,4 +78,31 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
             ├── bool Update(IntPtr hWindow)
             └── bool SetText(IntPtr hWindow, string text)
 ```
+## Main.cs - Basic
+Данный класс можно определить в коде как: MultiAPI.Basic.(METHOD);
 
+В этом классе содержутся следущие методы: 
+```csharp
+int rnd(int startInt, int endInt);
+void terminate(int errorCode);
+string getCurrentFolder();
+void writeMachine(string text, int countDown = 40, bool writeLine = true);
+```
+
+### rnd
+```csharp
+int rnd(int startInt, int endInt);
+```
+
+` startInt ` - Начальное значение
+
+` endInt ` - Конечное значение
+
+Пример:
+```csharp
+int random;
+random = Basic.rnd(1,10)
+```
+```csharp
+Console.WriteLine(Basic.rnd(1, 10))
+```

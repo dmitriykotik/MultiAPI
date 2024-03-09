@@ -98,6 +98,8 @@ int rnd(int startInt, int endInt);
 
 ` endInt ` - Конечное значение
 
+Возврат: Случайное значение от ` startInt ` до ` endInt `
+
 Пример:
 ```csharp
 int random;
@@ -106,3 +108,6 @@ random = Basic.rnd(1,10)
 ```csharp
 Console.WriteLine(Basic.rnd(1, 10))
 ```
+Описание: 
+
+Метод выводит случайное значение от ` startInt ` до ` endInt `. 

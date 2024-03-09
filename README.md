@@ -190,6 +190,8 @@ MultiAPI.Basic.writeMachine("Hello World!", 100);
 ```csharp
 MultiAPI.Basic.writeMachine("Hello World!", 40, false);
 ```
+> [!NOTE]
+> Если вы указываете значение в ` countDown `, то строго указывайте натуральное число (больше 0)
 Описание: 
 
 Метод печатает в терминал символы из текста с определённой задержкой.

@@ -13,9 +13,15 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
 
 ## Исключения
 В данном пункте расписаны исключения которые вручную создаются. Данный список вы можете использовать для дальнейшей обработки исключений. Все ручные исключения выводятся в формате строки ` string `. Как можно примерно обработать ручные исключения библиотеки расписано ниже списка.
+
+> [!WARNING]
+> Данный список используется для исключений которые лично выставлялись. При работе некоторых методов могут возникнуть и другие исключения.
+
 ```text
 0x00001 - Промежуток времени равен нулю, что делает её бесполезной
 0x00002 - Промежуток времени меньше или равен нулю
+0x00003 - Поле или значение не может быть пустым
+0x00004 - Указанного файла не существует
 ```
 Возможная обработка (Пример):
 ```csharp
@@ -100,8 +106,6 @@ catch (Exception ex)
             └── bool SetText(IntPtr hWindow, string text)
 ```
 ## Main.cs - Basic
-Данный класс можно определить в коде как: MultiAPI.Basic.(METHOD);
-
 В этом классе содержутся следущие методы: 
 ```csharp
 int rnd(int startInt, int endInt);
@@ -198,5 +202,41 @@ MultiAPI.Basic.writeMachine("Hello World!", 40, false);
 Метод печатает в терминал символы из текста с определённой задержкой.
 
 Исключения: ` 0x00001 ` и ` 0x00002 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+## FTP.cs - FTP
+В этом классе содержутся следущие методы: 
+```csharp
+FTP(string host, string userName, string password);
+void upload(string localFullPath);
+void download(string localPath);
+void delete();
+bool exists();
+```
+### FTP
+```csharp
+FTP(string host, string userName, string password);
+```
+
+` host ` - Путь до удалённого файла. Например: ftp://0.0.0.0:21/file.exmp
+
+` userName ` - Имя пользователя для аутентификации
+
+` password ` - Пароль для аутентификации
+
+Пример:
+```csharp
+MultiAPI.FTP newFTP = new MultiAPI.FTP("ftp://0.0.0.0:21/file.exmp", "root", "12345678");
+```
+```csharp
+var newFTP = new MultiAPI.FTP("ftp://0.0.0.0:21/file.exmp", "root", "12345678");
+```
+
+Описание:
+
+Определяет переменные для дальнейшего соединения с FTP сервером
+
+Исключения: ` 0x00003 `
 
 Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)

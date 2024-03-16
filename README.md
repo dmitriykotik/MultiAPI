@@ -11,6 +11,9 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
 
 Для работы с библиотекой можно использовать любую среду разработки, но обязательно использовать .net framework версии не меньше 4.7.2!
 
+> [!NOTE]
+> В исходных кодах, в документации могут быть комментарии разработчика о том как работает код.
+
 ## Импорт библиотеки в проект
 
 > [!NOTE]
@@ -161,6 +164,20 @@ string getCurrentFolder();
 void writeMachine(string text, int countDown = 40, bool writeLine = true);
 ```
 
+Код класса:
+```csharp
+public static class Basic
+{
+   public static int rnd(int startInt, int endInt) {...}
+
+   public static void terminate(int errorCode) {...}
+
+   public static string getCurrentFolder() {...}
+
+   public static void writeMachine(string text, int countDown = 40, bool writeLine = true) {...}
+}
+```
+
 ### - rnd
 ```csharp
 int rnd(int startInt, int endInt);
@@ -176,14 +193,23 @@ int rnd(int startInt, int endInt);
 Пример:
 ```csharp
 int random;
-random = MultiAPI.Basic.rnd(1,10)
+random = MultiAPI.Basic.rnd(1,10);
 ```
 ```csharp
-Console.WriteLine(MultiAPI.Basic.rnd(1, 10))
+Console.WriteLine(MultiAPI.Basic.rnd(1, 10));
 ```
 Описание: 
 
 Метод выводит случайное значение от ` startInt ` до ` endInt `. 
+
+Код:
+```csharp
+public static int rnd(int startInt, int endInt)
+{
+    Random rnd = new Random(); // Создаём рандомайзер
+    return rnd.Next(startInt, endInt); // Генерируем случайное число от startInt до endInt и возвращаем его
+}
+```
 
 ### - terminate
 ```csharp
@@ -199,6 +225,11 @@ MultiAPI.Basic.terminate(0);
 Описание:
 
 Метод завершает работу программы с определённым кодом ошибки
+
+Код:
+```csharp
+public static void terminate(int errorCode) => Environment.Exit(errorCode); // Завершаем работу программы с определённым кодом ошибки. Использование "=>" уменьшает метод если используется лишь одна строка.
+```
 
 ### - getCurrentFolder
 ```csharp
@@ -219,6 +250,11 @@ Console.WriteLine(MultiAPI.Basic.getCurrentFolder);
 Описание:
 
 Метод возвращает путь к папке с программой
+
+Код:
+```csharp
+public static string getCurrentFolder() { return Environment.CurrentDirectory; } // Возвращает путь до папки с программой. Использование "{ }" в одной строке с выполнением одного действия уменьшает громосткость кода ради одного действия. Это почти как и "=>", но "=>" не работает с "return"
+```
 
 ### - writeMachine
 ```csharp
@@ -252,6 +288,21 @@ MultiAPI.Basic.writeMachine("Hello World!", 40, false);
 
 Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
 
+Код:
+```csharp
+public static void writeMachine(string text, int countDown = 40, bool writeLine = true)
+{
+    if (countDown == 0) throw new Exception("0x00001"); // Если "countdown" (задержка между символами) равна 0, то выдаём исключение с текстом "0x00001"
+    else if (countDown < 0) throw new Exception("0x00002"); // или Если "countdown" меньше 0, то выдаём исключение с текстом "0x00002"
+    foreach (char c in text) // Разбираем текст на буквы
+    {
+        Console.Write(c); // Выводим букву в терминал
+        Thread.Sleep(countDown); // Ожидаем указанное время из countdown в миллисекундах, перед тем как продолжить
+    }
+    if (writeLine) Console.WriteLine(); // Если "writeLine" равен "true", то выводим новую строку (Или переводим курсор на новую строку)
+}
+```
+
 ## FTP.cs - FTP
 В этом классе содержутся следущие методы: 
 ```csharp
@@ -261,6 +312,28 @@ void download(string localPath);
 void delete();
 bool exists();
 ```
+
+Код класса:
+```csharp
+public class FTP
+{
+    private string _host;
+    private string _userName;
+    private string _password;
+
+    public FTP(string host, string userName, string password) {...}
+
+    public void upload(string localFullPath) {...}
+
+    public void download(string localPath) {...}
+
+    public void delete() {...}
+
+    public bool exists() {...}
+
+}
+```
+
 ### FTP
 ```csharp
 FTP(string host, string userName, string password);
@@ -287,3 +360,14 @@ var newFTP = new MultiAPI.FTP("ftp://0.0.0.0:21/file.exmp", "root", "12345678");
 Исключения: ` 0x00003 `
 
 Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+Код:
+```csharp
+public FTP(string host, string userName, string password)
+{
+    if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password)) throw new Exception("0x00003"); // Если "host" или "userName", или "password" равен пустоте, то выдаём исключение с текстом "0x00003"
+    _host = host; // Устанавливаем значение для переменной "_host" в виде "host"
+    _userName = userName; // Устанавливаем значение для переменной "_userName" в виде "userName"
+    _password = password; // Устанавливаем значение для переменной "_password" в виде "password"
+}
+```

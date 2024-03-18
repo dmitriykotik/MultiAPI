@@ -537,3 +537,80 @@ public bool exists()
     catch (WebException ex) when (((FtpWebResponse)ex.Response).StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) { return false; } // Если в ходе запроса произошли какие либо ошибки, то возвращаем false
 }
 ```
+
+## Generator.cs - Generator
+В этом классе содержутся следущие методы:
+```csharp
+string GenPassword(int length);
+string GenPassword(int length, string dictionary);
+```
+
+### - GenPassword
+```csharp
+string GenPassword(int length);
+```
+```csharp
+string GenPassword(int length, string dictionary);
+```
+
+` length ` - Длинна пароля
+` dictionary ` - Список символов которые могут входить в пароль
+
+#### Возврат:
+Сгенерированный пароль
+
+#### Пример:
+```csharp
+string password = GenPassword(18);
+```
+```csharp
+Console.WriteLine(GenPassword(18));
+```
+```csharp
+string password = GenPassword(18, "abcdefghijklmnopqrstyvwxyz123456789");
+```
+```csharp
+Console.WriteLine(GenPassword(18, "abcdefghijklmnopqrstyvwxyz123456789"));
+```
+
+#### Описание: 
+Генерирует пароль с указанной длинной и возможностью указания своего списка символов
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+#### Код:
+```csharp
+public static string GenPassword(int length)
+{
+    if (string.IsNullOrEmpty(Convert.ToString(length))) throw new Exception("0x00003"); // Если "length" пустой, то выдаём исключение "0x00003"
+
+    const string chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-+=%*&?$#"; // Стандартный словарь
+
+    StringBuilder sb = new StringBuilder(); // Создаем объект StringBuilder для формирования пароля
+    Random rnd = new Random(); // Создаем объект Random для генерации случайных чисел
+
+    for (int i = 0; i < length; i++)
+    {
+        int index = rnd.Next(chars.Length); // Получаем случайный индекс символа из стандартного набора символов
+        sb.Append(chars[index]); // Добавляем символ к паролю
+    }
+    return sb.ToString(); // Возвращаем итоговый пароль
+}
+
+public static string GenPassword(int length, string dictionary)
+{
+    if (string.IsNullOrEmpty(Convert.ToString(length)) || string.IsNullOrEmpty(dictionary)) throw new Exception("0x00003"); // Если "length" или "dictionary" пустой, то выдаём исключение "0x00003"
+    StringBuilder sb = new StringBuilder(); // Создаем объект StringBuilder для формирования пароля
+    Random rnd = new Random(); // Создаем объект Random для генерации случайных чисел
+
+    for (int i = 0; i < length; i++)
+    {
+        int index = rnd.Next(dictionary.Length); // Получаем случайный индекс символа из пользовательского набора символов
+        sb.Append(dictionary[index]); // Добавляем символ к паролю
+    }
+    return sb.ToString(); // Возвращаем итоговый пароль
+}
+```

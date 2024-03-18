@@ -373,3 +373,49 @@ public FTP(string host, string userName, string password)
     _password = password; // Устанавливаем значение для переменной "_password" в виде "password"
 }
 ```
+
+### upload
+```csharp
+void upload(string localFullPath);
+```
+
+` localFullPath ` - Локальный путь до файла
+
+#### Пример:
+```csharp
+MultiAPI.FTP newFTP = new MultiAPI.FTP("ftp://0.0.0.0:21/file.exmp", "root", "12345678");
+newFTP.upload("C:\\Folder\\newFile.txt");
+```
+
+#### Описание:
+Отправляем файл на FTP сервер
+
+#### Исключения:
+Исключения: ` 0x00003 `, ` 0x00004 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+#### Код:
+```csharp
+public void upload(string localFullPath)
+{
+    if (string.IsNullOrEmpty(localFullPath)) throw new Exception("0x00003"); // Если "localFullPath" пустой, то выдаём исключение "0x00003"
+    if (!File.Exists(localFullPath)) throw new Exception("0x00004"); // Если файл по пути "localFullPath" не найден, то выдаём исключение "0x00004"
+
+    FtpWebRequest request = (FtpWebRequest)WebRequest.Create(_host); // Создаём соединение с "_host"
+
+    request.Method = WebRequestMethods.Ftp.UploadFile; // Добавляем метод для соединения, метод - Загрузка файла
+    request.Credentials = new NetworkCredential(_userName, _password); 
+    request.UsePassive = true;
+    request.UseBinary = true;
+    request.KeepAlive = false;
+
+    using (Stream inputStream = File.OpenRead(localFullPath))
+    using (Stream outputStream = request.GetRequestStream())
+    {
+        byte[] buffer = new byte[1024];
+        int bytesRead = 0;
+        while ((bytesRead = inputStream.Read(buffer, 0, buffer.Length)) > 0) outputStream.Write(buffer, 0, bytesRead);
+    }
+}
+```

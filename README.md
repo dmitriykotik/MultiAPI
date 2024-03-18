@@ -18,7 +18,24 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
 - [Введение](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#введение)
 - [Импорт библиотеки в проект](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#импорт-библиотеки-в-проект)
   - [Ручной метод](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#ручной-метод)
-  - 
+  - [Использование командной строки NuGet](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#использование-командной-строки-nuget)
+  - [Использование диспетчера пакетов NuGet](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#использование-диспетчера-пакетов-nuget)
+  - [Импорт библиотеки](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#импорт-библиотеки)
+- [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+- [Древо классов и методов](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#древо-классов-и-методов)
+
+<space><space>
+- [Main.cs - Basic](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#maincs---basic)
+  - [rnd](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--rnd)
+  - [terminate](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--terminate)
+  - [getCurrentFolder](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--getcurrentfolder)
+  - [writeMachine](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--writemachine)
+- [FTP.cs - FTP](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#ftpcs---ftp)
+  - [FTP](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--ftp)
+  - [upload](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--upload)
+  - [download](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--download)
+  - [delete](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--delete)
+  - [exists](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--exists)
 
 ## Импорт библиотеки в проект
 
@@ -50,7 +67,7 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
    
 - [x] MultiAPI_Lib.dll
 
-### Использование командной строки NuGet
+### Использование коммандной строки NuGet
 1. Откройте ваш проект.
 2. Откройте командную строку NuGet (Средства -> Диспетчер пакетов NuGet -> Консоль диспетчера пакетов).
 3. Введите в консоль следущую команду: ` Install-Package MultiAPI_Lib `, этим вы установите самую последнюю версию. Определённую версию вы можете найти на NuGet [![NuGet](https://img.shields.io/badge/NuGet-v0.1.1-orange?labelColor=gray&style=flat&link=https://www.nuget.org/packages/MultiAPI_Lib)](https://www.nuget.org/packages/MultiAPI_Lib)

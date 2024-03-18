@@ -16,7 +16,7 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
 
 ## Быстрый доступ
 - [Введение](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#введение)
-- - [Импорт библиотеки в проект](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#импорт-библиотеки-в-проект)
+- - - [Импорт библиотеки в проект](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#импорт-библиотеки-в-проект)
 
 ## Импорт библиотеки в проект
 

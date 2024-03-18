@@ -419,3 +419,31 @@ public void upload(string localFullPath)
     }
 }
 ```
+
+### - download
+```csharp
+void download(string localPath);
+```
+
+` localPath ` - Путь до локального файла (Нового)
+
+#### Описание:
+Сохраняет файл с сервера в файл "localPath"
+
+#### Исключения:
+Исключения: ` 0x00004 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+#### Код:
+```csharp
+public void download(string localPath)
+{
+    if (string.IsNullOrEmpty(localPath)) throw new Exception("0x00004"); // Если "localPath" пустой, то выдаём исключение "0x00004"
+    using (WebClient client = new WebClient()) // Создаём WEB-клиент
+    {
+        client.Credentials = new NetworkCredential(_userName, _password); // Устанавливаем учетные данные для аутентификации на сервере
+        client.DownloadFile(_host, localPath); // Скачиваем файл "_host" в файл "localPath"
+    }
+}
+```

@@ -563,10 +563,10 @@ string GenPassword(int length, string dictionary);
 
 #### Пример:
 ```csharp
-string password = GenPassword(18);
+string password = MultiAPI.Generator.GenPassword(18);
 ```
 ```csharp
-Console.WriteLine(GenPassword(18));
+Console.WriteLine(MultiAPI.Generator.GenPassword(18));
 ```
 ```csharp
 string password = GenPassword(18, "abcdefghijklmnopqrstyvwxyz123456789");
@@ -614,5 +614,45 @@ public static string GenPassword(int length, string dictionary)
         sb.Append(dictionary[index]); // Добавляем символ к паролю
     }
     return sb.ToString(); // Возвращаем итоговый пароль
+}
+```
+
+## INI.cs - INI
+В этом классе содержутся следущие методы:
+```csharp
+string GenPassword(int length);
+string GenPassword(int length, string dictionary);
+```
+
+### - INI
+```csharp
+INI(string iniFile);
+```
+
+` iniFile ` - Путь к ini файлу
+
+#### Пример:
+```csharp
+MultiAPI.INI ini = new MultiAPI.INI("C:\\Folder\\iniFile.ini");
+```
+```csharp
+var ini = new MultiAPI.INI("C:\\Folder\\iniFile.ini");
+```
+
+#### Описание:
+Установка значения для переменной, для дальнейшего взаиможействия с INI файлом
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+#### Код:
+```csharp
+public INI(string iniFile)
+{
+    if (string.IsNullOrEmpty(iniFile)) throw new Exception("0x00003"); // Если "iniFile" пустой, то выдаём исключение "0x00003"
+    if (!File.Exists(iniFile)) File.Create(iniFile).Close(); // Если файла "iniFile" не существует, то создаём его.
+    _iniFile = iniFile; // Для "_iniFile" выставляем значение "iniFile"
 }
 ```

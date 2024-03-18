@@ -36,6 +36,8 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
   - [download](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--download)
   - [delete](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--delete)
   - [exists](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--exists)
+- [Generator.cs - Generator](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#generatorcs---generator)
+  - [GenPassword](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--genpassword)
 
 ## Импорт библиотеки в проект
 

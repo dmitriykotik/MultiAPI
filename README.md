@@ -404,18 +404,18 @@ public void upload(string localFullPath)
 
     FtpWebRequest request = (FtpWebRequest)WebRequest.Create(_host); // Создаём соединение с "_host"
 
-    request.Method = WebRequestMethods.Ftp.UploadFile; // Добавляем метод для соединения, метод - Загрузка файла
-    request.Credentials = new NetworkCredential(_userName, _password); 
-    request.UsePassive = true;
-    request.UseBinary = true;
-    request.KeepAlive = false;
+    request.Method = WebRequestMethods.Ftp.UploadFile; // Устанавливаем метод запроса как загрузка файла
+    request.Credentials = new NetworkCredential(_userName, _password); // Устанавливаем учетные данные для аутентификации на сервере
+    request.UsePassive = true; // Устанавливаем пассивный режим для передачи данных
+    request.UseBinary = true; // Устанавливаем бинарный режим передачи данных
+    request.KeepAlive = false; // Отключаем поддержание активного соединения
 
-    using (Stream inputStream = File.OpenRead(localFullPath))
-    using (Stream outputStream = request.GetRequestStream())
+    using (Stream inputStream = File.OpenRead(localFullPath)) // Открываем поток для чтения содержимого локального файла
+    using (Stream outputStream = request.GetRequestStream()) // Получаем поток для записи данных на FTP сервер
     {
-        byte[] buffer = new byte[1024];
-        int bytesRead = 0;
-        while ((bytesRead = inputStream.Read(buffer, 0, buffer.Length)) > 0) outputStream.Write(buffer, 0, bytesRead);
+        byte[] buffer = new byte[1024]; // Создаем буфер для чтения файла порциями
+        int bytesRead = 0; // Переменная для хранения количества считанных байт
+        while ((bytesRead = inputStream.Read(buffer, 0, buffer.Length)) > 0) outputStream.Write(buffer, 0, bytesRead); // Пишем порцию данных в поток для записи на сервер
     }
 }
 ```

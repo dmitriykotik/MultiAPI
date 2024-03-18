@@ -345,7 +345,7 @@ FTP(string host, string userName, string password);
 
 ` password ` - Пароль для аутентификации
 
-Пример:
+#### Пример:
 ```csharp
 MultiAPI.FTP newFTP = new MultiAPI.FTP("ftp://0.0.0.0:21/file.exmp", "root", "12345678");
 ```
@@ -353,15 +353,15 @@ MultiAPI.FTP newFTP = new MultiAPI.FTP("ftp://0.0.0.0:21/file.exmp", "root", "12
 var newFTP = new MultiAPI.FTP("ftp://0.0.0.0:21/file.exmp", "root", "12345678");
 ```
 
-Описание:
-
+#### Описание:
 Определяет переменные для дальнейшего соединения с FTP сервером
 
+#### Исключения:
 Исключения: ` 0x00003 `
 
 Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
 
-Код:
+#### Код:
 ```csharp
 public FTP(string host, string userName, string password)
 {

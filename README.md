@@ -453,3 +453,29 @@ public void download(string localPath)
     }
 }
 ```
+
+### - delete
+```csharp
+void delete();
+```
+
+#### Пример:
+```csharp
+MultiAPI.FTP newFTP = new MultiAPI.FTP("ftp://0.0.0.0:21/file.exmp", "root", "12345678");
+newFTP.delete();
+```
+
+#### Описание:
+Удаляет файл с сервера
+
+#### Код:
+```csharp
+public void delete()
+{
+    FtpWebRequest request = (FtpWebRequest)WebRequest.Create(_host); // Создаём подключение у серверу
+    request.Method = WebRequestMethods.Ftp.DeleteFile; // Устанавливаем метод запроса как удаление файла
+    request.Credentials = new NetworkCredential(_userName, _password); // Устанавливаем учетные данные для аутентификации на сервере
+    FtpWebResponse response = (FtpWebResponse)request.GetResponse(); // Получаем ответ от FTP сервера на запрос удаления файла
+    response.Close(); // Закрываем ответ от сервера
+}
+```

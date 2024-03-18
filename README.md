@@ -336,7 +336,7 @@ public class FTP
 }
 ```
 
-### FTP
+### - FTP
 ```csharp
 FTP(string host, string userName, string password);
 ```
@@ -374,7 +374,7 @@ public FTP(string host, string userName, string password)
 }
 ```
 
-### upload
+### - upload
 ```csharp
 void upload(string localFullPath);
 ```

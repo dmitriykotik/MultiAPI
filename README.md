@@ -38,6 +38,8 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
   - [exists](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--exists)
 - [Generator.cs - Generator](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#generatorcs---generator)
   - [GenPassword](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--genpassword)
+- [INI.cs - INI](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#inics---ini)
+  - [INI](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--ini)
 
 ## Импорт библиотеки в проект
 
@@ -620,8 +622,12 @@ public static string GenPassword(int length, string dictionary)
 ## INI.cs - INI
 В этом классе содержутся следущие методы:
 ```csharp
-string GenPassword(int length);
-string GenPassword(int length, string dictionary);
+INI(string iniFile);
+string getValue(string section, string variable);
+void setValue(string section, string variable, string text);
+bool existVariable(string section, string variable);
+void deleteVariable(string section, string variable);
+void deleteAllVariables(string section);
 ```
 
 ### - INI

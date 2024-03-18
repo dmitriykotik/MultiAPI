@@ -427,6 +427,12 @@ void download(string localPath);
 
 ` localPath ` - Путь до локального файла (Нового)
 
+#### Пример:
+```csharp
+MultiAPI.FTP newFTP = new MultiAPI.FTP("ftp://0.0.0.0:21/file.exmp", "root", "12345678");
+newFTP.download("C:\\Folder\\file.exmp");
+```
+
 #### Описание:
 Сохраняет файл с сервера в файл "localPath"
 
@@ -439,7 +445,7 @@ void download(string localPath);
 ```csharp
 public void download(string localPath)
 {
-    if (string.IsNullOrEmpty(localPath)) throw new Exception("0x00004"); // Если "localPath" пустой, то выдаём исключение "0x00004"
+    if (string.IsNullOrEmpty(localPath)) throw new Exception("0x00003"); // Если "localPath" пустой, то выдаём исключение "0x00003"
     using (WebClient client = new WebClient()) // Создаём WEB-клиент
     {
         client.Credentials = new NetworkCredential(_userName, _password); // Устанавливаем учетные данные для аутентификации на сервере

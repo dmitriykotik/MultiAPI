@@ -479,3 +479,37 @@ public void delete()
     response.Close(); // Закрываем ответ от сервера
 }
 ```
+
+### - exists
+```csharp
+bool exists();
+```
+
+#### Возврат:
+` true ` или ` false `. ` true ` - если файл существует, ` false ` - если не существует.
+
+#### Пример:
+```csharp
+MultiAPI.FTP newFTP = new MultiAPI.FTP("ftp://0.0.0.0:21/file.exmp", "root", "12345678");
+Console.WriteLine(newFTP.exists());
+```
+```csharp
+MultiAPI.FTP newFTP = new MultiAPI.FTP("ftp://0.0.0.0:21/file.exmp", "root", "12345678");
+bool fileExists = newFTP.exists();
+```
+
+#### Описание:
+Проверяет, есть ли файл на сервере
+
+#### Код:
+```csharp
+public bool exists()
+{
+    FtpWebRequest request = (FtpWebRequest)WebRequest.Create(_host); // Создаем запрос к FTP серверу для получения даты и времени последней модификации файла
+    request.Credentials = new NetworkCredential(_userName, _password); // Устанавливаем учетные данные для аутентификации на сервере
+    request.Method = WebRequestMethods.Ftp.GetDateTimestamp; // Устанавливаем метод запроса как получение даты и времени последней модификации файла
+
+    try { using (FtpWebResponse response = (FtpWebResponse)request.GetResponse()) return true; } // Если запрос к серверу выполнен успешно, возвращаем true
+    catch (WebException ex) when (((FtpWebResponse)ex.Response).StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable) { return false; } // Если в ходе запроса произошли какие либо ошибки, то возвращаем false
+}
+```

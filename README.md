@@ -663,7 +663,7 @@ public INI(string iniFile)
 }
 ```
 
-### getValue
+### - getValue
 ```csharp
 string getValue(string section, string variable);
 ```
@@ -704,7 +704,7 @@ public string getValue(string section, string variable)
 }
 ```
 
-### setValue
+### - setValue
 ```csharp
 void setValue(string section, string variable, string text);
 ```
@@ -741,7 +741,7 @@ public void setValue(string section, string variable, string text)
 }
 ```
 
-### existsVariable
+### - existsVariable
 ```csharp
 bool existVariable(string section, string variable);
 ```
@@ -782,7 +782,7 @@ public bool existVariable(string section, string variable)
 }
 ```
 
-### deleteVariable
+### - deleteVariable
 ```csharp
 void deleteVariable(string section, string variable);
 ```
@@ -817,7 +817,7 @@ public void deleteVariable(string section, string variable)
 }
 ```
 
-### deleteAllVariables
+### - deleteAllVariables
 ```csharp
 void deleteAllVariables(string section);
 ```

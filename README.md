@@ -685,6 +685,9 @@ MultiAPI.INI ini = new MultiAPI.INI("C:\\Folder\\iniFile.ini");
 Console.WriteLine(ini.getValue("NewSection", "FirstVar"));
 ```
 
+#### Описание:
+Получает значение из переменной в секции
+
 #### Исключения:
 Исключения: ` 0x00003 `
 
@@ -718,6 +721,9 @@ MultiAPI.INI ini = new MultiAPI.INI("C:\\Folder\\iniFile.ini");
 ini.setValue("NewSection", "FirstVar", "FirstTextttttt");
 ```
 
+#### Описание:
+Устанавливаем значение в переменной из секции
+
 #### Исключения:
 Исключения: ` 0x00003 `
 
@@ -732,5 +738,114 @@ public void setValue(string section, string variable, string text)
     IniData data = parser.ReadFile(_iniFile); // Читаем файл с помощью парсера
     data[section][variable] = text; // Пишем новый текст для переменной
     parser.WriteFile(_iniFile, data); // Записываем в файл новый текст для переменной
+}
+```
+
+### existsVariable
+```csharp
+bool existVariable(string section, string variable);
+```
+
+` section ` - Секция
+
+` variable ` - Переменная в секции
+
+#### Возврат:
+` true ` или ` false `. ` true ` - если переменная существует, ` false ` - если не существует
+
+#### Пример:
+```csharp
+MultiAPI.INI ini = new MultiAPI.INI("C:\\Folder\\iniFile.ini");
+ini.existsVariable("NewSection", "FirstVar");
+```
+```csharp
+MultiAPI.INI ini = new MultiAPI.INI("C:\\Folder\\iniFile.ini");
+Console.WriteLine(ini.existsVariable("NewSection", "FirstVar"));
+```
+
+#### Описание:
+Проверяет, есть ли переменная в секции
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+#### Код:
+```csharp
+public bool existVariable(string section, string variable)
+{
+    if (string.IsNullOrEmpty(section) || string.IsNullOrEmpty(variable)) throw new Exception("0x00003"); // Если "section" или "variable" пуст, то выдаём исключение "0x00003" 
+    FileIniDataParser parser = new FileIniDataParser(); // Создаём парсер
+    IniData data = parser.ReadFile(_iniFile); // Читаем файл с помощью парсера
+    return data[section].ContainsKey(variable); // Возвращаем "true" или "false", если есть переменная
+}
+```
+
+### deleteVariable
+```csharp
+void deleteVariable(string section, string variable);
+```
+
+` section ` - Секция
+
+` variable ` - Переменная в секции
+
+#### Пример:
+```csharp
+MultiAPI.INI ini = new MultiAPI.INI("C:\\Folder\\iniFile.ini");
+ini.deleteVariable("NewSection", "FirstVar");
+```
+
+#### Описание:
+Удаляет переменную в секции
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+#### Код:
+```csharp
+public void deleteVariable(string section, string variable)
+{
+    if (string.IsNullOrEmpty(section) || string.IsNullOrEmpty(variable)) throw new Exception("0x00003"); // Если "section" или "variable" пуст, то выдаём исключение "0x00003" 
+    FileIniDataParser parser = new FileIniDataParser(); // Создаём парсер
+    IniData data = parser.ReadFile(_iniFile); // Читаем файл с помощью парсера
+    data[section].RemoveKey(variable); // Удаляем переменную
+    parser.WriteFile(_iniFile, data); // Записываем действие в файл (Удаляем переменную в файле)
+}
+```
+
+### deleteAllVariables
+```csharp
+void deleteAllVariables(string section);
+```
+
+` section ` - Секция
+
+#### Пример:
+```csharp
+MultiAPI.INI ini = new MultiAPI.INI("C:\\Folder\\iniFile.ini");
+ini.deleteAllVariables("NewSection");
+```
+
+#### Описание:
+Удаляем все переменные из секции
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+#### Код:
+```csharp
+public void deleteAllVariables(string section)
+{
+    if (string.IsNullOrEmpty(section)) throw new Exception("0x00003"); // Если "section" пуст, то выдаём исключение "0x00003" 
+    FileIniDataParser parser = new FileIniDataParser(); // Создаём парсер
+    IniData data = parser.ReadFile(_iniFile); // Читаем файл с помощью парсера
+    data[section].RemoveAllKeys(); // Удаляем все переменные из секции
+    parser.WriteFile(_iniFile, data); // Записываем действие в файл (Удаляем все переменные в файле)
 }
 ```

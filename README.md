@@ -40,6 +40,11 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
   - [GenPassword](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--genpassword)
 - [INI.cs - INI](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#inics---ini)
   - [INI](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--ini)
+  - [getValue](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--getvalue)
+  - [setValue](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--setvalue)
+  - [existsVariable](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--existsvariable)
+  - [deleteVariable](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--deletevariable)
+  - [deleteAllVariables](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--deleteallvariables)
 
 ## Импорт библиотеки в проект
 

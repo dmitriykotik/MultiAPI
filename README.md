@@ -45,7 +45,7 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
   - [existsVariable](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--existsvariable)
   - [deleteVariable](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--deletevariable)
   - [deleteAllVariables](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--deleteallvariables)
-- [Internet.cs - Internet]
+- [Internet.cs - Internet](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#internetcs---internet)
   - [TestConnection](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--testconnection)
   - [ping](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--ping)
 - [Mail.cs - Mail](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#mailcs---mail)

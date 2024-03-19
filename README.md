@@ -662,3 +662,75 @@ public INI(string iniFile)
     _iniFile = iniFile; // Для "_iniFile" выставляем значение "iniFile"
 }
 ```
+
+### getValue
+```csharp
+string getValue(string section, string variable);
+```
+
+` section ` - Секция
+
+` variable ` - Переменная в секции
+
+#### Возврат:
+Значение переменной ` variable ` из секции ` section `
+
+#### Пример:
+```csharp
+MultiAPI.INI ini = new MultiAPI.INI("C:\\Folder\\iniFile.ini");
+ini.getValue("NewSection", "FirstVar");
+```
+```csharp
+MultiAPI.INI ini = new MultiAPI.INI("C:\\Folder\\iniFile.ini");
+Console.WriteLine(ini.getValue("NewSection", "FirstVar"));
+```
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+#### Код:
+```csharp
+public string getValue(string section, string variable)
+{
+    if (string.IsNullOrEmpty(section) || string.IsNullOrEmpty(variable)) throw new Exception("0x00003"); // Если "section" или "variable" пуст, то выдаём исключение "0x00003"
+    FileIniDataParser parser = new FileIniDataParser(); // Создаём парсер
+    IniData data = parser.ReadFile(_iniFile); // Читаем файл с помощью парсера
+    return data[section][variable]; // Возвращаем значение переменной
+}
+```
+
+### setValue
+```csharp
+void setValue(string section, string variable, string text);
+```
+
+` section ` - Секция
+
+` variable ` - Переменная в секции
+
+` text ` - Текст
+
+#### Пример:
+```csharp
+MultiAPI.INI ini = new MultiAPI.INI("C:\\Folder\\iniFile.ini");
+ini.setValue("NewSection", "FirstVar", "FirstTextttttt");
+```
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+#### Код:
+```csharp
+public void setValue(string section, string variable, string text)
+{
+    if (string.IsNullOrEmpty(section) || string.IsNullOrEmpty(variable) || string.IsNullOrEmpty(text)) throw new Exception("0x00003"); // Если "section", "variable" или "text" пуст, то выдаём исключение "0x00003"
+    FileIniDataParser parser = new FileIniDataParser(); // Создаём парсер
+    IniData data = parser.ReadFile(_iniFile); // Читаем файл с помощью парсера
+    data[section][variable] = text; // Пишем новый текст для переменной
+    parser.WriteFile(_iniFile, data); // Записываем в файл новый текст для переменной
+}
+```

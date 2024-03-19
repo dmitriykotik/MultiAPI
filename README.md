@@ -104,6 +104,7 @@ using MultiAPI;
 0x00002 - Промежуток времени меньше или равен нулю
 0x00003 - Поле или значение не может быть пустым
 0x00004 - Указанного файла не существует
+0x00005 - Нет подключения к интернету
 ```
 Возможная обработка (Пример):
 ```csharp
@@ -852,5 +853,164 @@ public void deleteAllVariables(string section)
     IniData data = parser.ReadFile(_iniFile); // Читаем файл с помощью парсера
     data[section].RemoveAllKeys(); // Удаляем все переменные из секции
     parser.WriteFile(_iniFile, data); // Записываем действие в файл (Удаляем все переменные в файле)
+}
+```
+
+## Internet.cs - Internet
+В этом классе содержутся следущие методы:
+```csharp
+bool TestConnection();
+bool ping(string url);
+```
+
+### - TestConnection
+```csharp
+bool TestConnection();
+```
+
+#### Возврат:
+Возвращает ` true `, если соединение с Интернетом установлено, иначе ` false `.
+
+#### Пример:
+```csharp
+bool isConnected = MultiAPI.Internet.TestConnection();
+
+if (isConnected) Console.WriteLine("Connection established.");
+else Console.WriteLine("Unable to establish connection.");
+```
+
+#### Описание:
+Проверяет наличие соединения с Интернетом путем отправки запроса на ping хоста "google.com".
+
+#### Код:
+```csharp
+public static bool TestConnection()
+{
+    try
+    {
+        using (var ping = new Ping()) // Создаем экземпляр класса Ping с помощью using, чтобы гарантировать освобождение ресурсов
+        {
+            var result = ping.Send("google.com", 1000); // Посылаем пинг на google.com с таймаутом 1000 миллисекунд
+            return result.Status == IPStatus.Success; // Возвращаем true, если ответ получен успешно, иначе false
+        }
+    }
+    catch { return false; } // Если произошла ошибка во время пинга, возвращаем false
+}
+
+```
+
+### - ping
+```csharp
+bool ping(string url);
+```
+
+` url ` - Адрес для проверки доступности.
+
+#### Возврат:
+Возвращает ` true `, если удалось установить соединение с указанным адресом, иначе ` false `.
+
+#### Пример:
+```csharp
+bool isReachable = MultiAPI.Internet.ping("example.com");
+if (isReachable) Console.WriteLine("Host is reachable.");
+else Console.WriteLine("Host is not reachable.");
+```
+
+#### Описание:
+Проверяет доступность указанного адреса путем отправки запроса на ping.
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+#### Код:
+```csharp
+public static bool ping(string url)
+{
+    if (string.IsNullOrEmpty(url)) throw new Exception("0x00003"); // Если "URL" пуст, выбрасываем исключение с кодом "0x00003"
+
+    try
+    {
+        using (var ping = new Ping()) // Создаем экземпляр класса Ping с помощью using, чтобы гарантировать освобождение ресурсов
+        {
+            var result = ping.Send(url, 1000); // Посылаем пинг на указанный URL с таймаутом 1000 миллисекунд
+            return result.Status == IPStatus.Success; // Возвращаем true, если ответ получен успешно, иначе false
+        }
+    }
+    catch { return false; } // Если произошла ошибка во время пинга, возвращаем false
+}
+```
+
+## Mail.cs - Mail
+В этом классе содержутся следущие методы:
+```csharp
+void send(string fromEmail, string fromName, string toEmail, string subject, string textOrHtml, string smtpServer, int smtpPort, string smtpPasswordMail);
+```
+
+### - send
+```csharp
+void send(string fromEmail, string fromName, string toEmail, string subject, string textOrHtml, string smtpServer, int smtpPort, string smtpPasswordMail);
+```
+
+` fromEmail ` - Адрес электронной почты отправителя.
+
+` fromName ` - Имя отправителя.
+
+` toEmail ` - Адрес электронной почты получателя.
+
+` subject ` - Тема письма.
+
+` textOrHtml ` - Текст письма или HTML-разметка.
+
+` smtpServer ` - SMTP-сервер.
+
+` smtpPort ` - Порт SMTP-сервера.
+
+` smtpPasswordMail ` - Пароль электронной почты отправителя.
+
+#### Пример:
+```csharp
+MultiAPI.Mail.send("sender@example.com", "Sender Name", "recipient@example.com", "Test Subject", "This is a test email", "smtp.example.com", 587, "password");
+```
+
+#### Описание:
+Отправляет электронное письмо с указанными параметрами.
+
+#### Исключения:
+Исключения: ` 0x00003 ` и ` 0x00005 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+#### Код:
+```csharp
+public static void send(string fromEmail, string fromName, string toEmail, string subject, string textOrHtml, string smtpServer, int smtpPort, string smtpPasswordMail)
+{
+    if (string.IsNullOrEmpty(fromEmail) || string.IsNullOrEmpty(fromName) || string.IsNullOrEmpty(toEmail) || string.IsNullOrEmpty(subject) || string.IsNullOrEmpty(textOrHtml) || string.IsNullOrEmpty(smtpServer) || string.IsNullOrEmpty(Convert.ToString(smtpPort)) || string.IsNullOrEmpty(smtpPasswordMail)) 
+        throw new Exception("0x00003"); // Если какой-либо параметр пуст, выбрасываем исключение с кодом "0x00003"
+    
+    // Проверяем доступность интернета
+    if (Internet.TestConnection())
+    {
+        // Создаем объекты для адресов отправителя и получателя
+        MailAddress from = new MailAddress(fromEmail, fromName);
+        MailAddress to = new MailAddress(toEmail);
+        
+        // Создаем объект сообщения
+        MailMessage m = new MailMessage(from, to);
+        m.Subject = subject; // Задаем тему письма
+        m.Body = textOrHtml; // Задаем текст письма
+        m.IsBodyHtml = true; // Устанавливаем, что тело письма содержит HTML
+        
+        // Создаем клиент SMTP
+        SmtpClient smtp = new SmtpClient(smtpServer, smtpPort);
+        smtp.Credentials = new NetworkCredential(fromEmail, smtpPasswordMail); // Устанавливаем учетные данные для аутентификации на SMTP-сервере
+        smtp.EnableSsl = true; // Включаем SSL для защищенного подключения
+        smtp.Send(m); // Отправляем сообщение
+    }
+    else
+    {
+        throw new Exception("0x00005"); // Если нет подключения к интернету, выбрасываем исключение с кодом "0x00005"
+    }
 }
 ```

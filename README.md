@@ -341,7 +341,7 @@ MultiAPI.Basic.writeMachine("Hello World!", 40, false);
 #### Исключения:
 Исключения: ` 0x00001 ` и ` 0x00002 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -414,7 +414,7 @@ var newFTP = new MultiAPI.FTP("ftp://0.0.0.0:21/file.exmp", "root", "12345678");
 #### Исключения:
 Исключения: ` 0x00003 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -446,7 +446,7 @@ newFTP.upload("C:\\Folder\\newFile.txt");
 #### Исключения:
 Исключения: ` 0x00003 `, ` 0x00004 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -492,7 +492,7 @@ newFTP.download("C:\\Folder\\file.exmp");
 #### Исключения:
 Исключения: ` 0x00004 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -608,7 +608,7 @@ Console.WriteLine(GenPassword(18, "abcdefghijklmnopqrstyvwxyz123456789"));
 #### Исключения:
 Исключения: ` 0x00003 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -676,7 +676,7 @@ var ini = new MultiAPI.INI("C:\\Folder\\iniFile.ini");
 #### Исключения:
 Исключения: ` 0x00003 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -716,7 +716,7 @@ Console.WriteLine(ini.getValue("NewSection", "FirstVar"));
 #### Исключения:
 Исключения: ` 0x00003 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -752,7 +752,7 @@ ini.setValue("NewSection", "FirstVar", "FirstTextttttt");
 #### Исключения:
 Исключения: ` 0x00003 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -794,7 +794,7 @@ Console.WriteLine(ini.existsVariable("NewSection", "FirstVar"));
 #### Исключения:
 Исключения: ` 0x00003 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -828,7 +828,7 @@ ini.deleteVariable("NewSection", "FirstVar");
 #### Исключения:
 Исключения: ` 0x00003 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -861,7 +861,7 @@ ini.deleteAllVariables("NewSection");
 #### Исключения:
 Исключения: ` 0x00003 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -941,7 +941,7 @@ else Console.WriteLine("Host is not reachable.");
 #### Исключения:
 Исключения: ` 0x00003 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -999,7 +999,7 @@ MultiAPI.Mail.send("sender@example.com", "Sender Name", "recipient@example.com",
 #### Исключения:
 Исключения: ` 0x00003 ` и ` 0x00005 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -1062,7 +1062,7 @@ var music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
 #### Исключения:
 Исключения: ` 0x00003 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -1149,7 +1149,7 @@ music.setVolume(85);
 #### Исключения:
 Исключения: ` 0x00003 `, ` 0x00006 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -1279,7 +1279,7 @@ music.setPosition(0.7);
 #### Исключения:
 Исключения: ` 0x00003 `, ` 0x00006 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp
@@ -1334,7 +1334,7 @@ music.updatePath("C:\\Folder\\testMusicFile2.mp3");
 #### Исключения:
 Исключения: ` 0x00003 `
 
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
 #### Код:
 ```csharp

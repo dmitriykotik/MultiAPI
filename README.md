@@ -128,14 +128,11 @@ using MultiAPI;
 ```csharp
 try
 {
-    MultiAPI.Basic.writeMachine("Я шишибочка! :D", 0);
+    MultiAPI.Basic.writeMachine("Я шишибочка! :D", 0); // Используем "writeMachine" и используем значение "0" в аргументе "countdown", что вызывает исключение с кодом "0x00001"
 }
 catch (Exception ex)
 {
-    if (ex.Message == "0x00001")
-    {
-        MultiAPI.Basic.terminate(1);
-    }
+    if (ex.Message == "0x00001") MultiAPI.Basic.terminate(1); // Если текст исключения равен "0x00001", то закрываем программу с кодом ошибки 1
 }
 ```
 

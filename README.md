@@ -110,6 +110,7 @@ using MultiAPI;
 0x00003 - Поле или значение не может быть пустым
 0x00004 - Указанного файла не существует
 0x00005 - Нет подключения к интернету
+0x00006 - Привышение установленного лимита
 ```
 Возможная обработка (Пример):
 ```csharp
@@ -166,7 +167,8 @@ catch (Exception ex)
     │   ├── double getDuration()
     │   ├── void setPosition(double position)
     │   ├── double getPosition()
-    │   └── void updatePath(string pathFile)
+    │   ├── void updatePath(string pathFile)
+    │   └── string getPath()
     ├── RegEdit.cs - RegEdit
     │   ├── void create(RegistryKey key, string keyName)
     │   ├── void delete(RegistryKey key, string keyName)
@@ -909,10 +911,10 @@ public static bool TestConnection()
 bool ping(string url);
 ```
 
-` url ` - Адрес для проверки доступности.
+` url ` - Адрес для проверки доступности
 
 #### Возврат:
-Возвращает ` true `, если удалось установить соединение с указанным адресом, иначе ` false `.
+Возвращает ` true `, если удалось установить соединение с указанным адресом, иначе ` false `
 
 #### Пример:
 ```csharp
@@ -922,7 +924,7 @@ else Console.WriteLine("Host is not reachable.");
 ```
 
 #### Описание:
-Проверяет доступность указанного адреса путем отправки запроса на ping.
+Проверяет доступность указанного адреса путем отправки запроса на ping
 
 #### Исключения:
 Исключения: ` 0x00003 `
@@ -958,21 +960,21 @@ void send(string fromEmail, string fromName, string toEmail, string subject, str
 void send(string fromEmail, string fromName, string toEmail, string subject, string textOrHtml, string smtpServer, int smtpPort, string smtpPasswordMail);
 ```
 
-` fromEmail ` - Адрес электронной почты отправителя.
+` fromEmail ` - Адрес электронной почты отправителя
 
-` fromName ` - Имя отправителя.
+` fromName ` - Имя отправителя
 
-` toEmail ` - Адрес электронной почты получателя.
+` toEmail ` - Адрес электронной почты получателя
 
-` subject ` - Тема письма.
+` subject ` - Тема письма
 
-` textOrHtml ` - Текст письма или HTML-разметка.
+` textOrHtml ` - Текст письма или HTML-разметка
 
-` smtpServer ` - SMTP-сервер.
+` smtpServer ` - SMTP-сервер
 
-` smtpPort ` - Порт SMTP-сервера.
+` smtpPort ` - Порт SMTP-сервера
 
-` smtpPasswordMail ` - Пароль электронной почты отправителя.
+` smtpPasswordMail ` - Пароль электронной почты отправителя
 
 #### Пример:
 ```csharp
@@ -980,7 +982,7 @@ MultiAPI.Mail.send("sender@example.com", "Sender Name", "recipient@example.com",
 ```
 
 #### Описание:
-Отправляет электронное письмо с указанными параметрами.
+Отправляет электронное письмо с указанными параметрами
 
 #### Исключения:
 Исключения: ` 0x00003 ` и ` 0x00005 `
@@ -991,31 +993,370 @@ MultiAPI.Mail.send("sender@example.com", "Sender Name", "recipient@example.com",
 ```csharp
 public static void send(string fromEmail, string fromName, string toEmail, string subject, string textOrHtml, string smtpServer, int smtpPort, string smtpPasswordMail)
 {
-    if (string.IsNullOrEmpty(fromEmail) || string.IsNullOrEmpty(fromName) || string.IsNullOrEmpty(toEmail) || string.IsNullOrEmpty(subject) || string.IsNullOrEmpty(textOrHtml) || string.IsNullOrEmpty(smtpServer) || string.IsNullOrEmpty(Convert.ToString(smtpPort)) || string.IsNullOrEmpty(smtpPasswordMail)) 
-        throw new Exception("0x00003"); // Если какой-либо параметр пуст, выбрасываем исключение с кодом "0x00003"
-    
+    if (string.IsNullOrEmpty(fromEmail) || string.IsNullOrEmpty(fromName) || string.IsNullOrEmpty(toEmail) || string.IsNullOrEmpty(subject) || string.IsNullOrEmpty(textOrHtml) || string.IsNullOrEmpty(smtpServer) || string.IsNullOrEmpty(Convert.ToString(smtpPort)) || string.IsNullOrEmpty(smtpPasswordMail)) throw new Exception("0x00003"); // Если какой-либо параметр пуст, выбрасываем исключение с кодом "0x00003"
     // Проверяем доступность интернета
     if (Internet.TestConnection())
     {
         // Создаем объекты для адресов отправителя и получателя
         MailAddress from = new MailAddress(fromEmail, fromName);
         MailAddress to = new MailAddress(toEmail);
-        
-        // Создаем объект сообщения
-        MailMessage m = new MailMessage(from, to);
+        MailMessage m = new MailMessage(from, to); // Создаем объект сообщения
         m.Subject = subject; // Задаем тему письма
         m.Body = textOrHtml; // Задаем текст письма
         m.IsBodyHtml = true; // Устанавливаем, что тело письма содержит HTML
-        
-        // Создаем клиент SMTP
-        SmtpClient smtp = new SmtpClient(smtpServer, smtpPort);
+        SmtpClient smtp = new SmtpClient(smtpServer, smtpPort); // Создаем клиент SMTP
         smtp.Credentials = new NetworkCredential(fromEmail, smtpPasswordMail); // Устанавливаем учетные данные для аутентификации на SMTP-сервере
         smtp.EnableSsl = true; // Включаем SSL для защищенного подключения
         smtp.Send(m); // Отправляем сообщение
     }
-    else
-    {
-        throw new Exception("0x00005"); // Если нет подключения к интернету, выбрасываем исключение с кодом "0x00005"
-    }
+    else throw new Exception("0x00005"); // Если нет подключения к интернету, выбрасываем исключение с кодом "0x00005"
 }
+```
+
+## Music.cs - Music
+В этом классе содержутся следущие методы:
+```csharp
+Music(string pathFile);
+void play();
+void stop();
+void pause();
+void setVolume(int volume);
+int getVolume();
+double getDuration();
+void setPosition(double position);
+double getPosition();
+void updatePath(string pathFile);
+```
+
+### - Music
+```csharp
+Music(string pathFile);
+```
+
+` pathFile ` - Путь до файла музыки
+
+#### Пример:
+```csharp
+MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+```
+```csharp
+var music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+```
+
+#### Описание:
+Создаёт конструктор для взаимодействия с музыкальным файлом
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+#### Код:
+```csharp
+public Music(string pathFile)
+{
+    if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003"); // Если "pathFile" пуст, то выдаём исключение "0x00003" 
+    musicPlayer.URL = pathFile; // Устанавливаем ссылку для плеера
+}
+```
+
+#### - play
+```csharp
+void play();
+```
+
+#### Пример:
+```csharp
+MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+music.play();
+```
+
+#### Описание:
+Воспроизводит или продоолжает воспроизведение музыкального файла
+
+#### Код:
+```csharp
+public void play() => musicPlayer.controls.play(); // Воспроизводим или продолжнаем воспроизведение музыкального файла
+```
+
+#### - stop
+```csharp
+void stop();
+```
+
+#### Пример:
+```csharp
+MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+music.stop();
+```
+
+#### Описание:
+Останавливает воспроизведение музыкального файла и переводит курсор на начало
+
+#### Код:
+```csharp
+public void stop() => musicPlayer.controls.stop(); // Останавливаем воспроизведение и переводим курсор на начало
+```
+
+### - pause
+```csharp
+void pause();
+```
+
+#### Пример:
+```csharp
+MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+music.pause();
+```
+
+#### Описание:
+Приостанавливает возспроизведение музыкального файла. При искользовании ' play(); ' можно продолжить воспроизведение файла
+
+#### Код:
+```csharp
+public void pause() => musicPlayer.controls.pause(); // Приостанавливаем воспроизведение
+```
+
+### - setVolume
+```csharp
+void setVolume(int volume);
+```
+
+` volume ` - Громкость (Максимальное значение: 100, Минимальное значение: 0)
+
+#### Пример:
+```csharp
+MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+music.setVolume(85);
+```
+
+#### Описание:
+Устанавливает громкость воспроизведения музыкального файла
+
+#### Исключения:
+Исключения: ` 0x00003 `, ` 0x00006 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+#### Код:
+```csharp
+public void setVolume(int volume) 
+{ 
+    if (volume < 0 || volume > 100) throw new Exception("0x00006"); // Если "volume" меньше "0" или больше "100", то выдаём исключение "0x00006"
+    if (string.IsNullOrEmpty(Convert.ToString(volume))) throw new Exception("0x00003"); // Если "volume" пуст, то выдаём исключение "0x00003"
+    musicPlayer.settings.volume = volume; // Устанавливаем громкость
+}
+```
+
+### - getVolume
+```csharp
+int getVolume();
+```
+
+#### Возврат:
+Громкость в формате целочисленного типа ` int `. От 0 до 100
+
+#### Пример:
+```csharp
+MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+int volume = music.getVolume();
+```
+```csharp
+MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+Console.WriteLine(music.getVolume());
+```
+
+#### Описание:
+Получение текущей громкости воспроизводимого музыкального файла
+
+#### Код:
+```csharp
+public int getVolume() => musicPlayer.settings.volume; // Возвращаем громкость
+```
+
+### - getDuration()
+```csharp
+double getDuration();
+```
+
+> [!WARNING]
+> В данный момент документации на данный метод отсутствует!
+
+> [!NOTE]
+> Т.к. документация на данный метод отсутствует, ниже будет приведён код из файла "Music.cs" где взаимодействуется данный метод. Приносим свои извинения за приченённые неудобства.
+
+```csharp
+using System;
+using WMPLib;
+
+/* 
+  =================- INFO -===================
+ * File:         | Music.cs
+ * Class:        | Music
+ * Project:      | MultiAPI
+ * Author:       | Plufik
+ * Version:      | 0.0.0.0
+ * VerType:      | major_version.minor_version.patch_version.builds
+ * Main file:    | Main.cs
+ * [OPEN SOURCE] | +True
+ * [CONSTRUCTOR] | +True
+  ============================================
+ */
+
+namespace MultiAPI
+{
+    #region CLASS | Music
+    /// <summary>
+    /// Действия с музыкальными файлами
+    /// </summary>
+    public class Music
+    {
+        #region WindowsMediaPlayer | musicPlayer
+        /// <summary>
+        /// Музыкальная конструкция
+        /// </summary>
+        private static WindowsMediaPlayer musicPlayer = new WindowsMediaPlayer();
+        #endregion
+
+        #region METHOD-Music | Music
+        /// <summary>
+        /// Определение конструкции. ( Music nameVar = new Music("C:\\Path\\To\\Music.mp3") )
+        /// </summary>
+        /// <param name="pathFile">Полный путь до музыкального файла</param>
+        public Music(string pathFile)
+        {
+            if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003");
+            musicPlayer.URL = pathFile;
+        }
+        #endregion
+
+        // ...
+
+        #region METHOD-DOUBLE | getDuration
+        /// <summary>
+        /// Получение длительности музыкального файла из конструкции
+        /// </summary>
+        /// <returns>Длительность музыкального файла</returns>
+        public double getDuration() => musicPlayer.currentMedia.duration;
+        #endregion
+
+        // ...
+    }
+    #endregion
+}
+
+```
+
+### - setPosition
+```csharp
+void setPosition(double position);
+```
+
+` position ` - Позиция в музыкальном файле. (Максимальное значение: 1.0, Минимальное значение: 0.0)
+
+#### Пример:
+```csharp
+MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+music.setPosition(0.7);
+```
+
+#### Описание:
+Устанавливает позицию курсора в музыкальном файле
+
+#### Исключения:
+Исключения: ` 0x00003 `, ` 0x00006 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+#### Код:
+```csharp
+public void setPosition(double position)
+{
+    if (position < 0.0 || position > 1.0) throw new Exception("0x00006"); // Если "position" меньше "0.0" или больше "1.0", то выдаём исключение "0x00006"
+    if (string.IsNullOrEmpty(Convert.ToString(position))) throw new Exception("0x00003"); // Если "position" пуст, то выдаём исключение "0x00003"
+    musicPlayer.controls.currentPosition = position; // Устанавливаем позицию
+}
+```
+
+### - getPosition
+```csharp
+double getPosition();
+```
+
+#### Возврат:
+Позиция курсора в музкальном файле
+
+#### Пример:
+```csharp
+MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+double position = music.getPosition();
+```
+```csharp
+MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+Console.WriteLine(music.getPosition());
+```
+
+#### Описание:
+Возвращает позицию курсора в музыкальном файле в формате ` double ` (От 0.0, до 1.0)
+
+#### Код:
+```csharp
+public double getPosition() => musicPlayer.controls.currentPosition; // Возвращаем позицию курсора (От 0.0, до 1.0)
+```
+
+### - updatePath
+```csharp
+void updatePath(string pathFile);
+```
+
+#### Пример:
+```csharp
+MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+music.updatePath("C:\\Folder\\testMusicFile2.mp3");
+```
+
+#### Описание:
+Устанавливает новый музыкальный файл в плеер
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI/blob/master/README.md#исключения)
+
+#### Код:
+```csharp
+public void updatePath(string pathFile)
+{
+    if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003"); // Если "pathFile" пуст, то выдаём исключение "0x00003"
+    musicPlayer.URL = pathFile; // Устанавливаем новый путь до музыкального файла
+}
+```
+
+### - getPath
+```csharp
+string getPath()
+```
+
+> [!NOTE]
+> Добавлено в версии "0.1.2.96"
+
+#### Возврат: 
+Путь до музыкального файла установленного в данный момент
+
+#### Пример:
+```csharp
+MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+string path = music.getPath();
+```
+```csharp
+MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+Console.WriteLine(music.getPath());
+```
+
+#### Описание:
+Получает и возвращает путь до музыкального файла установленного в данный момент
+
+#### Код:
+```csharp
+public string getPath() => musicPlayer.URL; // Возвращаем путь до музыкального файла
 ```

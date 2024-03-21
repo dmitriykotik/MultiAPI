@@ -1,4 +1,5 @@
-﻿using System.Net.NetworkInformation;
+﻿using System;
+using System.Net.NetworkInformation;
 
 /* 
   =================- INFO -===================
@@ -49,6 +50,7 @@ namespace MultiAPI
         /// <returns>true - если сервер или сайт доступен, false - если сервер или сайт не доступен</returns>
         public static bool ping(string url)
         {
+            if (string.IsNullOrEmpty(url)) throw new Exception("0x00003");
             try
             {
                 using (var ping = new Ping())

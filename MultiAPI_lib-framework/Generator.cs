@@ -33,6 +33,8 @@ namespace MultiAPI
         /// <returns>Пароль</returns>
         public static string GenPassword(int length)
         {
+            if (string.IsNullOrEmpty(Convert.ToString(length))) throw new Exception("0x00003");
+
             const string chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-+=%*&?$#";
 
             StringBuilder sb = new StringBuilder();
@@ -54,6 +56,7 @@ namespace MultiAPI
         /// <returns>Пароль</returns>
         public static string GenPassword(int length, string dictionary)
         {
+            if (string.IsNullOrEmpty(Convert.ToString(length)) || string.IsNullOrEmpty(dictionary)) throw new Exception("0x00003");
             StringBuilder sb = new StringBuilder();
             Random rnd = new Random();
 

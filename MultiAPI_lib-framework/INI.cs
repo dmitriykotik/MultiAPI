@@ -38,7 +38,7 @@ namespace MultiAPI
         /// <param name="iniFile">Полный путь до INI файла</param>
         public INI(string iniFile)
         {
-            if (string.IsNullOrEmpty(iniFile)) throw new Exception("iniFile не может быть пустым!");
+            if (string.IsNullOrEmpty(iniFile)) throw new Exception("0x00003");
             if (!File.Exists(iniFile)) File.Create(iniFile).Close();
             _iniFile = iniFile;
         }
@@ -53,7 +53,7 @@ namespace MultiAPI
         /// <returns>Значение из переменной в INI-файле</returns>
         public string getValue(string section, string variable)
         {
-            if (string.IsNullOrEmpty(section) || string.IsNullOrEmpty(variable)) throw new Exception("section или variable не могут быть пустыми!");
+            if (string.IsNullOrEmpty(section) || string.IsNullOrEmpty(variable)) throw new Exception("0x00003");
             FileIniDataParser parser = new FileIniDataParser();
             IniData data = parser.ReadFile(_iniFile);
             return data[section][variable];
@@ -69,7 +69,7 @@ namespace MultiAPI
         /// <param name="text">Новый текст в переменной</param>
         public void setValue(string section, string variable, string text)
         {
-            if (string.IsNullOrEmpty(section) || string.IsNullOrEmpty(variable)) throw new Exception("section или variable не могут быть пустыми!");
+            if (string.IsNullOrEmpty(section) || string.IsNullOrEmpty(variable) || string.IsNullOrEmpty(text)) throw new Exception("0x00003");
             FileIniDataParser parser = new FileIniDataParser();
             IniData data = parser.ReadFile(_iniFile);
             data[section][variable] = text;
@@ -86,7 +86,7 @@ namespace MultiAPI
         /// <returns>true - если переменная существует, false - если переменная НЕ существует</returns>
         public bool existVariable(string section, string variable)
         {
-            if (string.IsNullOrEmpty(section) || string.IsNullOrEmpty(variable)) throw new Exception("section или variable не могут быть пустыми!");
+            if (string.IsNullOrEmpty(section) || string.IsNullOrEmpty(variable)) throw new Exception("0x00003");
             FileIniDataParser parser = new FileIniDataParser();
             IniData data = parser.ReadFile(_iniFile);
             return data[section].ContainsKey(variable);
@@ -101,7 +101,7 @@ namespace MultiAPI
         /// <param name="variable">Переменная в секции</param>
         public void deleteVariable(string section, string variable)
         {
-            if (string.IsNullOrEmpty(section) || string.IsNullOrEmpty(variable)) throw new Exception("section или variable не могут быть пустыми!");
+            if (string.IsNullOrEmpty(section) || string.IsNullOrEmpty(variable)) throw new Exception("0x00003");
             FileIniDataParser parser = new FileIniDataParser();
             IniData data = parser.ReadFile(_iniFile);
             data[section].RemoveKey(variable);
@@ -116,7 +116,7 @@ namespace MultiAPI
         /// <param name="section">Секция</param>
         public void deleteAllVariables(string section)
         {
-            if (string.IsNullOrEmpty(section)) throw new Exception("section не может быть пустым!");
+            if (string.IsNullOrEmpty(section)) throw new Exception("0x00003");
             FileIniDataParser parser = new FileIniDataParser();
             IniData data = parser.ReadFile(_iniFile);
             data[section].RemoveAllKeys();

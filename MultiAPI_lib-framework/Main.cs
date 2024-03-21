@@ -7,7 +7,7 @@ using System.Threading;
  * Class:        | Basic
  * Project:      | MultiAPI
  * Author:       | Plufik
- * Version:      | 0.1.2.95
+ * Version:      | 0.1.2.96
  * VerType:      | major_version.minor_version.patch_version.build
  * Main file:    | Main.cs
  * [OPEN SOURCE] | +True
@@ -19,7 +19,7 @@ namespace MultiAPI
     #region Assembly Info
     internal class AssemblyI
     {
-        internal const string version = "0.1.2.95";
+        internal const string version = "0.1.2.96";
     }
     #endregion
 
@@ -69,8 +69,8 @@ namespace MultiAPI
         /// <param name="writeLine">Отступить строчку после выполнения?</param>
         public static void writeMachine(string text, int countDown = 40, bool writeLine = true)
         {
-            if (countDown == 0) throw new Exception("Промежуток времени равен нулю, что делает её бесполезной");
-            else if (countDown < 0) throw new Exception("Промежуток времени меньше или равен нулю");
+            if (countDown == 0) throw new Exception("0x00001");
+            else if (countDown < 0) throw new Exception("0x00002");
             foreach (char c in text)
             {
                 Console.Write(c);

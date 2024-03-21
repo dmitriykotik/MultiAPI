@@ -36,6 +36,7 @@ namespace MultiAPI
     {
         public static class Window
         {
+            #region Импорт методов
             [DllImport("user32.dll")]
             private static extern IntPtr CreateWindowEx(
                 WindowStylesEx dwExStyle,
@@ -72,7 +73,7 @@ namespace MultiAPI
             [DllImport("user32.dll")]
             [return: MarshalAs(UnmanagedType.Bool)]
             private static extern bool SetWindowText(IntPtr hWnd, string lpString);
-
+            #endregion
 
             /// <summary>
             /// Стили окна

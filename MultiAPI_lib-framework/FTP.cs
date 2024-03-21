@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Net;
+using System;
 
 /* 
   =================- INFO -===================
@@ -35,11 +36,12 @@ namespace MultiAPI
         /// <summary>
         /// Создание конструкции для управления FTP
         /// </summary>
-        /// <param name="host">Полная ссылка до удалённого файла на FTP сервере (например: ftp://0.0.0.0:21//file.exmp)</param>
+        /// <param name="host">Полная ссылка до удалённого файла на FTP сервере (например: ftp://0.0.0.0:21/file.exmp)</param>
         /// <param name="userName">Вход: Имя пользователя (например: exampleName)</param>
         /// <param name="password">Вход: Пароль пользователя (например: Ex@mpleP@3w0rd)</param>
         public FTP(string host, string userName, string password)
         {
+            if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password)) throw new Exception("0x00003");
             _host = host;
             _userName = userName;
             _password = password;
@@ -53,6 +55,9 @@ namespace MultiAPI
         /// <param name="localFullPath">Путь до файла на локальном компьютере (например: C:\path\to\file.exmp или: file.exmp)</param>
         public void upload(string localFullPath)
         {
+            if (string.IsNullOrEmpty(localFullPath)) throw new Exception("0x00003");
+            if (!File.Exists(localFullPath)) throw new Exception("0x00004");
+
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(_host);
 
             request.Method = WebRequestMethods.Ftp.UploadFile;
@@ -78,6 +83,7 @@ namespace MultiAPI
         /// <param name="localPath">Полный путь до файла который будет сохранён на локальном компьютере (например: C:\path\to\file.exmp; или: file.exmp)</param>
         public void download(string localPath)
         {
+            if (string.IsNullOrEmpty(localPath)) throw new Exception("0x00003");
             using (WebClient client = new WebClient())
             {
                 client.Credentials = new NetworkCredential(_userName, _password);

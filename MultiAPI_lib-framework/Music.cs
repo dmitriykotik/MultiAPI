@@ -1,4 +1,5 @@
-﻿using WMPLib;
+﻿using System;
+using WMPLib;
 
 /* 
   =================- INFO -===================
@@ -34,7 +35,11 @@ namespace MultiAPI
         /// Определение конструкции. ( Music nameVar = new Music("C:\\Path\\To\\Music.mp3") )
         /// </summary>
         /// <param name="pathFile">Полный путь до музыкального файла</param>
-        public Music(string pathFile) => musicPlayer.URL = pathFile;
+        public Music(string pathFile)
+        {
+            if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003");
+            musicPlayer.URL = pathFile;
+        }
         #endregion
 
         #region METHOD-VOID | play
@@ -63,7 +68,12 @@ namespace MultiAPI
         /// Установка громкости музыкальной конструкции
         /// </summary>
         /// <param name="volume">Громкость</param>
-        public void setVolume(int volume) => musicPlayer.settings.volume = volume;
+        public void setVolume(int volume) 
+        { 
+            if (volume < 0 || volume > 100) throw new Exception("0x00006");
+            if (string.IsNullOrEmpty(Convert.ToString(volume))) throw new Exception("0x00003");
+            musicPlayer.settings.volume = volume; 
+        }
         #endregion
 
         #region METHOD-INT | getVolume
@@ -87,7 +97,12 @@ namespace MultiAPI
         /// Установка позиции в музыкальной конструкции
         /// </summary>
         /// <param name="position">Позиция</param>
-        public void setPosition(double position) => musicPlayer.controls.currentPosition = position;
+        public void setPosition(double position)
+        {
+            if (position < 0.0 || position > 1.0) throw new Exception("0x00006");
+            if (string.IsNullOrEmpty(Convert.ToString(position))) throw new Exception("0x00003");
+            musicPlayer.controls.currentPosition = position;
+        }
         #endregion
 
         #region METHOD-DOUBLE | getPosition
@@ -103,7 +118,19 @@ namespace MultiAPI
         /// Изменение музыкального файла в конструкции
         /// </summary>
         /// <param name="pathFile">Полный путь до музыкального файла</param>
-        public void updatePath(string pathFile) => musicPlayer.URL = pathFile;
+        public void updatePath(string pathFile)
+        {
+            if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003");
+            musicPlayer.URL = pathFile;
+        }
+        #endregion
+
+        #region METHOD-STRING | getPath
+        /// <summary>
+        /// Получение текущего музыкального файла (Путь)
+        /// </summary>
+        /// <returns>Путь до музыкального файла</returns>
+        public string getPath() => musicPlayer.URL;
         #endregion
 
     }

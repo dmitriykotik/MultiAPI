@@ -50,6 +50,18 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
   - [ping](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--ping)
 - [Mail.cs - Mail](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#mailcs---mail)
   - [send](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--send)
+- [Music.cs - Music](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#musiccs---music)
+  - [Music](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--music)
+  - [play](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--play)
+  - [stop](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--stop)
+  - [pause](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--pause)
+  - [setVolume](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--setvolume)
+  - [getVolume](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--getvolume)
+  - [getDuration](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--getduration)
+  - [setPosition](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--setposition)
+  - [getPosition](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--getposition)
+  - [updatePath](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--updatepath)
+  - [getPath](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--getpath)
 
 ## Импорт библиотеки в проект
 
@@ -1026,6 +1038,7 @@ double getDuration();
 void setPosition(double position);
 double getPosition();
 void updatePath(string pathFile);
+string getPath();
 ```
 
 ### - Music

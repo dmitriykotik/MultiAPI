@@ -15,7 +15,7 @@ using WMPLib;
   ============================================
  */
 
-namespace MultiAPI
+namespace MultiAPI.Music
 {
     #region CLASS | Music
     /// <summary>

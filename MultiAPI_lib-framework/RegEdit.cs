@@ -20,7 +20,7 @@ using System.Threading.Tasks;
   ============================================
  */
 
-namespace MultiAPI
+namespace MultiAPI.RegEdit
 {
 
     #region CLASS | RegEdit

@@ -15,7 +15,7 @@ using System.Net.NetworkInformation;
   ============================================
  */
 
-namespace MultiAPI
+namespace MultiAPI.Internet
 {
     /// <summary>
     /// Проверки в интернете

@@ -18,7 +18,7 @@ using System.Text;
   ============================================
  */
 
-namespace MultiAPI
+namespace MultiAPI.Zip
 {
     #region CLASS | Zip
     /// <summary>
@@ -37,10 +37,9 @@ namespace MultiAPI
         /// <param name="BufferSize">Размер буфера (При дешифровке файла, размер буфера должен совпадать с размеров буфера при шифровке!!!) (Стандартное значение: 104576)</param>
         public static void EncryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
         {
-            if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || string.IsNullOrEmpty(password)) throw new Exception("inputFile, outputFile или password не могут быть пустыми!");
-            if (!File.Exists(inputFile)) throw new Exception("Входной файла не существует!");
-            if (password.Length < 4) throw new Exception("Пароль должен содержать не менее 4-х символов!");
-            if (BufferSize < 256) throw new Exception("Размер буфера должен быть не менее 256!");
+            if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || string.IsNullOrEmpty(password)) throw new Exception("0x00003");
+            if (!File.Exists(inputFile)) throw new Exception("0x00004");
+            if (password.Length < 4 || BufferSize < 256) throw new Exception("0x00006");
             UnicodeEncoding UE = new UnicodeEncoding();
             byte[] key = UE.GetBytes(password);
 
@@ -77,10 +76,9 @@ namespace MultiAPI
         /// <param name="BufferSize">Размер буфера (При дешифровке файла, размер буфера должен совпадать с размеров буфера при шифровке!!!) (Стандартное значение: 104576)</param>
         public static void DecryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
         {
-            if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || string.IsNullOrEmpty(password)) throw new Exception("inputFile, outputFile или password не могут быть пустыми!");
-            if (!File.Exists(inputFile)) throw new Exception("Входной файла не существует!");
-            if (password.Length < 4) throw new Exception("Пароль должен содержать не менее 4-х символов!");
-            if (BufferSize < 256) throw new Exception("Размер буфера должен быть не менее 256!");
+            if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || string.IsNullOrEmpty(password)) throw new Exception("0x00003");
+            if (!File.Exists(inputFile)) throw new Exception("0x00004");
+            if (password.Length < 4 || BufferSize < 256) throw new Exception("0x00006");
             UnicodeEncoding UE = new UnicodeEncoding();
             byte[] key = UE.GetBytes(password);
 
@@ -115,8 +113,9 @@ namespace MultiAPI
         /// <param name="outputArchive">Выходной файл</param>
         public static void create(string pathFoler, string outputArchive)
         {
+            if (string.IsNullOrEmpty(pathFoler) || string.IsNullOrEmpty(outputArchive)) throw new Exception("0x00003");
             if (Directory.Exists(pathFoler)) ZipFile.CreateFromDirectory(pathFoler, outputArchive);
-            else throw new Exception("Папка с содержимым не существует!");
+            else throw new Exception("0x00004");
 
         }
         #endregion
@@ -129,12 +128,9 @@ namespace MultiAPI
         /// <param name="outputFolder">Папка в которую распакуется архив</param>
         public static void unpacking(string pathArchive, string outputFolder)
         {
-            if (File.Exists(pathArchive))
-            {
-                if (Directory.Exists(outputFolder)) System.IO.Compression.ZipFile.ExtractToDirectory(pathArchive, outputFolder);
-                else throw new Exception("Папка для распаковки не существует!");
-            }
-            else throw new Exception("Архив не существует!");
+            if (string.IsNullOrEmpty(pathArchive) || string.IsNullOrEmpty(outputFolder)) throw new Exception("0x00003");
+            if (File.Exists(pathArchive) && Directory.Exists(outputFolder)) ZipFile.ExtractToDirectory(pathArchive, outputFolder);
+            else throw new Exception("0x00004");
         }
         #endregion
 

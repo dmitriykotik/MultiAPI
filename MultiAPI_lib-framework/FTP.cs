@@ -16,7 +16,7 @@ using System;
   ============================================
  */
 
-namespace MultiAPI
+namespace MultiAPI.FTP
 {
 
     #region CLASS | FTP

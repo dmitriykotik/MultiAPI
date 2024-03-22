@@ -15,7 +15,7 @@ using System.Text;
   ============================================
  */
 
-namespace MultiAPI
+namespace MultiAPI.Generator
 {
 
     #region CLASS | Generator

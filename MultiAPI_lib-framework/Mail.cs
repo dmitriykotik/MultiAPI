@@ -16,7 +16,7 @@ using System.Net;
   ============================================
  */
 
-namespace MultiAPI
+namespace MultiAPI.Mail
 {
 
     #region CLASS | Mail

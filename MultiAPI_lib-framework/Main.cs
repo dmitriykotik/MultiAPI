@@ -7,19 +7,19 @@ using System.Threading;
  * Class:        | Basic
  * Project:      | MultiAPI
  * Author:       | Plufik
- * Version:      | 0.1.2.96
+ * Version:      | 0.1.2.98
  * VerType:      | major_version.minor_version.patch_version.build
  * Main file:    | Main.cs
  * [OPEN SOURCE] | +True
   ============================================
  */
 
-namespace MultiAPI
+namespace MultiAPI.Basic
 {
     #region Assembly Info
     internal class AssemblyI
     {
-        internal const string version = "0.1.2.96";
+        internal const string version = "0.1.2.98";
     }
     #endregion
 

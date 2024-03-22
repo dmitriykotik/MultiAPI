@@ -30,7 +30,7 @@ using System.Threading.Tasks;
   ============================================
  */
 
-namespace MultiAPI
+namespace MultiAPI.WinAPI
 {
     public static class WinAPI
     {

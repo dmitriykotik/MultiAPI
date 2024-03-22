@@ -18,7 +18,7 @@ using IniParser.Model;
   ============================================
  */
 
-namespace MultiAPI
+namespace MultiAPI.INI
 {
     #region CLASS | INI
     /// <summary>

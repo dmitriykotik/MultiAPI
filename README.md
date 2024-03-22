@@ -140,7 +140,7 @@ using MultiAPI.INI; // Импортируем библиотеку с класс
 
 void Main(string[] args)
 {
-  INI iniFile = new INI("C:\\Folder\\iniF.ini"); // Создаём конструктор
+  INI.INI iniFile = new INI.INI("C:\\Folder\\iniF.ini"); // Создаём конструктор
   string ff = iniFile.getValue("Test", "testVar"); // Получаем значение из переменной в ini файле
 }
 ```
@@ -160,6 +160,18 @@ void Main(string[] args)
 {
   MultiAPI.INI.INI iniFile = new MultiAPI.INI.INI("C:\\Folder\\iniF.ini"); // *** Создаём конструктор (MultiAPI - Библиотека, после идёт .INI - это уже подкласс, дальше снова идёт .INI - это уже основной класс). Зачастую полный путь не придётся использовать
   string ff = iniFile.getValue("Test", "testVar"); // Получаем значение из переменной в ini файле
+}
+```
+или
+```csharp
+using MultiAPI.Internet; // Импортируем библиотеку с классом
+
+void Main(string[] args)
+{
+  //            Подкласс
+  //           библиотеки   Класс        Метод
+  //                 |        |            |
+  bool internet = Internet.Internet.TestConnection(); // Проверка подключения интернета
 }
 ```
 

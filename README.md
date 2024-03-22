@@ -21,7 +21,7 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
   - [Использование командной строки NuGet](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#использование-командной-строки-nuget)
   - [Использование диспетчера пакетов NuGet](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#использование-диспетчера-пакетов-nuget)
   - [Импорт библиотеки](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#импорт-библиотеки)
-- [Подклассы библиотеки]
+- [Подклассы библиотеки](https://github.com/dmitriykotik/MultiAPI#подклассы-бибилотеки)
 - [Древо классов и методов](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#древо-классов-и-методов)
 - [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
@@ -108,7 +108,7 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
 ### Импорт библиотеки
 
 > [!WARNING]
-> Ниже представленная информация для версий ниже 0.1.2.98. Новую информацию вы можете получить из пункта "Подклассы библиотеки"
+> Ниже представленная информация для версий ниже 0.1.2.98. Новую информацию вы можете получить из пункта "[Подклассы библиотеки](https://github.com/dmitriykotik/MultiAPI#подклассы-бибилотеки)"
 
 В проекте импортируйте библиотеку следующим образом:
 ```csharp

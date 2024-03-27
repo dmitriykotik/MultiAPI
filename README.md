@@ -11,6 +11,9 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
 
 Для работы с библиотекой можно использовать любую среду разработки, но обязательно использовать .net framework версии не меньше 4.7.2!
 
+> [!WARNING]
+> В данный момент библиотека на этапе разработки, поэтому до версии ` 1.0.0.XXXX ` мы не обещаем полную совместимость старых функций в новых версиях.
+
 > [!NOTE]
 > В исходных кодах, в документации могут быть комментарии разработчика о том как работает код.
 
@@ -206,7 +209,7 @@ void Main(string[] args)
     ├── Mail.cs - Mail
     │   └── void send(string fromEmail, string fromName, string toEmail, string subject, string textOrHtml, string smtpServer, int smtpPort, string smtpPasswordMail)
     ├── Music.cs - Music
-    │   ├── Music(string pathFile)
+    │   ├── Music(string pathFile, bool autoStart = false)
     │   ├── void play()
     │   ├── void stop()
     │   ├── void pause()
@@ -216,7 +219,8 @@ void Main(string[] args)
     │   ├── void setPosition(double position)
     │   ├── double getPosition()
     │   ├── void updatePath(string pathFile)
-    │   └── string getPath()
+    │   ├── string getPath()
+    │   └── string repeat(bool turn)
     ├── RegEdit.cs - RegEdit
     │   ├── void create(RegistryKey key, string keyName)
     │   ├── void delete(RegistryKey key, string keyName)
@@ -1090,7 +1094,7 @@ public static void send(string fromEmail, string fromName, string toEmail, strin
 ## Music.cs - Music
 В этом классе содержутся следущие методы:
 ```csharp
-Music(string pathFile);
+Music(string pathFile, bool autoStart = false);
 void play();
 void stop();
 void pause();
@@ -1101,7 +1105,11 @@ void setPosition(double position);
 double getPosition();
 void updatePath(string pathFile);
 string getPath();
+void repeat(bool turn);
 ```
+
+> [!WARNING]
+> Такие функции как ` Music(string pathFile, bool autoStart = false); `, ` string getPath(); ` и ` void repeat(bool turn); ` не работают в версиях ниже ` 0.1.2.100 `! При попытке использовании данных функций, пожалуйста, убедитесь, что у вас стоит версия 0.1.2.100 и выше. 
 
 ### - Music
 ```csharp
@@ -1128,10 +1136,11 @@ var music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
 
 #### Код:
 ```csharp
-public Music(string pathFile)
+public Music(string pathFile, bool autoStart = false)
 {
     if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003"); // Если "pathFile" пуст, то выдаём исключение "0x00003" 
     musicPlayer.URL = pathFile; // Устанавливаем ссылку для плеера
+    musicPlayer.settings.autoStart = autoStart; // Устанавливаем значение авто-старта
 }
 ```
 
@@ -1434,4 +1443,35 @@ Console.WriteLine(music.getPath());
 #### Код:
 ```csharp
 public string getPath() => musicPlayer.URL; // Возвращаем путь до музыкального файла
+```
+
+### - updatePath
+```csharp
+void updatePath(string pathFile);
+```
+
+> [!NOTE]
+> Добавлено в версии "0.1.2.100"
+
+#### Пример:
+```csharp
+MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+music.updatePath("C:\\Folder\\testMusicFile2.mp3");
+```
+
+#### Описание:
+Устанавливает новый музыкальный файл в плеер
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Код:
+```csharp
+public void updatePath(string pathFile)
+{
+    if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003"); // Если "pathFile" пуст, то выдаём исключение "0x00003"
+    musicPlayer.URL = pathFile; // Устанавливаем новый путь до музыкального файла
+}
 ```

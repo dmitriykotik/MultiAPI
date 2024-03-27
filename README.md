@@ -24,7 +24,6 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
   - [Использование командной строки NuGet](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#использование-командной-строки-nuget)
   - [Использование диспетчера пакетов NuGet](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#использование-диспетчера-пакетов-nuget)
   - [Импорт библиотеки](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#импорт-библиотеки)
-- [Подклассы библиотеки](https://github.com/dmitriykotik/MultiAPI#подклассы-бибилотеки)
 - [Древо классов и методов](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#древо-классов-и-методов)
 - [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 

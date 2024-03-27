@@ -11,6 +11,9 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
 
 Для работы с библиотекой можно использовать любую среду разработки, но обязательно использовать .net framework версии не меньше 4.7.2!
 
+> [!WARNING]
+> В данный момент библиотека на этапе разработки, поэтому до версии ` 1.0.0.XXXX ` мы не обещаем полную совместимость старых функций в новых версиях.
+
 > [!NOTE]
 > В исходных кодах, в документации могут быть комментарии разработчика о том как работает код.
 
@@ -21,7 +24,6 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
   - [Использование командной строки NuGet](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#использование-командной-строки-nuget)
   - [Использование диспетчера пакетов NuGet](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#использование-диспетчера-пакетов-nuget)
   - [Импорт библиотеки](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#импорт-библиотеки)
-- [Подклассы библиотеки](https://github.com/dmitriykotik/MultiAPI#подклассы-бибилотеки)
 - [Древо классов и методов](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#древо-классов-и-методов)
 - [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
@@ -63,6 +65,7 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
   - [getPosition](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--getposition)
   - [updatePath](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--updatepath)
   - [getPath](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--getpath)
+  - [repeat](https://github.com/dmitriykotik/MultiAPI/tree/master#--repeat)
 
 ## Импорт библиотеки в проект
 
@@ -106,73 +109,9 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
 4. Нажмите на пакет, в правом окне диспетчера выберите проекты в которые вам надо установить библиотеку, версию и нажмите кнопку установить.
 
 ### Импорт библиотеки
-
-> [!WARNING]
-> Ниже представленная информация для версий ниже 0.1.2.98. Новую информацию вы можете получить из пункта "[Подклассы библиотеки](https://github.com/dmitriykotik/MultiAPI#подклассы-бибилотеки)"
-
 В проекте импортируйте библиотеку следующим образом:
 ```csharp
 using MultiAPI;
-```
-
-
-## Подклассы бибилотеки 
-С версии 0.1.2.98 используются подклассы библиотеки. В качестве подклассов используются обычные классы библиотеки. Это создано для модульности. Ниже списка описанно как пользоваться новой системой.
-
-### Список подклассов (И как они импортируются):
-```csharp
-using MultiAPI.Basic;
-using MultiAPI.FTP;
-using MultiAPI.Generator;
-using MultiAPI.INI;
-using MultiAPI.Internet;
-using MultiAPI.Mail;
-using MultiAPI.Music;
-using MultiAPI.RegEdit;
-using MultiAPI.Zip;
-using MultiAPI.WinAPI;
-```
-
-### Как ими пользоваться:
-Например, в коде нам требуется библиотека MultiAPI с классом INI, тогда можем написать такой код:
-```csharp
-using MultiAPI.INI; // Импортируем библиотеку с классом
-
-void Main(string[] args)
-{
-  INI.INI iniFile = new INI.INI("C:\\Folder\\iniF.ini"); // Создаём конструктор
-  string ff = iniFile.getValue("Test", "testVar"); // Получаем значение из переменной в ini файле
-}
-```
-Также вы можете указывать полный путь:
-```csharp
-using MultiAPI.INI; // Импортируем библиотеку с классом
-
-void Main(string[] args)
-{
-  MultiAPI.INI.INI iniFile = new MultiAPI.INI.INI("C:\\Folder\\iniF.ini"); // *** Создаём конструктор (MultiAPI - Библиотека, после идёт .INI - это уже подкласс, дальше снова идёт .INI - это уже основной класс). Зачастую полный путь не придётся использовать
-  string ff = iniFile.getValue("Test", "testVar"); // Получаем значение из переменной в ini файле
-}
-```
-или
-```csharp
-void Main(string[] args)
-{
-  MultiAPI.INI.INI iniFile = new MultiAPI.INI.INI("C:\\Folder\\iniF.ini"); // *** Создаём конструктор (MultiAPI - Библиотека, после идёт .INI - это уже подкласс, дальше снова идёт .INI - это уже основной класс). Зачастую полный путь не придётся использовать
-  string ff = iniFile.getValue("Test", "testVar"); // Получаем значение из переменной в ini файле
-}
-```
-или
-```csharp
-using MultiAPI.Internet; // Импортируем библиотеку с классом
-
-void Main(string[] args)
-{
-  //            Подкласс
-  //           библиотеки   Класс        Метод
-  //                 |        |            |
-  bool internet = Internet.Internet.TestConnection(); // Проверка подключения интернета
-}
 ```
 
 ## Древо классов и методов
@@ -206,7 +145,7 @@ void Main(string[] args)
     ├── Mail.cs - Mail
     │   └── void send(string fromEmail, string fromName, string toEmail, string subject, string textOrHtml, string smtpServer, int smtpPort, string smtpPasswordMail)
     ├── Music.cs - Music
-    │   ├── Music(string pathFile)
+    │   ├── Music(string pathFile, bool autoStart = false)
     │   ├── void play()
     │   ├── void stop()
     │   ├── void pause()
@@ -216,7 +155,8 @@ void Main(string[] args)
     │   ├── void setPosition(double position)
     │   ├── double getPosition()
     │   ├── void updatePath(string pathFile)
-    │   └── string getPath()
+    │   ├── string getPath()
+    │   └── string repeat(bool turn)
     ├── RegEdit.cs - RegEdit
     │   ├── void create(RegistryKey key, string keyName)
     │   ├── void delete(RegistryKey key, string keyName)
@@ -1090,7 +1030,7 @@ public static void send(string fromEmail, string fromName, string toEmail, strin
 ## Music.cs - Music
 В этом классе содержутся следущие методы:
 ```csharp
-Music(string pathFile);
+Music(string pathFile, bool autoStart = false);
 void play();
 void stop();
 void pause();
@@ -1101,7 +1041,11 @@ void setPosition(double position);
 double getPosition();
 void updatePath(string pathFile);
 string getPath();
+void repeat(bool turn);
 ```
+
+> [!WARNING]
+> Такие функции как ` Music(string pathFile, bool autoStart = false); `, ` string getPath(); ` и ` void repeat(bool turn); ` не работают в версиях ниже ` 0.1.2.100 `! При попытке использовании данных функций, пожалуйста, убедитесь, что у вас стоит версия 0.1.2.100 и выше. 
 
 ### - Music
 ```csharp
@@ -1128,10 +1072,11 @@ var music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
 
 #### Код:
 ```csharp
-public Music(string pathFile)
+public Music(string pathFile, bool autoStart = false)
 {
     if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003"); // Если "pathFile" пуст, то выдаём исключение "0x00003" 
     musicPlayer.URL = pathFile; // Устанавливаем ссылку для плеера
+    musicPlayer.settings.autoStart = autoStart; // Устанавливаем значение авто-старта
 }
 ```
 
@@ -1434,4 +1379,28 @@ Console.WriteLine(music.getPath());
 #### Код:
 ```csharp
 public string getPath() => musicPlayer.URL; // Возвращаем путь до музыкального файла
+```
+
+### - repeat
+```csharp
+void repeat(bool turn);
+```
+
+` turn ` - true или false. true - включить повтор, false - выключить повтор
+
+> [!NOTE]
+> Добавлено в версии "0.1.2.100"
+
+#### Пример:
+```csharp
+MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
+music.repeat(true);
+```
+
+#### Описание:
+Устанавливает значение ` turn ` для повтора песни.
+
+#### Код:
+```csharp
+public void repeat(bool turn) => musicPlayer.settings.setMode("loop", turn);
 ```

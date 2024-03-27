@@ -38,6 +38,7 @@ namespace MultiAPI
         /// <param name="keyName">Имя под-ключа для его создания</param>
         public static void create(RegistryKey key, string keyName)
         {
+            if (string.IsNullOrEmpty(keyName)) throw new Exception("0x00003");
             key.CreateSubKey(keyName);
             key.Close();
         }
@@ -51,6 +52,7 @@ namespace MultiAPI
         /// <param name="keyName">Имя под-ключа для его удаления</param>
         public static void delete(RegistryKey key, string keyName)
         {
+            if (string.IsNullOrEmpty(keyName)) throw new Exception("0x00003");
             key.DeleteSubKeyTree(keyName);
             key.Close();
         }
@@ -66,6 +68,7 @@ namespace MultiAPI
         /// <param name="varValue">Значение переменной</param>
         public static void createVariable(RegistryKey key, string keyName, string varName, object varValue)
         {
+            if (string.IsNullOrEmpty(keyName) || string.IsNullOrEmpty(varName) || varValue == null) throw new Exception("0x00003");
             RegistryKey key2 = key.OpenSubKey(keyName, true);
             key2.SetValue(varName, varValue);
             key.Close();
@@ -83,6 +86,7 @@ namespace MultiAPI
         /// <returns>Значение переменной varName в формате object</returns>
         public static object getValue(RegistryKey key, string keyName, string varName)
         {
+            if (string.IsNullOrEmpty(keyName) || string.IsNullOrEmpty(varName)) throw new Exception("0x00003");
             RegistryKey key2 = key.OpenSubKey(keyName);
             object value = key2.GetValue(varName);
             key.Close();
@@ -100,6 +104,7 @@ namespace MultiAPI
         /// <param name="varName">Название переменной для её удаления</param>
         public static void deleteVariable(RegistryKey key, string keyName, string varName)
         {
+            if (string.IsNullOrEmpty(keyName) || string.IsNullOrEmpty(varName)) throw new Exception("0x00003");
             RegistryKey key2 = key.OpenSubKey(keyName, true);
             key2.DeleteValue(varName);
             key.Close();
@@ -134,7 +139,10 @@ namespace MultiAPI
         /// <returns>true - в случае если переменная существует, false - в случае если переменная НЕ существует</returns>
         public static bool existsVariable(RegistryKey key, string keyName, string varName)
         {
-            if (key.OpenSubKey(keyName) == null) return false;
+            if (string.IsNullOrEmpty(keyName) || string.IsNullOrEmpty(varName)) throw new Exception("0x00003");
+            RegistryKey key2 = key.OpenSubKey(keyName);
+            if (key2 == null) return false;
+            else if (key2.GetValue(varName) == null) return false;
             else return true;
         }
         #endregion

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -75,6 +76,7 @@ namespace MultiAPI
             private static extern bool SetWindowText(IntPtr hWnd, string lpString);
             #endregion
 
+            #region Стили
             /// <summary>
             /// Стили окна
             /// </summary>
@@ -106,7 +108,9 @@ namespace MultiAPI
                 SW_SHOWNORMAL = 1,
                 SW_SHOWMAXIMIZED = 3
             }
+            #endregion
 
+            #region METHOD-INTPTR | Create
             /// <summary>
             /// Создать окно
             /// </summary>
@@ -121,6 +125,8 @@ namespace MultiAPI
             /// <returns>hWindows для дальнейшего использования в методах (для переменных укажите тип IntPtr, например: IntPtr windowExample = WinAPI.CreateWindw(...); )</returns>
             public static IntPtr Create(WindowStylesEx windowStyleEx, WindowStyles windowStyle, string className, string windowName, int x, int y, int width, int height)
             {
+                if (string.IsNullOrEmpty(className) || string.IsNullOrEmpty(windowName)) throw new Exception("0x00003");
+                if (x < 0 || y < 0 || width < 1 || height < 1) throw new Exception("0x00006");
                 return CreateWindowEx(
                     windowStyleEx,
                     className,
@@ -136,7 +142,9 @@ namespace MultiAPI
                     IntPtr.Zero
                 );
             }
+            #endregion
 
+            #region METHOD-BOOL | Show
             /// <summary>
             /// Отобразить окно
             /// </summary>
@@ -147,7 +155,9 @@ namespace MultiAPI
             {
                 return ShowWindow(hWindow, command);
             }
+            #endregion
 
+            #region METHOD-INTPTR | Find
             /// <summary>
             /// Найти окно по классу и названию
             /// </summary>
@@ -156,9 +166,12 @@ namespace MultiAPI
             /// <returns>Само окно в IntPtr для дальнейшего использования в методах или переменных</returns>
             public static IntPtr Find(string className, string windowName)
             {
+                if (string.IsNullOrEmpty(className) || string.IsNullOrEmpty(windowName)) throw new Exception("0x00003");
                 return FindWindow(className, windowName);
             }
+            #endregion
 
+            #region METHOD-BOOL | Destroy
             /// <summary>
             /// Уничтожение окна
             /// </summary>
@@ -168,7 +181,9 @@ namespace MultiAPI
             {
                 return DestroyWindow(hWnd);
             }
+            #endregion
 
+            #region METHOD-BOOL | Move
             /// <summary>
             /// Изменить размер и позицию окна
             /// </summary>
@@ -180,9 +195,12 @@ namespace MultiAPI
             /// <returns></returns>
             public static bool Move(IntPtr hWindow, int x, int y, int width, int height)
             {
+                if (x < 0 || y < 0 || width < 1 || height < 1) throw new Exception("0x00006");
                 return MoveWindow(hWindow, x, y, width, height, true);
             }
+            #endregion
 
+            #region METHOD-BOOL | Update
             /// <summary>
             /// Обновить окно
             /// </summary>
@@ -192,7 +210,9 @@ namespace MultiAPI
             {
                 return UpdateWindow(hWindow);
             }
+            #endregion
 
+            #region METHOD-BOOL | SetText
             /// <summary>
             /// Установить новый текст (новое имя) окну
             /// </summary>
@@ -201,8 +221,10 @@ namespace MultiAPI
             /// <returns></returns>
             public static bool SetText(IntPtr hWindow, string text)
             {
+                if (string.IsNullOrEmpty(text)) throw new Exception("0x00003");
                 return SetWindowText(hWindow, text);
             }
+            #endregion
         }
     }
 }

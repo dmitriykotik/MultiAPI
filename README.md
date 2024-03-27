@@ -1445,10 +1445,12 @@ Console.WriteLine(music.getPath());
 public string getPath() => musicPlayer.URL; // Возвращаем путь до музыкального файла
 ```
 
-### - updatePath
+### - repeat
 ```csharp
-void updatePath(string pathFile);
+void repeat(bool turn);
 ```
+
+` turn ` - true или false. true - включить повтор, false - выключить повтор
 
 > [!NOTE]
 > Добавлено в версии "0.1.2.100"
@@ -1456,22 +1458,13 @@ void updatePath(string pathFile);
 #### Пример:
 ```csharp
 MultiAPI.Music music = new MultiAPI.Music("C:\\Folder\\testMusicFile.mp3");
-music.updatePath("C:\\Folder\\testMusicFile2.mp3");
+music.repeat(true);
 ```
 
 #### Описание:
-Устанавливает новый музыкальный файл в плеер
-
-#### Исключения:
-Исключения: ` 0x00003 `
-
-Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+Устанавливает значение ` turn ` для повтора песни.
 
 #### Код:
 ```csharp
-public void updatePath(string pathFile)
-{
-    if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003"); // Если "pathFile" пуст, то выдаём исключение "0x00003"
-    musicPlayer.URL = pathFile; // Устанавливаем новый путь до музыкального файла
-}
+public void repeat(bool turn) => musicPlayer.settings.setMode("loop", turn);
 ```

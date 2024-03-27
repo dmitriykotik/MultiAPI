@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Mail;
 using System.Net;
-using MultiAPI.Internet;
 
 /* 
   =================- INFO -===================
@@ -17,7 +16,7 @@ using MultiAPI.Internet;
   ============================================
  */
 
-namespace MultiAPI.Mail
+namespace MultiAPI
 {
 
     #region CLASS | Mail
@@ -42,7 +41,7 @@ namespace MultiAPI.Mail
         public static void send(string fromEmail, string fromName, string toEmail, string subject, string textOrHtml, string smtpServer, int smtpPort, string smtpPasswordMail)
         {
             if (string.IsNullOrEmpty(fromEmail) || string.IsNullOrEmpty(fromName) || string.IsNullOrEmpty(toEmail) || string.IsNullOrEmpty(subject) || string.IsNullOrEmpty(textOrHtml) || string.IsNullOrEmpty(smtpServer) || string.IsNullOrEmpty(Convert.ToString(smtpPort)) || string.IsNullOrEmpty(smtpPasswordMail)) throw new Exception("0x00003");
-            if (Internet.Internet.TestConnection())
+            if (Internet.TestConnection())
             {
                 MailAddress from = new MailAddress(fromEmail, fromName);
                 MailAddress to = new MailAddress(toEmail);

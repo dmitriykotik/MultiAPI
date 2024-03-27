@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using MultiAPI.INI;
+using MultiAPI;
 
 namespace MultiAPI_Tester
 {

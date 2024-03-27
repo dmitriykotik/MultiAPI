@@ -15,7 +15,9 @@ using WMPLib;
   ============================================
  */
 
-namespace MultiAPI.Music
+
+
+namespace MultiAPI
 {
     #region CLASS | Music
     /// <summary>
@@ -35,10 +37,11 @@ namespace MultiAPI.Music
         /// Определение конструкции. ( Music nameVar = new Music("C:\\Path\\To\\Music.mp3") )
         /// </summary>
         /// <param name="pathFile">Полный путь до музыкального файла</param>
-        public Music(string pathFile)
+        public Music(string pathFile, bool autoStart = false)
         {
             if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003");
             musicPlayer.URL = pathFile;
+            musicPlayer.settings.autoStart = autoStart;
         }
         #endregion
 
@@ -131,6 +134,14 @@ namespace MultiAPI.Music
         /// </summary>
         /// <returns>Путь до музыкального файла</returns>
         public string getPath() => musicPlayer.URL;
+        #endregion
+
+        #region METHOD-VOID | repeat
+        /// <summary>
+        /// Повтор песни
+        /// </summary>
+        /// <param name="turn">true или false. true - включить повтор, false - выключить повтор</param>
+        public void repeat(bool turn) => musicPlayer.settings.setMode("loop", turn);
         #endregion
 
     }

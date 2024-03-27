@@ -18,7 +18,7 @@ using System.Text;
   ============================================
  */
 
-namespace MultiAPI.Zip
+namespace MultiAPI
 {
     #region CLASS | Zip
     /// <summary>

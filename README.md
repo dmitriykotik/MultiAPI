@@ -66,6 +66,7 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
   - [getPosition](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--getposition)
   - [updatePath](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--updatepath)
   - [getPath](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--getpath)
+  - [repeat](https://github.com/dmitriykotik/MultiAPI/tree/master#--repeat)
 
 ## Импорт библиотеки в проект
 
@@ -109,74 +110,10 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
 4. Нажмите на пакет, в правом окне диспетчера выберите проекты в которые вам надо установить библиотеку, версию и нажмите кнопку установить.
 
 ### Импорт библиотеки
-
-> [!WARNING]
-> Ниже представленная информация для версий ниже 0.1.2.98. Новую информацию вы можете получить из пункта "[Подклассы библиотеки](https://github.com/dmitriykotik/MultiAPI#подклассы-бибилотеки)"
-
 В проекте импортируйте библиотеку следующим образом:
 ```csharp
 using MultiAPI;
 ```
-
-
-## Подклассы бибилотеки 
-С версии 0.1.2.98 используются подклассы библиотеки. В качестве подклассов используются обычные классы библиотеки. Это создано для модульности. Ниже списка описанно как пользоваться новой системой.
-
-### Список подклассов (И как они импортируются):
-```csharp
-using MultiAPI.Basic;
-using MultiAPI.FTP;
-using MultiAPI.Generator;
-using MultiAPI.INI;
-using MultiAPI.Internet;
-using MultiAPI.Mail;
-using MultiAPI.Music;
-using MultiAPI.RegEdit;
-using MultiAPI.Zip;
-using MultiAPI.WinAPI;
-```
-
-### Как ими пользоваться:
-Например, в коде нам требуется библиотека MultiAPI с классом INI, тогда можем написать такой код:
-```csharp
-using MultiAPI.INI; // Импортируем библиотеку с классом
-
-void Main(string[] args)
-{
-  INI.INI iniFile = new INI.INI("C:\\Folder\\iniF.ini"); // Создаём конструктор
-  string ff = iniFile.getValue("Test", "testVar"); // Получаем значение из переменной в ini файле
-}
-```
-Также вы можете указывать полный путь:
-```csharp
-using MultiAPI.INI; // Импортируем библиотеку с классом
-
-void Main(string[] args)
-{
-  MultiAPI.INI.INI iniFile = new MultiAPI.INI.INI("C:\\Folder\\iniF.ini"); // *** Создаём конструктор (MultiAPI - Библиотека, после идёт .INI - это уже подкласс, дальше снова идёт .INI - это уже основной класс). Зачастую полный путь не придётся использовать
-  string ff = iniFile.getValue("Test", "testVar"); // Получаем значение из переменной в ini файле
-}
-```
-или
-```csharp
-void Main(string[] args)
-{
-  MultiAPI.INI.INI iniFile = new MultiAPI.INI.INI("C:\\Folder\\iniF.ini"); // *** Создаём конструктор (MultiAPI - Библиотека, после идёт .INI - это уже подкласс, дальше снова идёт .INI - это уже основной класс). Зачастую полный путь не придётся использовать
-  string ff = iniFile.getValue("Test", "testVar"); // Получаем значение из переменной в ini файле
-}
-```
-или
-```csharp
-using MultiAPI.Internet; // Импортируем библиотеку с классом
-
-void Main(string[] args)
-{
-  bool internet = Internet.TestConnection(); // Проверка подключения интернета
-}
-```
-
-> [!NOTE]
-> Как обнаружилось, не всегда можно использовать например Internet.TestConnection(); В некоторых случиях нужно использовать Internet.Internet.TestConnection();
 
 ## Древо классов и методов
 ``` text

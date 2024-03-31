@@ -82,7 +82,7 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
 ### Ручной метод
 1. Скачайте стабильную версию библиотеки по этой [ссылке](https://github.com/dmitriykotik/MultiAPI/releases). 
 
-Распознать стабильную версию можно по такому значку: [![MultiAPI](https://shields.io/badge/v0.0.0.0-Stable-green?labelColor=gray&style=flat)]()
+Распознать стабильную версию можно по такому значку: [![MultiAPI](https://shields.io/badge/v0.0.0.0-stable-green?labelColor=gray&style=flat)]()
 
 Почти стабильная: [![MultiAPI](https://img.shields.io/badge/v0.0.0.0-n%20stable-yellow?labelColor=gray&style=flat)]()
 

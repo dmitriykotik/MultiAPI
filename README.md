@@ -576,6 +576,16 @@ string GenPassword(int length);
 string GenPassword(int length, string dictionary);
 ```
 
+Код класса:
+```csharp
+public static class Generator
+{
+  public static string GenPassword(int length) { ... }
+
+  public static string GenPassword(int length, string dictionary) { ... }
+}
+```
+
 ### - GenPassword
 ```csharp
 string GenPassword(int length);
@@ -655,6 +665,26 @@ void setValue(string section, string variable, string text);
 bool existVariable(string section, string variable);
 void deleteVariable(string section, string variable);
 void deleteAllVariables(string section);
+```
+
+Код класса:
+```csharp
+public class INI
+{
+    private string _iniFile;
+
+    public INI(string iniFile) { ... }
+
+    public string getValue(string section, string variable) { ... }
+
+    public void setValue(string section, string variable, string text) { ... }
+
+    public bool existVariable(string section, string variable) { ... }
+
+    public void deleteVariable(string section, string variable) { ... }
+
+    public void deleteAllVariables(string section) { ... }
+}
 ```
 
 ### - INI
@@ -884,6 +914,16 @@ bool TestConnection();
 bool ping(string url);
 ```
 
+Код класса:
+```csharp
+public static class Internet
+{
+    public static bool TestConnection() { ... }
+
+    public static bool ping(string url) { ... }
+}
+```
+
 ### - TestConnection
 ```csharp
 bool TestConnection();
@@ -969,6 +1009,14 @@ public static bool ping(string url)
 void send(string fromEmail, string fromName, string toEmail, string subject, string textOrHtml, string smtpServer, int smtpPort, string smtpPasswordMail);
 ```
 
+Код класса:
+```csharp
+public static class Mail
+{
+    public static void send(string fromEmail, string fromName, string toEmail, string subject, string textOrHtml, string smtpServer, int smtpPort, string smtpPasswordMail) { ... }
+}
+```
+
 ### - send
 ```csharp
 void send(string fromEmail, string fromName, string toEmail, string subject, string textOrHtml, string smtpServer, int smtpPort, string smtpPasswordMail);
@@ -1042,6 +1090,38 @@ double getPosition();
 void updatePath(string pathFile);
 string getPath();
 void repeat(bool turn);
+```
+
+Код класса:
+```csharp
+public class Music
+{
+    private static WindowsMediaPlayer musicPlayer = new WindowsMediaPlayer();
+
+    public Music(string pathFile, bool autoStart = false) { ... }
+
+    public void play() => musicPlayer.controls.play();
+
+    public void stop() => musicPlayer.controls.stop();
+
+    public void pause() => musicPlayer.controls.pause();
+
+    public void setVolume(int volume) { ... }
+
+    public int getVolume() => musicPlayer.settings.volume;
+
+    public double getDuration() => musicPlayer.currentMedia.duration;
+
+    public void setPosition(double position) { ... }
+
+    public double getPosition() => musicPlayer.controls.currentPosition;
+
+    public void updatePath(string pathFile) { ... }
+
+    public string getPath() => musicPlayer.URL;
+
+    public void repeat(bool turn) => musicPlayer.settings.setMode("loop", turn);
+}
 ```
 
 > [!WARNING]

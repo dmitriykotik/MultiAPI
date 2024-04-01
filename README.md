@@ -66,6 +66,14 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
   - [updatePath](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--updatepath)
   - [getPath](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--getpath)
   - [repeat](https://github.com/dmitriykotik/MultiAPI/tree/master#--repeat)
+- [RegEdit.cs - RegEdit](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#regeditcs---regedit)
+  - [create](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--create)
+  - [delete](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--delete-1)
+  - [createVariable](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--createvariable)
+  - [getValue](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--getvalue-1)
+  - [deleteVariable](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--deletevariable-1)
+  - [editVariable](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--editvariable)
+  - [existsVariable](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--existsvariable-1)
 
 ## Импорт библиотеки в проект
 

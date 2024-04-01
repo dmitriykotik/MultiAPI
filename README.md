@@ -1531,7 +1531,7 @@ void create(RegistryKey key, string keyName);
 
 #### Пример:
 ```csharp
-RegEdit.create(Registry.LocalMachine, "keeeeey")
+MultiAPI.RegEdit.create(Registry.LocalMachine, "keeeeey")
 ```
 
 #### Описание:
@@ -1563,7 +1563,7 @@ void delete(RegistryKey key, string keyName)
 
 #### Пример:
 ```csharp
-RegEdit.delete(Registry.LocalMachine, "keeeeey")
+MultiAPI.RegEdit.delete(Registry.LocalMachine, "keeeeey")
 ```
 
 #### Описание:
@@ -1599,7 +1599,7 @@ void createVariable(RegistryKey key, string keyName, string varName, object varV
 
 #### Пример:
 ```csharp
-RegEdit.createVariable(Registry.LocalMachine, "keeeeey", "variable", "HeHeHE")
+MultiAPI.RegEdit.createVariable(Registry.LocalMachine, "keeeeey", "variable", "HeHeHE")
 ```
 
 #### Описание:
@@ -1638,10 +1638,10 @@ getValue(RegistryKey key, string keyName, string varName)
 
 #### Пример:
 ```csharp
-string value = getValue(Registry.LocalMachine, "keeeeey", "variable");
+string value = MultiAPI.RegEdit.getValue(Registry.LocalMachine, "keeeeey", "variable");
 ```
 ```csharp
-int value = getValue(Registry.LocalMachine, "keeeeey", "variable");
+int value = MultiAPI.RegEdit.getValue(Registry.LocalMachine, "keeeeey", "variable");
 ```
 
 #### Описание:
@@ -1662,5 +1662,125 @@ public static object getValue(RegistryKey key, string keyName, string varName)
     key.Close(); // Закрываем корневой ключ
     key2.Close(); // Закрываем под-ключ
     return value; // Возвращаем значение 
+}
+```
+
+### - deleteVariable
+```csharp
+void deleteVariable(RegistryKey key, string keyName, string varName);
+```
+
+` key ` - Корневой ключ (Выбирайте с помощью "Registry". Например: "Registry.LocalMachine")
+
+` keyName ` - Название под-ключа
+
+` varName ` - Название переменной в под-ключе 
+
+#### Пример:
+```csharp
+MultiAPI.RegEdit.deleteVariable(Registry.LocalMachine, "keeeeey", "variable");
+```
+
+#### Описание:
+Удаляет переменную из под-ключа
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Код:
+```csharp
+public static void deleteVariable(RegistryKey key, string keyName, string varName)
+{
+    if (string.IsNullOrEmpty(keyName) || string.IsNullOrEmpty(varName)) throw new Exception("0x00003"); // Если переменная "keyName" или "varName" пуста, то выдаём исключение "0x00003"
+    RegistryKey key2 = key.OpenSubKey(keyName, true); // Открываем под-ключ из корневого ключа 
+    key2.DeleteValue(varName); // Удаляем переменную
+    key.Close(); // Закрываем корневой ключ
+    key2.Close(); // Закрываем под-ключ
+}
+```
+
+### - editVariable
+```csharp
+void editVariable(RegistryKey key, string keyName, string varName, object varValue);
+```
+
+` key ` - Корневой ключ (Выбирайте с помощью "Registry". Например: "Registry.LocalMachine")
+
+` keyName ` - Название под-ключа
+
+` varName ` - Название переменной в под-ключе 
+
+` varValue ` - Новое значение для переменной
+
+> [!NOTE]
+> Фактически, это и есть метод ` createVariable `, но данный метод проще для понимания.
+
+#### Пример:
+```csharp
+MultiAPI.RegEdit.editVariable(Registry.LocalMachine, "keeeeey", "variable", "HeHeHE")
+```
+
+#### Описание:
+Редактирование переменной в под-ключе
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Код:
+```csharp
+public static void editVariable(RegistryKey key, string keyName, string varName, object varValue)
+{
+    if (string.IsNullOrEmpty(keyName) || string.IsNullOrEmpty(varName) || varValue == null) throw new Exception("0x00003"); // Если "keyName", "varName" или "varValue" пуст, то выводим исключение "0x00003"
+    RegistryKey key2 = key.OpenSubKey(keyName, true); // Открываем под-ключ из корневого ключа
+    key2.SetValue(varName, varValue); // Изменяем значение переменной
+    key.Close(); // Закрываем под-ключ
+    key2.Close(); // Закрываем корневой ключ
+}
+```
+
+### - existsVariable
+```csharp
+bool existsVariable(RegistryKey key, string keyName, string varName)
+```
+
+` key ` - Корневой ключ (Выбирайте с помощью "Registry". Например: "Registry.LocalMachine")
+
+` keyName ` - Название под-ключа
+
+` varName ` - Название переменной в под-ключе
+
+#### Возврат:
+` true ` или ` false `. ` true ` - Если переменная существует, ` false ` - Если переменная НЕ существует
+
+#### Пример:
+```csharp
+bool exists = MultiAPI.RegEdit.existsVariable(Registry.LocalMachine, "keeeeey", "variable");
+```
+```csharp
+bool exists = MultiAPI.RegEdit.existsVariable(Registry.LocalMachine, "keeeeey", "variable");
+Console.WriteLine(exists);
+```
+
+#### Описание:
+Проверяет, существует ли переменная
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Код:
+```csharp
+public static bool existsVariable(RegistryKey key, string keyName, string varName)
+{
+    if (string.IsNullOrEmpty(keyName) || string.IsNullOrEmpty(varName)) throw new Exception("0x00003"); // Если "keyName", "varName" или "varValue" пуст, то выводим исключение "0x00003"
+    RegistryKey key2 = key.OpenSubKey(keyName); // Открываем под-ключ из корневого ключа
+    if (key2 == null) return false; // Если "key2" равен "null", то возвращаем "false"
+    else if (key2.GetValue(varName) == null) return false; // Если полученное значение из переменной "varName" равно "null", то возвращаем "false"
+    else return true; // Если ничего из перечисленного не равно "null", то возвращаем "true"
 }
 ```

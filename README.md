@@ -349,7 +349,7 @@ MultiAPI.Basic.writeMachine("Hello World!", 40, false);
 Метод печатает в терминал символы из текста с определённой задержкой.
 
 #### Исключения:
-Исключения: ` 0x00001 ` и ` 0x00002 `
+Исключения: ` 0x00001 `, ` 0x00002 ` и ` 0x00003 `
 
 Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
@@ -357,6 +357,7 @@ MultiAPI.Basic.writeMachine("Hello World!", 40, false);
 ```csharp
 public static void writeMachine(string text, int countDown = 40, bool writeLine = true)
 {
+    if (string.IsNullOrEmpty(text)) throw new Exception("0x00003"); // Если "text" пуст, то выдаём исключение "0x00003"
     if (countDown == 0) throw new Exception("0x00001"); // Если "countdown" (задержка между символами) равна 0, то выдаём исключение с текстом "0x00001"
     else if (countDown < 0) throw new Exception("0x00002"); // или Если "countdown" меньше 0, то выдаём исключение с текстом "0x00002"
     foreach (char c in text) // Разбираем текст на буквы

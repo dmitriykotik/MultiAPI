@@ -1569,6 +1569,9 @@ void delete(RegistryKey key, string keyName)
 
 ` keyName ` - Название под-ключа
 
+> [!WARNING]
+> Перед использованием класса ` RegEdit ` импортируйте в свой код библиотеку ` Microsoft.Win32 `. ` using Microsoft.Win32; `
+
 #### Пример:
 ```csharp
 MultiAPI.RegEdit.delete(Registry.LocalMachine, "keeeeey")
@@ -1605,6 +1608,9 @@ void createVariable(RegistryKey key, string keyName, string varName, object varV
 
 ` varValue ` - Значение для новой переменной
 
+> [!WARNING]
+> Перед использованием класса ` RegEdit ` импортируйте в свой код библиотеку ` Microsoft.Win32 `. ` using Microsoft.Win32; `
+
 #### Пример:
 ```csharp
 MultiAPI.RegEdit.createVariable(Registry.LocalMachine, "keeeeey", "variable", "HeHeHE")
@@ -1640,6 +1646,9 @@ getValue(RegistryKey key, string keyName, string varName)
 ` keyName ` - Название под-ключа
 
 ` varName ` - Название переменной в под-ключе 
+
+> [!WARNING]
+> Перед использованием класса ` RegEdit ` импортируйте в свой код библиотеку ` Microsoft.Win32 `. ` using Microsoft.Win32; `
 
 #### Возврат:
 Значение переменной ` varName ` в под-ключе ` keyName `, в формате ` object `
@@ -1684,6 +1693,9 @@ void deleteVariable(RegistryKey key, string keyName, string varName);
 
 ` varName ` - Название переменной в под-ключе 
 
+> [!WARNING]
+> Перед использованием класса ` RegEdit ` импортируйте в свой код библиотеку ` Microsoft.Win32 `. ` using Microsoft.Win32; `
+
 #### Пример:
 ```csharp
 MultiAPI.RegEdit.deleteVariable(Registry.LocalMachine, "keeeeey", "variable");
@@ -1721,6 +1733,9 @@ void editVariable(RegistryKey key, string keyName, string varName, object varVal
 ` varName ` - Название переменной в под-ключе 
 
 ` varValue ` - Новое значение для переменной
+
+> [!WARNING]
+> Перед использованием класса ` RegEdit ` импортируйте в свой код библиотеку ` Microsoft.Win32 `. ` using Microsoft.Win32; `
 
 > [!NOTE]
 > Фактически, это и есть метод ` createVariable `, но данный метод проще для понимания.
@@ -1760,6 +1775,9 @@ bool existsVariable(RegistryKey key, string keyName, string varName)
 ` keyName ` - Название под-ключа
 
 ` varName ` - Название переменной в под-ключе
+
+> [!WARNING]
+> Перед использованием класса ` RegEdit ` импортируйте в свой код библиотеку ` Microsoft.Win32 `. ` using Microsoft.Win32; `
 
 #### Возврат:
 ` true ` или ` false `. ` true ` - Если переменная существует, ` false ` - Если переменная НЕ существует

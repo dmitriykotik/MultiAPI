@@ -179,17 +179,25 @@ using MultiAPI;
     │   ├── void create(string pathFoler, string outputArchive)
     │   └── void unpacking(string pathArchive, string outputFolder)
     └── WinAPI.cs - WinAPI
-        └── Window
-            ├── enum WindowStyles : uint
-            ├── enum WindowStylesEx : uint
-            ├── enum ShowWindowCommands : int
-            ├── IntPtr Create(WindowStylesEx windowStyleEx, WindowStyles windowStyle, string className, string windowName, int x, int y, int width, int height)
-            ├── bool Show(IntPtr hWindow, ShowWindowCommands command)
-            ├── IntPtr Find(string className, string windowName)
-            ├── bool Destroy(IntPtr hWnd)
-            ├── bool Move(IntPtr hWindow, int x, int y, int width, int height)
-            ├── bool Update(IntPtr hWindow)
-            └── bool SetText(IntPtr hWindow, string text)
+        ├── Window
+        │   ├── enum WindowStyles : uint
+        │   ├── enum WindowStylesEx : uint
+        │   ├── enum ShowWindowCommands : int
+        │   ├── IntPtr Create(WindowStylesEx windowStyleEx, WindowStyles windowStyle, string className, string windowName, int x, int y, int width, int height)
+        │   ├── bool Show(IntPtr hWindow, ShowWindowCommands command)
+        │   ├── IntPtr Find(string className, string windowName)
+        │   ├── bool Destroy(IntPtr hWnd)
+        │   ├── bool Move(IntPtr hWindow, int x, int y, int width, int height)
+        │   ├── bool Update(IntPtr hWindow)
+        │   └── bool SetText(IntPtr hWindow, string text)
+        └── ConsoleWindow
+            ├── enum WindowStyle : int
+            ├── IntPtr getWindow()
+            ├── Size GetFontSize()
+            ├── void ModifyStyleControl(IntPtr hWnd, WindowStyle windowStyle);
+            ├── void CursorVisibility(bool visible)
+            ├── void ScrollVisibleFalse()
+            └── void ScrollVisibleTrue()
 ```
 
 ## Исключения

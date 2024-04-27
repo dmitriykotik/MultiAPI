@@ -323,7 +323,7 @@ namespace MultiAPI
 
             public static IntPtr GetWindow => GetConsoleWindow();
 
-            public static Size GetConsoleFontSize()
+            public static Size GetFontSize()
             {
                 IntPtr outHandle = CreateFile("CONOUT$", (int)ConsoleFont.GENERIC_READ | (int)ConsoleFont.GENERIC_WRITE,
                     (int)ConsoleFont.FILE_SHARE_READ | (int)ConsoleFont.FILE_SHARE_WRITE,
@@ -343,7 +343,7 @@ namespace MultiAPI
                     {
                         if (useMetricFont)
                         {
-                            Size fontSize = GetConsoleFontSize();
+                            Size fontSize = GetFontSize();
                             Rectangle imageRect = new Rectangle(
                                 pos_x * fontSize.Width,
                                 pos_y * fontSize.Height,

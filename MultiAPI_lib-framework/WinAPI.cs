@@ -37,8 +37,14 @@ using System.Windows.Controls;
 
 namespace MultiAPI
 {
+    /// <summary>
+    /// Класс взаимодействия с библиотекой WinAPI
+    /// </summary>
     public static class WinAPI
     {
+        /// <summary>
+        /// Взаимодействие с окнами
+        /// </summary>
         public static class Window
         {
             #region Импорт методов
@@ -231,8 +237,12 @@ namespace MultiAPI
             #endregion
         }
 
+        /// <summary>
+        /// Взаимодействие с консольными окнами
+        /// </summary>
         public static class ConsoleWindow
         {
+            #region Импорт методов
             [DllImport("kernel32.dll", SetLastError = true)]
             private static extern IntPtr GetConsoleWindow();
 
@@ -242,7 +252,15 @@ namespace MultiAPI
             [DllImport("user32.dll", SetLastError = true)]
             private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
+            [DllImport("user32.dll", SetLastError = true)]
+            private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+
+            [DllImport("user32.dll")]
+            private static extern bool RemoveMenu(IntPtr hMenu, uint uPosition, uint uFlags);
+
             private const int GWL_STYLE = -16;
+
+            private const uint MF_BYCOMMAND = 0x00000000;
 
             [DllImport("kernel32.dll", SetLastError = true)]
             private static extern IntPtr CreateFile(
@@ -303,7 +321,10 @@ namespace MultiAPI
                 public uint dwSize;
                 public bool bVisible;
             }
+            #endregion
 
+            #region Стили
+            #region Скрытый
             private enum ConsoleFont : int
             {
                 GENERIC_READ = unchecked((int)0x80000000),
@@ -313,7 +334,11 @@ namespace MultiAPI
                 INVALID_HANDLE_VALUE = -1,
                 OPEN_EXISTING = 3
             }
-            
+            #endregion
+            #region Открытый
+            /// <summary>
+            /// Кнопки
+            /// </summary>
             public enum WindowStyle : int
             {
                 WS_MAXIMIZEBOX = 0x00010000,
@@ -321,8 +346,31 @@ namespace MultiAPI
                 WS_SYSMENU = 0x00080000
             }
 
-            public static IntPtr GetWindow => GetConsoleWindow();
+            /// <summary>
+            /// Кнопки
+            /// </summary>
+            public enum SCWindowStyle : uint
+            {
+                SC_CLOSE = 0xF060,
+                SC_MINIMIZE = 0xF020,
+                SC_MAXIMIZE = 0xF030,
+                SC_SIZE = 0xF000
+            }
+            #endregion
+            #endregion
 
+            #region METHOD-IntPtr | GetConsoleWindow
+            /// <summary>
+            /// Получает hWnd текущего консольного окна
+            /// </summary>
+            public static IntPtr GetWindow => GetConsoleWindow();
+            #endregion
+
+            #region METHOD-SIZE | GetFontSize
+            /// <summary>
+            /// Получает размер шрифта консоли для разметки по символам
+            /// </summary>
+            /// <returns>Размер шрифта</returns>
             public static Size GetFontSize()
             {
                 IntPtr outHandle = CreateFile("CONOUT$", (int)ConsoleFont.GENERIC_READ | (int)ConsoleFont.GENERIC_WRITE,
@@ -334,7 +382,19 @@ namespace MultiAPI
                 ConsoleFontInfo cfi = new ConsoleFontInfo();
                 return new Size(cfi.dwFontSize.X, cfi.dwFontSize.Y);
             }
+            #endregion
 
+            #region METHOD-VOID | InjectPicture
+            /// <summary>
+            /// Инъецирует картинку в определённое консольное окно
+            /// </summary>
+            /// <param name="hWnd">Окно</param>
+            /// <param name="pathToImage">Путь до изображения которое нужно вставить</param>
+            /// <param name="size_x">Размер в точках по оси X или в символах если параметр useMetricFont включён</param>
+            /// <param name="size_y">Размер в точках по оси Y или в символах если параметр useMetricFont включён</param>
+            /// <param name="pos_x">Позиция изображения в точках по оси X или в символах если параметр useMetricFont включён</param>
+            /// <param name="pos_y">Позиция изображения в точках по оси X или в символах если параметр useMetricFont включён</param>
+            /// <param name="useMetricFont">Включает использование метрической системы в виде символов (Определяется по размеру шрифту)</param>
             public static void InjectPicture(IntPtr hWnd, string pathToImage, int size_x, int size_y, int pos_x, int pos_y, bool useMetricFont = true)
             {
                 using (Graphics g = Graphics.FromHwnd(hWnd))
@@ -363,9 +423,31 @@ namespace MultiAPI
                     }
                 }
             }
+            #endregion
 
+            #region METHOD-VOID | ModifyStyleControl
+            /// <summary>
+            /// Модификация стиля панели управления (Кнопки, изменение размера и т.д.)
+            /// </summary>
+            /// <param name="hWnd">Окно</param>
+            /// <param name="windowStyle">Стиль из ConsoleWindow.WindowStyle</param>
             public static void ModifyStyleControl(IntPtr hWnd, WindowStyle windowStyle) => SetWindowLong(hWnd, GWL_STYLE, GetWindowLong(hWnd, GWL_STYLE) & ~(int)windowStyle);
+            #endregion
 
+            #region METHOD-VOID | ModifyStyleControlSC
+            /// <summary>
+            /// Модификация стиля панели управления (Кнопки, изменение размера и т.д.). Фактически аналог ModifyStyleControl с дополнительным функционалом
+            /// </summary>
+            /// <param name="hWnd">Окно</param>
+            /// <param name="SCwindowStyle">Стиль из ConsoleWindow.SCWindowStyle</param>
+            public static void ModifyStyleControlSC(IntPtr hWnd, SCWindowStyle SCwindowStyle) => RemoveMenu(GetSystemMenu(hWnd, false), (uint)SCwindowStyle, MF_BYCOMMAND);
+            #endregion
+
+            #region METHOD-VOID | CursorVisiblity
+            /// <summary>
+            /// Активен ли консольный курсор?
+            /// </summary>
+            /// <param name="visible">Виден? (true или false)</param>
             public static void CursorVisibility(bool visible)
             {
                 IntPtr consoleHandle = GetStdHandle(-11); // Получаем дескриптор вывода консоли (STD_OUTPUT_HANDLE)
@@ -374,17 +456,26 @@ namespace MultiAPI
                 cursorInfo.bVisible = visible;
                 SetConsoleCursorInfo(consoleHandle, ref cursorInfo);
             }
+            #endregion
 
+            #region METHOD-VOID | ScrollVisible(False - True)
+            /// <summary>
+            /// Выключают консольный скрол
+            /// </summary>
             public static void ScrollVisibleFalse()
             {
                 Console.BufferWidth = Console.WindowWidth;
                 Console.BufferHeight = Console.WindowHeight;
             }
 
+            /// <summary>
+            /// Включает консольный курсор
+            /// </summary>
             public static void ScrollVisibleTrue()
             {
                 Console.BufferHeight = Console.BufferHeight + 4096;
             }
+            #endregion
         }
     }
 }

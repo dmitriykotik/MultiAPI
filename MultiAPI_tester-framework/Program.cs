@@ -14,11 +14,13 @@ namespace MultiAPI_Tester
         {
             WinAPI.ConsoleWindow.CursorVisibility(false);
             WinAPI.ConsoleWindow.ScrollVisibleFalse();
+            WinAPI.ConsoleWindow.ModifyStyleControl(WinAPI.ConsoleWindow.GetWindow, WinAPI.ConsoleWindow.WindowStyle.WS_CLOSE);
             Console.ReadLine();
             WinAPI.ConsoleWindow.InjectPicture(WinAPI.ConsoleWindow.GetWindow, "D:\\a.png", 640, 480, 0, 0, false);
             Console.ReadLine();
             WinAPI.ConsoleWindow.ScrollVisibleTrue();
             Console.ReadLine();
+
             
         }
 

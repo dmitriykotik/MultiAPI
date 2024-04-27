@@ -192,9 +192,11 @@ using MultiAPI;
         │   └── bool SetText(IntPtr hWindow, string text)
         └── ConsoleWindow
             ├── enum WindowStyle : int
+            ├── enum SCWindowStyle : uint
             ├── IntPtr getWindow()
             ├── Size GetFontSize()
             ├── void ModifyStyleControl(IntPtr hWnd, WindowStyle windowStyle);
+            ├── void ModifyStyleControlSC(IntPtr hWnd, WindowStyle windowStyle);
             ├── void CursorVisibility(bool visible)
             ├── void ScrollVisibleFalse()
             └── void ScrollVisibleTrue()

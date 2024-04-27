@@ -17,6 +17,7 @@ using System.Net.NetworkInformation;
 
 namespace MultiAPI
 {
+    #region CLASS | Internet
     /// <summary>
     /// Проверки в интернете
     /// </summary>
@@ -64,4 +65,5 @@ namespace MultiAPI
         #endregion
 
     }
+    #endregion
 }

@@ -69,6 +69,7 @@ namespace MultiAPI
         /// <param name="writeLine">Отступить строчку после выполнения?</param>
         public static void writeMachine(string text, int countDown = 40, bool writeLine = true)
         {
+            if (string.IsNullOrEmpty(text)) throw new Exception("0x00003");
             if (countDown == 0) throw new Exception("0x00001");
             else if (countDown < 0) throw new Exception("0x00002");
             foreach (char c in text)

@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
+using System.Windows.Controls.Primitives;
+using System.Windows.Controls;
 
 /* 
   =================- INFO -===================
@@ -225,6 +229,162 @@ namespace MultiAPI
                 return SetWindowText(hWindow, text);
             }
             #endregion
+        }
+
+        public static class ConsoleWindow
+        {
+            [DllImport("kernel32.dll", SetLastError = true)]
+            private static extern IntPtr GetConsoleWindow();
+
+            [DllImport("user32.dll", SetLastError = true)]
+            private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+            [DllImport("user32.dll", SetLastError = true)]
+            private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+            private const int GWL_STYLE = -16;
+
+            [DllImport("kernel32.dll", SetLastError = true)]
+            private static extern IntPtr CreateFile(
+            string lpFileName,
+            int dwDesiredAccess,
+            int dwShareMode,
+            IntPtr lpSecurityAttributes,
+            int dwCreationDisposition,
+            int dwFlagsAndAttributes,
+            IntPtr hTemplateFile);
+
+            [DllImport("kernel32.dll", SetLastError = true)]
+            private static extern bool GetCurrentConsoleFont(
+                IntPtr hConsoleOutput,
+                bool bMaximumWindow,
+                [Out][MarshalAs(UnmanagedType.LPStruct)] ConsoleFontInfo lpConsoleCurrentFont);
+
+            [DllImport("kernel32.dll", SetLastError = true)]
+            private static extern IntPtr GetStdHandle(int nStdHandle);
+
+            [DllImport("kernel32.dll")]
+            private static extern bool GetConsoleCursorInfo(IntPtr hConsoleOutput, out CONSOLE_CURSOR_INFO lpConsoleCursorInfo);
+
+            [DllImport("kernel32.dll")]
+            private static extern bool SetConsoleCursorInfo(IntPtr hConsoleOutput, ref CONSOLE_CURSOR_INFO lpConsoleCursorInfo);
+
+
+            [StructLayout(LayoutKind.Explicit)]
+            private struct CharInfo
+            {
+                [FieldOffset(0)]
+                public char UnicodeChar;
+                [FieldOffset(2)]
+                public short Attributes;
+            }
+
+            private const int STD_OUTPUT_HANDLE = -11;
+
+            [StructLayout(LayoutKind.Sequential)]
+            private class ConsoleFontInfo
+            {
+                internal int nFont;
+                internal Coord dwFontSize;
+            }
+
+            [StructLayout(LayoutKind.Explicit)]
+            private struct Coord
+            {
+                [FieldOffset(0)]
+                internal short X;
+                [FieldOffset(2)]
+                internal short Y;
+            }
+
+            [StructLayout(LayoutKind.Sequential)]
+            private struct CONSOLE_CURSOR_INFO
+            {
+                public uint dwSize;
+                public bool bVisible;
+            }
+
+            private enum ConsoleFont : int
+            {
+                GENERIC_READ = unchecked((int)0x80000000),
+                GENERIC_WRITE = 0x40000000,
+                FILE_SHARE_READ = 1,
+                FILE_SHARE_WRITE = 2,
+                INVALID_HANDLE_VALUE = -1,
+                OPEN_EXISTING = 3
+            }
+            
+            public enum WindowStyle : int
+            {
+                WS_MAXIMIZEBOX = 0x00010000,
+                WS_MINIMIZEBOX = 0x00020000,
+                WS_SYSMENU = 0x00080000
+            }
+
+            public static IntPtr GetWindow => GetConsoleWindow();
+
+            public static Size GetConsoleFontSize()
+            {
+                IntPtr outHandle = CreateFile("CONOUT$", (int)ConsoleFont.GENERIC_READ | (int)ConsoleFont.GENERIC_WRITE,
+                    (int)ConsoleFont.FILE_SHARE_READ | (int)ConsoleFont.FILE_SHARE_WRITE,
+                    IntPtr.Zero,
+                    (int)ConsoleFont.OPEN_EXISTING,
+                    0,
+                    IntPtr.Zero);
+                ConsoleFontInfo cfi = new ConsoleFontInfo();
+                return new Size(cfi.dwFontSize.X, cfi.dwFontSize.Y);
+            }
+
+            public static void InjectPicture(IntPtr hWnd, string pathToImage, int size_x, int size_y, int pos_x, int pos_y, bool useMetricFont = true)
+            {
+                using (Graphics g = Graphics.FromHwnd(hWnd))
+                {
+                    using (System.Drawing.Image image = System.Drawing.Image.FromFile(pathToImage))
+                    {
+                        if (useMetricFont)
+                        {
+                            Size fontSize = GetConsoleFontSize();
+                            Rectangle imageRect = new Rectangle(
+                                pos_x * fontSize.Width,
+                                pos_y * fontSize.Height,
+                                size_x * fontSize.Width,
+                                size_y * fontSize.Height);
+                            g.DrawImage(image, imageRect);
+                        }
+                        else
+                        {
+                            Rectangle imageRect = new Rectangle(
+                                pos_x,
+                                pos_y,
+                                size_x,
+                                size_y);
+                            g.DrawImage(image, imageRect);
+                        }
+                    }
+                }
+            }
+
+            public static void ModifyStyleControl(IntPtr hWnd, WindowStyle windowStyle) => SetWindowLong(hWnd, GWL_STYLE, GetWindowLong(hWnd, GWL_STYLE) & ~(int)windowStyle);
+
+            public static void CursorVisibility(bool visible)
+            {
+                IntPtr consoleHandle = GetStdHandle(-11); // Получаем дескриптор вывода консоли (STD_OUTPUT_HANDLE)
+                CONSOLE_CURSOR_INFO cursorInfo;
+                GetConsoleCursorInfo(consoleHandle, out cursorInfo);
+                cursorInfo.bVisible = visible;
+                SetConsoleCursorInfo(consoleHandle, ref cursorInfo);
+            }
+
+            public static void ScrollVisibleFalse()
+            {
+                Console.BufferWidth = Console.WindowWidth;
+                Console.BufferHeight = Console.WindowHeight;
+            }
+
+            public static void ScrollVisibleTrue()
+            {
+                Console.BufferHeight = Console.BufferHeight + 4096;
+            }
         }
     }
 }

@@ -1,0 +1,466 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Terminal.Gui</name>
+    </assembly>
+    <members>
+        <member name="T:Unix.Terminal.UnmanagedLibrary">
+            <summary>
+            Represents a dynamically loaded unmanaged library in a (partially) platform independent manner.
+            First, the native library is loaded using dlopen (on Unix systems) or using LoadLibrary (on Windows).
+            dlsym or GetProcAddress are then used to obtain symbol addresses. <c>Marshal.GetDelegateForFunctionPointer</c>
+            transforms the addresses into delegates to native methods.
+            See http://stackoverflow.com/questions/13461989/p-invoke-to-dynamically-loaded-library-on-mono.
+            </summary>
+        </member>
+        <member name="M:Unix.Terminal.UnmanagedLibrary.LoadSymbol(System.String)">
+            <summary>
+            Loads symbol in a platform specific way.
+            </summary>
+            <param name="symbolName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Unix.Terminal.UnmanagedLibrary.PlatformSpecificLoadLibrary(System.String)">
+            <summary>
+            Loads library in a platform specific way.
+            </summary>
+        </member>
+        <member name="T:Unix.Terminal.UnmanagedLibrary.Mono">
+            <summary>
+            On Linux systems, using using dlopen and dlsym results in
+            DllNotFoundException("libdl.so not found") if libc6-dev
+            is not installed. As a workaround, we load symbols for
+            dlopen and dlsym from the current process as on Linux
+            Mono sure is linked against these symbols.
+            </summary>
+        </member>
+        <member name="T:Unix.Terminal.UnmanagedLibrary.CoreCLR">
+            <summary>
+            Similarly as for Mono on Linux, we load symbols for
+            dlopen and dlsym from the "libcoreclr.so",
+            to avoid the dependency on libc-dev Linux.
+            </summary>
+        </member>
+        <member name="T:Terminal.Gui.CursesDriver">
+            <summary>
+            This is the Curses driver for the gui.cs/Terminal framework.
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.CursesDriver.MakeColor(System.Int16,System.Int16)">
+            <summary>
+            Creates a curses color from the provided foreground and background colors
+            </summary>
+            <param name="foreground">Contains the curses attributes for the foreground (color, plus any attributes)</param>
+            <param name="background">Contains the curses attributes for the background (color, plus any attributes)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Terminal.Gui.CursesDriver.GetCursorVisibility(Terminal.Gui.CursorVisibility@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Terminal.Gui.CursesDriver.SetCursorVisibility(Terminal.Gui.CursorVisibility)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Terminal.Gui.CursesDriver.EnsureCursorVisibility">
+            <inheritdoc/>
+        </member>
+        <member name="M:Terminal.Gui.Platform.Suspend">
+            <summary>
+            Suspends the process by sending SIGTSTP to itself
+            </summary>
+            <returns>The suspend.</returns>
+        </member>
+        <member name="T:Terminal.Gui.CursesClipboard">
+            <summary>
+             A clipboard implementation for Linux.
+             This implementation uses the xclip command to access the clipboard.
+            </summary>	
+            <remarks>
+            If xclip is not installed, this implementation will not work.
+            </remarks>
+        </member>
+        <member name="T:Terminal.Gui.MacOSXClipboard">
+            <summary>
+             A clipboard implementation for MacOSX. 
+             This implementation uses the Mac clipboard API (via P/Invoke) to copy/paste.
+             The existance of the Mac pbcopy and pbpaste commands 
+             is used to determine if copy/paste is supported.
+            </summary>	
+        </member>
+        <member name="T:Terminal.Gui.WSLClipboard">
+            <summary>
+             A clipboard implementation for Linux, when running under WSL. 
+             This implementation uses the Windows clipboard to store the data, and uses Windows'
+             powershell.exe (launched via WSL interop services) to set/get the Windows
+             clipboard. 
+            </summary>
+        </member>
+        <member name="T:Terminal.Gui.UnixMainLoop">
+            <summary>
+            Unix main loop, suitable for using on Posix systems
+            </summary>
+            <remarks>
+            In addition to the general functions of the mainloop, the Unix version
+            can watch file descriptors using the AddWatch methods.
+            </remarks>
+        </member>
+        <member name="T:Terminal.Gui.UnixMainLoop.Condition">
+            <summary>
+            Condition on which to wake up from file descriptor activity.  These match the Linux/BSD poll definitions.
+            </summary>
+        </member>
+        <member name="F:Terminal.Gui.UnixMainLoop.Condition.PollIn">
+            <summary>
+            There is data to read
+            </summary>
+        </member>
+        <member name="F:Terminal.Gui.UnixMainLoop.Condition.PollOut">
+            <summary>
+            Writing to the specified descriptor will not block
+            </summary>
+        </member>
+        <member name="F:Terminal.Gui.UnixMainLoop.Condition.PollPri">
+            <summary>
+            There is urgent data to read
+            </summary>
+        </member>
+        <member name="F:Terminal.Gui.UnixMainLoop.Condition.PollErr">
+            <summary>
+             Error condition on output
+            </summary>
+        </member>
+        <member name="F:Terminal.Gui.UnixMainLoop.Condition.PollHup">
+            <summary>
+            Hang-up on output
+            </summary>
+        </member>
+        <member name="F:Terminal.Gui.UnixMainLoop.Condition.PollNval">
+            <summary>
+            File descriptor is not open.
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.UnixMainLoop.RemoveWatch(System.Object)">
+            <summary>
+            Removes an active watch from the mainloop.
+            </summary>
+            <remarks>
+            The token parameter is the value returned from AddWatch
+            </remarks>
+        </member>
+        <member name="M:Terminal.Gui.UnixMainLoop.AddWatch(System.Int32,Terminal.Gui.UnixMainLoop.Condition,System.Func{Terminal.Gui.MainLoop,System.Boolean})">
+             <summary>
+              Watches a file descriptor for activity.
+             </summary>
+             <remarks>
+              When the condition is met, the provided callback
+              is invoked.  If the callback returns false, the
+              watch is automatically removed.
+            
+              The return value is a token that represents this watch, you can
+              use this token to remove the watch by calling RemoveWatch.
+             </remarks>
+        </member>
+        <member name="T:Terminal.Gui.FakeConsole">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Terminal.Gui.FakeConsole.WIDTH">
+            <summary>
+            Specifies the initial console width.
+            </summary>
+        </member>
+        <member name="F:Terminal.Gui.FakeConsole.HEIGHT">
+            <summary>
+            Specifies the initial console height.
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.WindowWidth">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.IsOutputRedirected">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.IsErrorRedirected">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.In">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.Out">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.Error">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.InputEncoding">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.OutputEncoding">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.BackgroundColor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.ForegroundColor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.BufferHeight">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.BufferWidth">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.WindowHeight">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.TreatControlCAsInput">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.LargestWindowWidth">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.LargestWindowHeight">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.WindowLeft">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.WindowTop">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.CursorLeft">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.CursorTop">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.CursorSize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.CursorVisible">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.Title">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.KeyAvailable">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.NumberLock">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.CapsLock">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Terminal.Gui.FakeConsole.IsInputRedirected">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.Beep">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.Beep(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.Clear">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.MoveBufferArea(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.MoveBufferArea(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Char,System.ConsoleColor,System.ConsoleColor)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.OpenStandardError">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.OpenStandardError(System.Int32)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.OpenStandardInput(System.Int32)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.OpenStandardInput">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.OpenStandardOutput(System.Int32)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.OpenStandardOutput">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.Read">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.ReadKey(System.Boolean)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Terminal.Gui.FakeConsole.MockKeyPresses">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.ReadKey">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.ReadLine">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.ResetColor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.SetBufferSize(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.SetCursorPosition(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.SetError(System.IO.TextWriter)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.SetIn(System.IO.TextReader)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.SetOut(System.IO.TextWriter)">
+            <summary>
+            
+            </summary>
+            <param name="newOut"></param>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.SetWindowPosition(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="left"></param>
+            <param name="top"></param>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.SetWindowSize(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="width"></param>
+            <param name="height"></param>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.Write(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.Write(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.Write(System.UInt64)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.Write(System.Int64)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Terminal.Gui.FakeConsole.Write(System.String,System.Object,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="format"></param>
+            <param name="arg0"

@@ -1,4 +1,4 @@
-# MultiAPI - [![GitHub](https://img.shields.io/badge/GitHub-MultiAPI-blue?labelColor=gray&style=flat&link=https://github.com/dmitriykotik/MultiAPI)](https://github.com/dmitriykotik/MultiAPI) [![NuGet](https://img.shields.io/badge/NuGet-v0.1.1-orange?labelColor=gray&style=flat&link=https://www.nuget.org/packages/MultiAPI_Lib)](https://www.nuget.org/packages/MultiAPI_Lib) [![MultiAPI](https://img.shields.io/badge/v0.1.1-not%20stable-red?labelColor=gray&style=flat)]() [![License](https://img.shields.io/badge/License-GPL--3.0-blue?labelColor=gray&style=flat)]()
+# MultiAPI - [![GitHub](https://img.shields.io/badge/GitHub-MultiAPI-blue?labelColor=gray&style=flat&link=https://github.com/dmitriykotik/MultiAPI)](https://github.com/dmitriykotik/MultiAPI) [![NuGet](https://img.shields.io/badge/NuGet-v0.1.1-orange?labelColor=gray&style=flat&link=https://www.nuget.org/packages/MultiAPI_Lib)](https://www.nuget.org/packages/MultiAPI_Lib)  [![MultiAPI](https://img.shields.io/badge/v0.1.1-not%20stable-red?labelColor=gray&style=flat)]() [![MultiAPI](https://img.shields.io/badge/v0.1.2-stable-green?labelColor=gray&style=flat)]() [![License](https://img.shields.io/badge/License-GPL--3.0-blue?labelColor=gray&style=flat)]()
 MultiAPI - Это библиотека и сборка разного ПО (Далее "Библиотека") для разработчиков. Она содержит множество функций чтобы ускорить разработку ПО. Данная библиотека усовершенствованная версия библиотеки MultiLib. MultiAPI подойдёт как начинающим разработчикам, так и профессиональным разработчикам ПО.
 
 **Если вам понравился данный проект, то поставьте пожалуйста звезду на проекте, на [![GitHub](https://img.shields.io/badge/GitHub-MultiAPI-blue?labelColor=gray&style=flat&link=https://github.com/dmitriykotik/MultiAPI)](https://github.com/dmitriykotik/MultiAPI). Спасибо <3**
@@ -66,6 +66,14 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
   - [updatePath](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--updatepath)
   - [getPath](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#--getpath)
   - [repeat](https://github.com/dmitriykotik/MultiAPI/tree/master#--repeat)
+- [RegEdit.cs - RegEdit](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#regeditcs---regedit)
+  - [create](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--create)
+  - [delete](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--delete-1)
+  - [createVariable](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--createvariable)
+  - [getValue](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--getvalue-1)
+  - [deleteVariable](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--deletevariable-1)
+  - [editVariable](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--editvariable)
+  - [existsVariable](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--existsvariable-1)
 
 ## Импорт библиотеки в проект
 
@@ -82,7 +90,7 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
 ### Ручной метод
 1. Скачайте стабильную версию библиотеки по этой [ссылке](https://github.com/dmitriykotik/MultiAPI/releases). 
 
-Распознать стабильную версию можно по такому значку: [![MultiAPI](https://shields.io/badge/v0.0.0.0-Stable-green?labelColor=gray&style=flat)]()
+Распознать стабильную версию можно по такому значку: [![MultiAPI](https://shields.io/badge/v0.0.0.0-stable-green?labelColor=gray&style=flat)]()
 
 Почти стабильная: [![MultiAPI](https://img.shields.io/badge/v0.0.0.0-n%20stable-yellow?labelColor=gray&style=flat)]()
 
@@ -341,7 +349,7 @@ MultiAPI.Basic.writeMachine("Hello World!", 40, false);
 Метод печатает в терминал символы из текста с определённой задержкой.
 
 #### Исключения:
-Исключения: ` 0x00001 ` и ` 0x00002 `
+Исключения: ` 0x00001 `, ` 0x00002 ` и ` 0x00003 `
 
 Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
 
@@ -349,6 +357,7 @@ MultiAPI.Basic.writeMachine("Hello World!", 40, false);
 ```csharp
 public static void writeMachine(string text, int countDown = 40, bool writeLine = true)
 {
+    if (string.IsNullOrEmpty(text)) throw new Exception("0x00003"); // Если "text" пуст, то выдаём исключение "0x00003"
     if (countDown == 0) throw new Exception("0x00001"); // Если "countdown" (задержка между символами) равна 0, то выдаём исключение с текстом "0x00001"
     else if (countDown < 0) throw new Exception("0x00002"); // или Если "countdown" меньше 0, то выдаём исключение с текстом "0x00002"
     foreach (char c in text) // Разбираем текст на буквы
@@ -576,6 +585,16 @@ string GenPassword(int length);
 string GenPassword(int length, string dictionary);
 ```
 
+Код класса:
+```csharp
+public static class Generator
+{
+  public static string GenPassword(int length) { ... }
+
+  public static string GenPassword(int length, string dictionary) { ... }
+}
+```
+
 ### - GenPassword
 ```csharp
 string GenPassword(int length);
@@ -655,6 +674,26 @@ void setValue(string section, string variable, string text);
 bool existVariable(string section, string variable);
 void deleteVariable(string section, string variable);
 void deleteAllVariables(string section);
+```
+
+Код класса:
+```csharp
+public class INI
+{
+    private string _iniFile;
+
+    public INI(string iniFile) { ... }
+
+    public string getValue(string section, string variable) { ... }
+
+    public void setValue(string section, string variable, string text) { ... }
+
+    public bool existVariable(string section, string variable) { ... }
+
+    public void deleteVariable(string section, string variable) { ... }
+
+    public void deleteAllVariables(string section) { ... }
+}
 ```
 
 ### - INI
@@ -884,6 +923,16 @@ bool TestConnection();
 bool ping(string url);
 ```
 
+Код класса:
+```csharp
+public static class Internet
+{
+    public static bool TestConnection() { ... }
+
+    public static bool ping(string url) { ... }
+}
+```
+
 ### - TestConnection
 ```csharp
 bool TestConnection();
@@ -969,6 +1018,14 @@ public static bool ping(string url)
 void send(string fromEmail, string fromName, string toEmail, string subject, string textOrHtml, string smtpServer, int smtpPort, string smtpPasswordMail);
 ```
 
+Код класса:
+```csharp
+public static class Mail
+{
+    public static void send(string fromEmail, string fromName, string toEmail, string subject, string textOrHtml, string smtpServer, int smtpPort, string smtpPasswordMail) { ... }
+}
+```
+
 ### - send
 ```csharp
 void send(string fromEmail, string fromName, string toEmail, string subject, string textOrHtml, string smtpServer, int smtpPort, string smtpPasswordMail);
@@ -1042,6 +1099,38 @@ double getPosition();
 void updatePath(string pathFile);
 string getPath();
 void repeat(bool turn);
+```
+
+Код класса:
+```csharp
+public class Music
+{
+    private static WindowsMediaPlayer musicPlayer = new WindowsMediaPlayer();
+
+    public Music(string pathFile, bool autoStart = false) { ... }
+
+    public void play() => musicPlayer.controls.play();
+
+    public void stop() => musicPlayer.controls.stop();
+
+    public void pause() => musicPlayer.controls.pause();
+
+    public void setVolume(int volume) { ... }
+
+    public int getVolume() => musicPlayer.settings.volume;
+
+    public double getDuration() => musicPlayer.currentMedia.duration;
+
+    public void setPosition(double position) { ... }
+
+    public double getPosition() => musicPlayer.controls.currentPosition;
+
+    public void updatePath(string pathFile) { ... }
+
+    public string getPath() => musicPlayer.URL;
+
+    public void repeat(bool turn) => musicPlayer.settings.setMode("loop", turn);
+}
 ```
 
 > [!WARNING]
@@ -1403,4 +1492,322 @@ music.repeat(true);
 #### Код:
 ```csharp
 public void repeat(bool turn) => musicPlayer.settings.setMode("loop", turn);
+```
+
+## RegEdit.cs - RegEdit
+В этом классе содержутся следущие методы: 
+```csharp
+void create(RegistryKey key, string keyName);
+void delete(RegistryKey key, string keyName);
+void createVariable(RegistryKey key, string keyName, string varName, object varValue);
+object getValue(RegistryKey key, string keyName, string varName);
+void deleteVariable(RegistryKey key, string keyName, string varName);
+void editVariable(RegistryKey key, string keyName, string varName, object varValue);
+bool existsVariable(RegistryKey key, string keyName, string varName);
+```
+
+Код класса:
+```csharp
+public static class RegEdit
+{
+    public static void create(RegistryKey key, string keyName) { ... }
+
+    public static void delete(RegistryKey key, string keyName) { ... }
+
+    public static void createVariable(RegistryKey key, string keyName, string varName, object varValue) { ... }
+
+    public static object getValue(RegistryKey key, string keyName, string varName) { ... }
+
+    public static void deleteVariable(RegistryKey key, string keyName, string varName) { ... }
+
+    public static void editVariable(RegistryKey key, string keyName, string varName, object varValue) { ... }
+
+    public static bool existsVariable(RegistryKey key, string keyName, string varName) { ... }
+}
+```
+
+> [!WARNING]
+> Перед использованием класса ` RegEdit ` импортируйте в свой код библиотеку ` Microsoft.Win32 `. ` using Microsoft.Win32; `
+
+### - create
+```csharp
+void create(RegistryKey key, string keyName);
+```
+
+` key ` - Корневой ключ (Выбирайте с помощью "Registry". Например: "Registry.LocalMachine")
+
+` keyName ` - Название для под-ключа
+
+#### Пример:
+```csharp
+MultiAPI.RegEdit.create(Registry.LocalMachine, "keeeeey")
+```
+
+#### Описание:
+Создаёт под-ключ в корневом ключе
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Код:
+```csharp
+public static void create(RegistryKey key, string keyName)
+{
+    if (string.IsNullOrEmpty(keyName)) throw new Exception("0x00003"); // Если переменная "keyName" пуста, то выдаём исключение "0x00003"
+    key.CreateSubKey(keyName); // Открываем корневой ключ и создаём под-ключ
+    key.Close(); // Закрываем корневой ключ
+}
+```
+
+### - delete
+```csharp
+void delete(RegistryKey key, string keyName)
+```
+
+` key ` - Корневой ключ (Выбирайте с помощью "Registry". Например: "Registry.LocalMachine")
+
+` keyName ` - Название под-ключа
+
+> [!WARNING]
+> Перед использованием класса ` RegEdit ` импортируйте в свой код библиотеку ` Microsoft.Win32 `. ` using Microsoft.Win32; `
+
+#### Пример:
+```csharp
+MultiAPI.RegEdit.delete(Registry.LocalMachine, "keeeeey")
+```
+
+#### Описание:
+Удаляет под-ключ в корневом ключе
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Код:
+```csharp
+public static void delete(RegistryKey key, string keyName)
+{
+    if (string.IsNullOrEmpty(keyName)) throw new Exception("0x00003"); // Если переменная "keyName" пуста, то выдаём исключение "0x00003"
+    key.DeleteSubKeyTree(keyName); // Открываем корневой ключ и удаляем под-ключ
+    key.Close(); // Закрываем корневой ключ
+}
+```
+
+### - createVariable
+```csharp
+void createVariable(RegistryKey key, string keyName, string varName, object varValue);
+```
+
+` key ` - Корневой ключ (Выбирайте с помощью "Registry". Например: "Registry.LocalMachine")
+
+` keyName ` - Название под-ключа
+
+` varName ` - Название новой переменной в под-ключе 
+
+` varValue ` - Значение для новой переменной
+
+> [!WARNING]
+> Перед использованием класса ` RegEdit ` импортируйте в свой код библиотеку ` Microsoft.Win32 `. ` using Microsoft.Win32; `
+
+#### Пример:
+```csharp
+MultiAPI.RegEdit.createVariable(Registry.LocalMachine, "keeeeey", "variable", "HeHeHE")
+```
+
+#### Описание:
+Создание переменной в под-ключе
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Код:
+```csharp
+public static void createVariable(RegistryKey key, string keyName, string varName, object varValue)
+{
+    if (string.IsNullOrEmpty(keyName) || string.IsNullOrEmpty(varName) || varValue == null) throw new Exception("0x00003"); // Если "keyName", "varName" или "varValue" пуст, то выводим исключение "0x00003"
+    RegistryKey key2 = key.OpenSubKey(keyName, true); // Открываем под-ключ из корневого ключа
+    key2.SetValue(varName, varValue); // Создаём переменную со значением
+    key.Close(); // Закрываем под-ключ
+    key2.Close(); // Закрываем корневой ключ
+}
+```
+
+### - getValue
+```csharp
+getValue(RegistryKey key, string keyName, string varName)
+```
+
+` key ` - Корневой ключ (Выбирайте с помощью "Registry". Например: "Registry.LocalMachine")
+
+` keyName ` - Название под-ключа
+
+` varName ` - Название переменной в под-ключе 
+
+> [!WARNING]
+> Перед использованием класса ` RegEdit ` импортируйте в свой код библиотеку ` Microsoft.Win32 `. ` using Microsoft.Win32; `
+
+#### Возврат:
+Значение переменной ` varName ` в под-ключе ` keyName `, в формате ` object `
+
+#### Пример:
+```csharp
+string value = MultiAPI.RegEdit.getValue(Registry.LocalMachine, "keeeeey", "variable");
+```
+```csharp
+int value = MultiAPI.RegEdit.getValue(Registry.LocalMachine, "keeeeey", "variable");
+```
+
+#### Описание:
+Получение значение переменной в под-ключе
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Код:
+```csharp
+public static object getValue(RegistryKey key, string keyName, string varName)
+{
+    if (string.IsNullOrEmpty(keyName) || string.IsNullOrEmpty(varName)) throw new Exception("0x00003"); // Если переменная "keyName" или "varName" пуста, то выдаём исключение "0x00003"
+    RegistryKey key2 = key.OpenSubKey(keyName); // Открываем под-ключ из корневого ключа 
+    object value = key2.GetValue(varName); // Получаем значение
+    key.Close(); // Закрываем корневой ключ
+    key2.Close(); // Закрываем под-ключ
+    return value; // Возвращаем значение 
+}
+```
+
+### - deleteVariable
+```csharp
+void deleteVariable(RegistryKey key, string keyName, string varName);
+```
+
+` key ` - Корневой ключ (Выбирайте с помощью "Registry". Например: "Registry.LocalMachine")
+
+` keyName ` - Название под-ключа
+
+` varName ` - Название переменной в под-ключе 
+
+> [!WARNING]
+> Перед использованием класса ` RegEdit ` импортируйте в свой код библиотеку ` Microsoft.Win32 `. ` using Microsoft.Win32; `
+
+#### Пример:
+```csharp
+MultiAPI.RegEdit.deleteVariable(Registry.LocalMachine, "keeeeey", "variable");
+```
+
+#### Описание:
+Удаляет переменную из под-ключа
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Код:
+```csharp
+public static void deleteVariable(RegistryKey key, string keyName, string varName)
+{
+    if (string.IsNullOrEmpty(keyName) || string.IsNullOrEmpty(varName)) throw new Exception("0x00003"); // Если переменная "keyName" или "varName" пуста, то выдаём исключение "0x00003"
+    RegistryKey key2 = key.OpenSubKey(keyName, true); // Открываем под-ключ из корневого ключа 
+    key2.DeleteValue(varName); // Удаляем переменную
+    key.Close(); // Закрываем корневой ключ
+    key2.Close(); // Закрываем под-ключ
+}
+```
+
+### - editVariable
+```csharp
+void editVariable(RegistryKey key, string keyName, string varName, object varValue);
+```
+
+` key ` - Корневой ключ (Выбирайте с помощью "Registry". Например: "Registry.LocalMachine")
+
+` keyName ` - Название под-ключа
+
+` varName ` - Название переменной в под-ключе 
+
+` varValue ` - Новое значение для переменной
+
+> [!WARNING]
+> Перед использованием класса ` RegEdit ` импортируйте в свой код библиотеку ` Microsoft.Win32 `. ` using Microsoft.Win32; `
+
+> [!NOTE]
+> Фактически, это и есть метод ` createVariable `, но данный метод проще для понимания.
+
+#### Пример:
+```csharp
+MultiAPI.RegEdit.editVariable(Registry.LocalMachine, "keeeeey", "variable", "HeHeHE")
+```
+
+#### Описание:
+Редактирование переменной в под-ключе
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Код:
+```csharp
+public static void editVariable(RegistryKey key, string keyName, string varName, object varValue)
+{
+    if (string.IsNullOrEmpty(keyName) || string.IsNullOrEmpty(varName) || varValue == null) throw new Exception("0x00003"); // Если "keyName", "varName" или "varValue" пуст, то выводим исключение "0x00003"
+    RegistryKey key2 = key.OpenSubKey(keyName, true); // Открываем под-ключ из корневого ключа
+    key2.SetValue(varName, varValue); // Изменяем значение переменной
+    key.Close(); // Закрываем под-ключ
+    key2.Close(); // Закрываем корневой ключ
+}
+```
+
+### - existsVariable
+```csharp
+bool existsVariable(RegistryKey key, string keyName, string varName)
+```
+
+` key ` - Корневой ключ (Выбирайте с помощью "Registry". Например: "Registry.LocalMachine")
+
+` keyName ` - Название под-ключа
+
+` varName ` - Название переменной в под-ключе
+
+> [!WARNING]
+> Перед использованием класса ` RegEdit ` импортируйте в свой код библиотеку ` Microsoft.Win32 `. ` using Microsoft.Win32; `
+
+#### Возврат:
+` true ` или ` false `. ` true ` - Если переменная существует, ` false ` - Если переменная НЕ существует
+
+#### Пример:
+```csharp
+bool exists = MultiAPI.RegEdit.existsVariable(Registry.LocalMachine, "keeeeey", "variable");
+```
+```csharp
+bool exists = MultiAPI.RegEdit.existsVariable(Registry.LocalMachine, "keeeeey", "variable");
+Console.WriteLine(exists);
+```
+
+#### Описание:
+Проверяет, существует ли переменная
+
+#### Исключения:
+Исключения: ` 0x00003 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Код:
+```csharp
+public static bool existsVariable(RegistryKey key, string keyName, string varName)
+{
+    if (string.IsNullOrEmpty(keyName) || string.IsNullOrEmpty(varName)) throw new Exception("0x00003"); // Если "keyName", "varName" или "varValue" пуст, то выводим исключение "0x00003"
+    RegistryKey key2 = key.OpenSubKey(keyName); // Открываем под-ключ из корневого ключа
+    if (key2 == null) return false; // Если "key2" равен "null", то возвращаем "false"
+    else if (key2.GetValue(varName) == null) return false; // Если полученное значение из переменной "varName" равно "null", то возвращаем "false"
+    else return true; // Если ничего из перечисленного не равно "null", то возвращаем "true"
+}
 ```

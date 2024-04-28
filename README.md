@@ -74,6 +74,11 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
   - [deleteVariable](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--deletevariable-1)
   - [editVariable](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--editvariable)
   - [existsVariable](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--existsvariable-1)
+- [Zip.cs - Zip](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#zipcs---zip)
+  - [EncryptFile](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--encryptfile)
+  - [DecryptFile](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--decryptfile)
+  - [create](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--create-1)
+  - [unpacking](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--unpacking)
 
 ## Импорт библиотеки в проект
 

@@ -1821,3 +1821,90 @@ public static bool existsVariable(RegistryKey key, string keyName, string varNam
     else return true; // Если ничего из перечисленного не равно "null", то возвращаем "true"
 }
 ```
+
+## Zip.cs - Zip
+В этом классе содержутся следущие методы:
+```csharp
+void EncryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
+void DecryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
+void create(string pathFoler, string outputArchive)
+void unpacking(string pathArchive, string outputFolder)
+```
+Код класса:
+```csharp
+public static class Zip
+{
+  public static void EncryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576) { ... }
+
+  public static void DecryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576) { ... }
+
+  public static void create(string pathFoler, string outputArchive) { ... }
+
+  public static void unpacking(string pathArchive, string outputFolder) { ... }
+}
+```
+
+### - EncryptFile
+```csharp
+void EncryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
+```
+
+` inputFile ` - Входной файл
+
+` outputFile ` - Выходной файл (Зашифрованный)
+
+` password ` - Пароль на зашифрованный файл (Минимальное кол-во символов: 4)
+
+` BufferSize ` - Размер буфера (Минимальное значение: 256) (Значение по стандарту: 104576)
+
+> [!WARNING]
+> При дешифровки размер буфера должен совпадать с буфером размер которого указывался во время шифровки
+
+#### Привер:
+```csharp
+MultiAPI.Zip.EncryptFile("C:\\FileToEncrypt.txt", "C:\\EncFile.e_txt", "1234");
+```
+```csharp
+MultiAPI.Zip.EncryptFile("C:\\FileToEncrypt.txt", "C:\\EncFile.e_txt", "1234", 256);
+```
+
+#### Описание:
+Шифрует любой файл с указанным размером буфера и устанавливает на него пароль
+
+#### Исключения:
+Исключения: ` 0x00003 `, ` 0x00004 ` и ` 0x00006 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Код:
+```csharp
+public static void EncryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
+{
+    if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || string.IsNullOrEmpty(password)) throw new Exception("0x00003"); // Если inputFile или outputFile, или password пуст, то выдём исключение "0x00003"
+    if (!File.Exists(inputFile)) throw new Exception("0x00004"); // Если файл inputFile не существует, то выдаём исключение "0x00004"
+    if (password.Length < 4 || BufferSize < 256) throw new Exception("0x00006"); // Если лимиты нарушены, то выдаём исключение "0x00006"
+    UnicodeEncoding UE = new UnicodeEncoding(); // Создание объекта UnicodeEncoding для кодирования пароля в байты
+    byte[] key = UE.GetBytes(password); // Получение байтового представления пароля
+
+    RijndaelManaged RMCrypto = new RijndaelManaged(); // Создание объекта RijndaelManaged для шифрования данных
+    RMCrypto.Mode = CipherMode.CBC; // Установка режима шифрования на CBC
+
+    byte[] iv = RMCrypto.IV; // Получение инициализационного вектора (IV) из RijndaelManaged
+
+    using (FileStream fsCrypt = new FileStream(outputFile, FileMode.Create)) // Создание потока записи для файла, в который будет записан IV и зашифрованные данные
+    {
+        fsCrypt.Write(iv, 0, iv.Length); // Запись IV в начало файла
+
+        using (CryptoStream cs = new CryptoStream(fsCrypt, RMCrypto.CreateEncryptor(key, iv), CryptoStreamMode.Write)) // Создание CryptoStream для шифрования данных с использованием ключа и IV
+        {
+            using (FileStream fsIn = new FileStream(inputFile, FileMode.Open)) // Создание потока чтения для входного файла
+            {
+                byte[] buffer = new byte[BufferSize]; // Создание буфера
+                int read;
+
+                while ((read = fsIn.Read(buffer, 0, buffer.Length)) > 0) cs.Write(buffer, 0, read); // Чтение данных из входного файла и их шифрование, запись зашифрованных данных в выходной файл
+            }
+        }
+    }
+}
+```

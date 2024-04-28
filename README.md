@@ -1779,7 +1779,7 @@ public static void editVariable(RegistryKey key, string keyName, string varName,
 
 ### - existsVariable
 ```csharp
-bool existsVariable(RegistryKey key, string keyName, string varName)
+bool existsVariable(RegistryKey key, string keyName, string varName);
 ```
 
 ` key ` - Корневой ключ (Выбирайте с помощью "Registry". Например: "Registry.LocalMachine")
@@ -1826,10 +1826,10 @@ public static bool existsVariable(RegistryKey key, string keyName, string varNam
 ## Zip.cs - Zip
 В этом классе содержутся следущие методы:
 ```csharp
-void EncryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
-void DecryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
-void create(string pathFoler, string outputArchive)
-void unpacking(string pathArchive, string outputFolder)
+void EncryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576);
+void DecryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576);
+void create(string pathFoler, string outputArchive);
+void unpacking(string pathArchive, string outputFolder);
 ```
 Код класса:
 ```csharp
@@ -1847,7 +1847,7 @@ public static class Zip
 
 ### - EncryptFile
 ```csharp
-void EncryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
+void EncryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576);
 ```
 
 ` inputFile ` - Входной файл
@@ -1912,7 +1912,7 @@ public static void EncryptFile(string inputFile, string outputFile, string passw
 
 ### - DecryptFile
 ```csharp
-void DecryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
+void DecryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576);
 ```
 
 ` inputFile ` - Входной файл (Зашифрованный)
@@ -1972,5 +1972,72 @@ public static void DecryptFile(string inputFile, string outputFile, string passw
             }
         }
     }
+}
+```
+
+### - create
+```csharp
+void create(string pathFoler, string outputArchive);
+```
+
+` pathFolder ` - Путь до запаковываемой папки
+
+` outputArchive ` - Выходной файл
+
+#### Пример:
+```csharp
+MultiAPI.Zip.create("C:\\AIFolder", "C:\\okay.zip")
+```
+
+#### Исключения:
+Исключения: ` 0x00003 ` и ` 0x00004 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Описание:
+Создаёт архив из папки
+
+#### Код:
+```csharp
+public static void create(string pathFoler, string outputArchive)
+{
+    if (string.IsNullOrEmpty(pathFoler) || string.IsNullOrEmpty(outputArchive)) throw new Exception("0x00003"); // Если pathFolder или outputArchive пуст, то выдаём исключение "0x00003"
+    if (Directory.Exists(pathFoler)) ZipFile.CreateFromDirectory(pathFoler, outputArchive); // Если pathFolder есть, то создаём архив из папки
+    else throw new Exception("0x00004"); // Если pathFolder нету, то выдаём исключение "0x00004"
+}
+```
+
+### - unpacking
+```csharp
+unpacking(string pathArchive, string outputFolder);
+```
+
+` pathArchive ` - Путь до архива
+
+` outputFolder ` - Папка в которую распакуется архив
+
+> [!NOTE]
+> Архив должен быть без пароля, иначе он не распакуется
+
+#### Пример:
+```csharp
+MultiAPI.Zip.unpacking("C:\\okay.zip", "C:\\AIFolder")
+```
+
+#### Исключения:
+Исключения: ` 0x00003 ` и ` 0x00004 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Описание:
+Создаёт архив из папки
+
+#### Код:
+```csharp
+public static void unpacking(string pathArchive, string outputFolder)
+{
+    if (string.IsNullOrEmpty(pathArchive) || string.IsNullOrEmpty(outputFolder)) throw new Exception("0x00003"); // Если pathArchive или outputFolder пуст, то выдаём исключение "0x00003"
+    if (File.Exists(pathArchive) && Directory.Exists(outputFolder)) ZipFile.ExtractToDirectory(pathArchive, outputFolder); // Если pathFolder и outputFolder существует, то распаковываем архив в папку
+    else throw new Exception("0x00004"); // Если pathFolder и outputFolder нету, то выдаём исключение "0x00004"
 }
 ```

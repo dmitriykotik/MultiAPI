@@ -189,7 +189,8 @@ using MultiAPI;
         │   ├── bool Destroy(IntPtr hWnd)
         │   ├── bool Move(IntPtr hWindow, int x, int y, int width, int height)
         │   ├── bool Update(IntPtr hWindow)
-        │   └── bool SetText(IntPtr hWindow, string text)
+        │   ├── bool SetText(IntPtr hWindow, string text)
+        │   └── bool GetText(IntPtr hWnd, int maxLength)
         └── ConsoleWindow
             ├── enum WindowStyle : int
             ├── enum SCWindowStyle : uint
@@ -1903,6 +1904,71 @@ public static void EncryptFile(string inputFile, string outputFile, string passw
                 int read;
 
                 while ((read = fsIn.Read(buffer, 0, buffer.Length)) > 0) cs.Write(buffer, 0, read); // Чтение данных из входного файла и их шифрование, запись зашифрованных данных в выходной файл
+            }
+        }
+    }
+}
+```
+
+### - DecryptFile
+```csharp
+void DecryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
+```
+
+` inputFile ` - Входной файл (Зашифрованный)
+
+` outputFile ` - Выходной файл (Дешифрованный)
+
+` password ` - Пароль для снятия шифрования (Минимальное кол-во символов: 4)
+
+` BufferSize ` - Размер буфера (Минимальное значение: 256) (Значение по стандарту: 104576)
+
+> [!WARNING]
+> При дешифровки размер буфера должен совпадать с буфером размер которого указывался во время шифровки
+
+#### Привер:
+```csharp
+MultiAPI.Zip.DecryptFile("C:\\EncFile.e_txt", "C:\\FileToEncrypt.txt", "1234");
+```
+```csharp
+MultiAPI.Zip.DecryptFile("C:\\EncFile.e_txt", "C:\\FileToEncrypt.txt", "1234", 256);
+```
+
+#### Описание:
+Дешифрует файл с указанным буфером и паролем
+
+#### Исключения:
+Исключения: ` 0x00003 `, ` 0x00004 ` и ` 0x00006 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Код:
+```csharp
+public static void DecryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
+{
+    if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || string.IsNullOrEmpty(password)) throw new Exception("0x00003"); // Если inputFile или outputFile, или password пуст, то выдём исключение "0x00003"
+    if (!File.Exists(inputFile)) throw new Exception("0x00004"); // Если файл inputFile не существует, то выдаём исключение "0x00004"
+    if (password.Length < 4 || BufferSize < 256) throw new Exception("0x00006"); // Если лимиты нарушены, то выдаём исключение "0x00006"
+    UnicodeEncoding UE = new UnicodeEncoding(); // Создание объекта UnicodeEncoding для кодирования пароля в байты
+    byte[] key = UE.GetBytes(password); // Получение байтового представления пароля
+    
+    RijndaelManaged RMCrypto = new RijndaelManaged(); // Создание объекта RijndaelManaged для расшифровки данных
+    RMCrypto.Mode = CipherMode.CBC; // Установка режима шифрования на CBC (Cipher Block Chaining)
+    
+    byte[] iv = new byte[16]; // Создание массива для хранения инициализационного вектора (IV)
+    
+    using (FileStream fsCrypt = new FileStream(inputFile, FileMode.Open)) // Создание потока чтения для входного зашифрованного файла
+    {
+        fsCrypt.Read(iv, 0, iv.Length); // Чтение инициализационного вектора из начала зашифрованного файла
+    
+        using (CryptoStream cs = new CryptoStream(fsCrypt, RMCrypto.CreateDecryptor(key, iv), CryptoStreamMode.Read)) // Создание CryptoStream для расшифровки данных с использованием ключа и IV
+        {
+            using (FileStream fsOut = new FileStream(outputFile, FileMode.Create)) // Создание потока записи для выходного расшифрованного файла
+            {
+                byte[] buffer = new byte[BufferSize]; // Создание буфера
+                int read;
+    
+                while ((read = cs.Read(buffer, 0, buffer.Length)) > 0) fsOut.Write(buffer, 0, read); // Чтение расшифрованных данных из CryptoStream и запись их в выходной файл
             }
         }
     }

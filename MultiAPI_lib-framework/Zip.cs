@@ -40,7 +40,7 @@ namespace MultiAPI
             if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || string.IsNullOrEmpty(password)) throw new Exception("0x00003");
             if (!File.Exists(inputFile)) throw new Exception("0x00004");
             if (password.Length < 4 || BufferSize < 256) throw new Exception("0x00006");
-            UnicodeEncoding UE = new UnicodeEncoding();
+            UnicodeEncoding UE = new UnicodeEncoding(); 
             byte[] key = UE.GetBytes(password);
 
             RijndaelManaged RMCrypto = new RijndaelManaged();
@@ -116,7 +116,6 @@ namespace MultiAPI
             if (string.IsNullOrEmpty(pathFoler) || string.IsNullOrEmpty(outputArchive)) throw new Exception("0x00003");
             if (Directory.Exists(pathFoler)) ZipFile.CreateFromDirectory(pathFoler, outputArchive);
             else throw new Exception("0x00004");
-
         }
         #endregion
 

@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
-using System.Windows.Controls.Primitives;
-using System.Windows.Controls;
 
 /* 
   =================- INFO -===================
@@ -84,6 +77,9 @@ namespace MultiAPI
             [DllImport("user32.dll")]
             [return: MarshalAs(UnmanagedType.Bool)]
             private static extern bool SetWindowText(IntPtr hWnd, string lpString);
+
+            [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+            static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
             #endregion
 
             #region Стили
@@ -233,6 +229,21 @@ namespace MultiAPI
             {
                 if (string.IsNullOrEmpty(text)) throw new Exception("0x00003");
                 return SetWindowText(hWindow, text);
+            }
+            #endregion
+
+            #region METHOD-STRING | GetText
+            /// <summary>
+            /// Получить текст (имя) окна
+            /// </summary>
+            /// <param name="hWnd">Окно</param>
+            /// <param name="maxLength">Максимальный размер получаемого текста</param>
+            /// <returns>Текст (имя) окна</returns>
+            public static string GetText(IntPtr hWnd, int maxLength = 1024)
+            {
+                var buff = new StringBuilder(maxLength);
+                GetWindowText(hWnd, buff, maxLength);
+                return buff.ToString();
             }
             #endregion
         }

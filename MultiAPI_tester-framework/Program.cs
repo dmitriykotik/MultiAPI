@@ -12,11 +12,16 @@ namespace MultiAPI_Tester
     {
         static void Main(string[] args)
         {
-            WinAPI.ConsoleWindow.CursorVisibility(false);
-            WinAPI.ConsoleWindow.ScrollVisibleFalse();
-            WinAPI.ConsoleWindow.ModifyStyleControl(WinAPI.ConsoleWindow.GetWindow, WinAPI.ConsoleWindow.WindowStyle.WS_CLOSE);
+            //WinAPI.ConsoleWindow.CursorVisibility(false);
+            //WinAPI.ConsoleWindow.ScrollVisibleFalse();
+            //WinAPI.ConsoleWindow.ModifyStyleControlSC(WinAPI.ConsoleWindow.GetWindow, WinAPI.ConsoleWindow.SCWindowStyle.SC_CLOSE);
+            //WinAPI.ConsoleWindow.ModifyStyleControlSC(WinAPI.ConsoleWindow.GetWindow, WinAPI.ConsoleWindow.SCWindowStyle.SC_SIZE);
+            //WinAPI.ConsoleWindow.ModifyStyleControlSC(WinAPI.ConsoleWindow.GetWindow, WinAPI.ConsoleWindow.SCWindowStyle.SC_MAXIMIZE);
+            //WinAPI.ConsoleWindow.ModifyStyleControlSC(WinAPI.ConsoleWindow.GetWindow, WinAPI.ConsoleWindow.SCWindowStyle.SC_MINIMIZE);
+            //WinAPI.ConsoleWindow.ModifyStyleControl(WinAPI.ConsoleWindow.GetWindow, WinAPI.ConsoleWindow.WindowStyle.WS_SYSMENU);
+            Console.WriteLine(WinAPI.Window.GetText(WinAPI.ConsoleWindow.GetWindow, 1024));
             Console.ReadLine();
-            WinAPI.ConsoleWindow.InjectPicture(WinAPI.ConsoleWindow.GetWindow, "D:\\a.png", 640, 480, 0, 0, false);
+            WinAPI.Window.SetText(WinAPI.ConsoleWindow.GetWindow, "IZI4ELIC");
             Console.ReadLine();
             WinAPI.ConsoleWindow.ScrollVisibleTrue();
             Console.ReadLine();
@@ -27,4 +32,5 @@ namespace MultiAPI_Tester
     }
 
 }
+
 

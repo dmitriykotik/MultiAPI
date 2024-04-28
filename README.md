@@ -74,6 +74,11 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
   - [deleteVariable](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--deletevariable-1)
   - [editVariable](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--editvariable)
   - [existsVariable](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--existsvariable-1)
+- [Zip.cs - Zip](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#zipcs---zip)
+  - [EncryptFile](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--encryptfile)
+  - [DecryptFile](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--decryptfile)
+  - [create](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--create-1)
+  - [unpacking](https://github.com/dmitriykotik/MultiAPI/tree/master?tab=readme-ov-file#--unpacking)
 
 ## Импорт библиотеки в проект
 
@@ -189,7 +194,8 @@ using MultiAPI;
         │   ├── bool Destroy(IntPtr hWnd)
         │   ├── bool Move(IntPtr hWindow, int x, int y, int width, int height)
         │   ├── bool Update(IntPtr hWindow)
-        │   └── bool SetText(IntPtr hWindow, string text)
+        │   ├── bool SetText(IntPtr hWindow, string text)
+        │   └── bool GetText(IntPtr hWnd, int maxLength)
         └── ConsoleWindow
             ├── enum WindowStyle : int
             ├── enum SCWindowStyle : uint
@@ -1778,7 +1784,7 @@ public static void editVariable(RegistryKey key, string keyName, string varName,
 
 ### - existsVariable
 ```csharp
-bool existsVariable(RegistryKey key, string keyName, string varName)
+bool existsVariable(RegistryKey key, string keyName, string varName);
 ```
 
 ` key ` - Корневой ключ (Выбирайте с помощью "Registry". Например: "Registry.LocalMachine")
@@ -1819,5 +1825,224 @@ public static bool existsVariable(RegistryKey key, string keyName, string varNam
     if (key2 == null) return false; // Если "key2" равен "null", то возвращаем "false"
     else if (key2.GetValue(varName) == null) return false; // Если полученное значение из переменной "varName" равно "null", то возвращаем "false"
     else return true; // Если ничего из перечисленного не равно "null", то возвращаем "true"
+}
+```
+
+## Zip.cs - Zip
+В этом классе содержутся следущие методы:
+```csharp
+void EncryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576);
+void DecryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576);
+void create(string pathFoler, string outputArchive);
+void unpacking(string pathArchive, string outputFolder);
+```
+Код класса:
+```csharp
+public static class Zip
+{
+  public static void EncryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576) { ... }
+
+  public static void DecryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576) { ... }
+
+  public static void create(string pathFoler, string outputArchive) { ... }
+
+  public static void unpacking(string pathArchive, string outputFolder) { ... }
+}
+```
+
+### - EncryptFile
+```csharp
+void EncryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576);
+```
+
+` inputFile ` - Входной файл
+
+` outputFile ` - Выходной файл (Зашифрованный)
+
+` password ` - Пароль на зашифрованный файл (Минимальное кол-во символов: 4)
+
+` BufferSize ` - Размер буфера (Минимальное значение: 256) (Значение по стандарту: 104576)
+
+> [!WARNING]
+> При дешифровки размер буфера должен совпадать с буфером размер которого указывался во время шифровки
+
+#### Привер:
+```csharp
+MultiAPI.Zip.EncryptFile("C:\\FileToEncrypt.txt", "C:\\EncFile.e_txt", "1234");
+```
+```csharp
+MultiAPI.Zip.EncryptFile("C:\\FileToEncrypt.txt", "C:\\EncFile.e_txt", "1234", 256);
+```
+
+#### Описание:
+Шифрует любой файл с указанным размером буфера и устанавливает на него пароль
+
+#### Исключения:
+Исключения: ` 0x00003 `, ` 0x00004 ` и ` 0x00006 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Код:
+```csharp
+public static void EncryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
+{
+    if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || string.IsNullOrEmpty(password)) throw new Exception("0x00003"); // Если inputFile или outputFile, или password пуст, то выдём исключение "0x00003"
+    if (!File.Exists(inputFile)) throw new Exception("0x00004"); // Если файл inputFile не существует, то выдаём исключение "0x00004"
+    if (password.Length < 4 || BufferSize < 256) throw new Exception("0x00006"); // Если лимиты нарушены, то выдаём исключение "0x00006"
+    UnicodeEncoding UE = new UnicodeEncoding(); // Создание объекта UnicodeEncoding для кодирования пароля в байты
+    byte[] key = UE.GetBytes(password); // Получение байтового представления пароля
+
+    RijndaelManaged RMCrypto = new RijndaelManaged(); // Создание объекта RijndaelManaged для шифрования данных
+    RMCrypto.Mode = CipherMode.CBC; // Установка режима шифрования на CBC
+
+    byte[] iv = RMCrypto.IV; // Получение инициализационного вектора (IV) из RijndaelManaged
+
+    using (FileStream fsCrypt = new FileStream(outputFile, FileMode.Create)) // Создание потока записи для файла, в который будет записан IV и зашифрованные данные
+    {
+        fsCrypt.Write(iv, 0, iv.Length); // Запись IV в начало файла
+
+        using (CryptoStream cs = new CryptoStream(fsCrypt, RMCrypto.CreateEncryptor(key, iv), CryptoStreamMode.Write)) // Создание CryptoStream для шифрования данных с использованием ключа и IV
+        {
+            using (FileStream fsIn = new FileStream(inputFile, FileMode.Open)) // Создание потока чтения для входного файла
+            {
+                byte[] buffer = new byte[BufferSize]; // Создание буфера
+                int read;
+
+                while ((read = fsIn.Read(buffer, 0, buffer.Length)) > 0) cs.Write(buffer, 0, read); // Чтение данных из входного файла и их шифрование, запись зашифрованных данных в выходной файл
+            }
+        }
+    }
+}
+```
+
+### - DecryptFile
+```csharp
+void DecryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576);
+```
+
+` inputFile ` - Входной файл (Зашифрованный)
+
+` outputFile ` - Выходной файл (Дешифрованный)
+
+` password ` - Пароль для снятия шифрования (Минимальное кол-во символов: 4)
+
+` BufferSize ` - Размер буфера (Минимальное значение: 256) (Значение по стандарту: 104576)
+
+> [!WARNING]
+> При дешифровки размер буфера должен совпадать с буфером размер которого указывался во время шифровки
+
+#### Привер:
+```csharp
+MultiAPI.Zip.DecryptFile("C:\\EncFile.e_txt", "C:\\FileToEncrypt.txt", "1234");
+```
+```csharp
+MultiAPI.Zip.DecryptFile("C:\\EncFile.e_txt", "C:\\FileToEncrypt.txt", "1234", 256);
+```
+
+#### Описание:
+Дешифрует файл с указанным буфером и паролем
+
+#### Исключения:
+Исключения: ` 0x00003 `, ` 0x00004 ` и ` 0x00006 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Код:
+```csharp
+public static void DecryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
+{
+    if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || string.IsNullOrEmpty(password)) throw new Exception("0x00003"); // Если inputFile или outputFile, или password пуст, то выдём исключение "0x00003"
+    if (!File.Exists(inputFile)) throw new Exception("0x00004"); // Если файл inputFile не существует, то выдаём исключение "0x00004"
+    if (password.Length < 4 || BufferSize < 256) throw new Exception("0x00006"); // Если лимиты нарушены, то выдаём исключение "0x00006"
+    UnicodeEncoding UE = new UnicodeEncoding(); // Создание объекта UnicodeEncoding для кодирования пароля в байты
+    byte[] key = UE.GetBytes(password); // Получение байтового представления пароля
+    
+    RijndaelManaged RMCrypto = new RijndaelManaged(); // Создание объекта RijndaelManaged для расшифровки данных
+    RMCrypto.Mode = CipherMode.CBC; // Установка режима шифрования на CBC (Cipher Block Chaining)
+    
+    byte[] iv = new byte[16]; // Создание массива для хранения инициализационного вектора (IV)
+    
+    using (FileStream fsCrypt = new FileStream(inputFile, FileMode.Open)) // Создание потока чтения для входного зашифрованного файла
+    {
+        fsCrypt.Read(iv, 0, iv.Length); // Чтение инициализационного вектора из начала зашифрованного файла
+    
+        using (CryptoStream cs = new CryptoStream(fsCrypt, RMCrypto.CreateDecryptor(key, iv), CryptoStreamMode.Read)) // Создание CryptoStream для расшифровки данных с использованием ключа и IV
+        {
+            using (FileStream fsOut = new FileStream(outputFile, FileMode.Create)) // Создание потока записи для выходного расшифрованного файла
+            {
+                byte[] buffer = new byte[BufferSize]; // Создание буфера
+                int read;
+    
+                while ((read = cs.Read(buffer, 0, buffer.Length)) > 0) fsOut.Write(buffer, 0, read); // Чтение расшифрованных данных из CryptoStream и запись их в выходной файл
+            }
+        }
+    }
+}
+```
+
+### - create
+```csharp
+void create(string pathFoler, string outputArchive);
+```
+
+` pathFolder ` - Путь до запаковываемой папки
+
+` outputArchive ` - Выходной файл
+
+#### Пример:
+```csharp
+MultiAPI.Zip.create("C:\\AIFolder", "C:\\okay.zip")
+```
+
+#### Исключения:
+Исключения: ` 0x00003 ` и ` 0x00004 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Описание:
+Создаёт архив из папки
+
+#### Код:
+```csharp
+public static void create(string pathFoler, string outputArchive)
+{
+    if (string.IsNullOrEmpty(pathFoler) || string.IsNullOrEmpty(outputArchive)) throw new Exception("0x00003"); // Если pathFolder или outputArchive пуст, то выдаём исключение "0x00003"
+    if (Directory.Exists(pathFoler)) ZipFile.CreateFromDirectory(pathFoler, outputArchive); // Если pathFolder есть, то создаём архив из папки
+    else throw new Exception("0x00004"); // Если pathFolder нету, то выдаём исключение "0x00004"
+}
+```
+
+### - unpacking
+```csharp
+unpacking(string pathArchive, string outputFolder);
+```
+
+` pathArchive ` - Путь до архива
+
+` outputFolder ` - Папка в которую распакуется архив
+
+> [!NOTE]
+> Архив должен быть без пароля, иначе он не распакуется
+
+#### Пример:
+```csharp
+MultiAPI.Zip.unpacking("C:\\okay.zip", "C:\\AIFolder")
+```
+
+#### Исключения:
+Исключения: ` 0x00003 ` и ` 0x00004 `
+
+Обработка: [Исключения](https://github.com/dmitriykotik/MultiAPI?tab=readme-ov-file#исключения)
+
+#### Описание:
+Создаёт архив из папки
+
+#### Код:
+```csharp
+public static void unpacking(string pathArchive, string outputFolder)
+{
+    if (string.IsNullOrEmpty(pathArchive) || string.IsNullOrEmpty(outputFolder)) throw new Exception("0x00003"); // Если pathArchive или outputFolder пуст, то выдаём исключение "0x00003"
+    if (File.Exists(pathArchive) && Directory.Exists(outputFolder)) ZipFile.ExtractToDirectory(pathArchive, outputFolder); // Если pathFolder и outputFolder существует, то распаковываем архив в папку
+    else throw new Exception("0x00004"); // Если pathFolder и outputFolder нету, то выдаём исключение "0x00004"
 }
 ```

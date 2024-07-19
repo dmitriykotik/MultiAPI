@@ -8,7 +8,7 @@ using System.Drawing;
  * File:         | WinAPI.cs
  * Class:        | WinAPI
  * Project:      | MultiAPI
- * Author:       | Plufik
+ * Author:       | dmitriykotik
  * Version:      | 0.0.0.0
  * VerType:      | major_version.minor_version.patch_version.builds
  * Main file:    | Main.cs
@@ -88,12 +88,33 @@ namespace MultiAPI
             /// </summary>
             public enum WindowStyles : uint
             {
+                /// <summary>
+                /// 
+                /// </summary>
                 WS_OVERLAPPED = 0x00000000,
+                /// <summary>
+                /// 
+                /// </summary>
                 WS_CAPTION = 0x00C00000,
+                /// <summary>
+                /// 
+                /// </summary>
                 WS_SYSMENU = 0x00080000,
+                /// <summary>
+                /// 
+                /// </summary>
                 WS_MINIMIZEBOX = 0x00020000,
+                /// <summary>
+                /// 
+                /// </summary>
                 WS_MAXIMIZEBOX = 0x00010000,
+                /// <summary>
+                /// 
+                /// </summary>
                 WS_THICKFRAME = 0x00040000,
+                /// <summary>
+                /// 
+                /// </summary>
                 WS_VISIBLE = 0x10000000
             }
 
@@ -102,7 +123,13 @@ namespace MultiAPI
             /// </summary>
             public enum WindowStylesEx : uint
             {
+                /// <summary>
+                /// 
+                /// </summary>
                 WS_EX_APPWINDOW = 0x00040000,
+                /// <summary>
+                /// 
+                /// </summary>
                 WS_EX_WINDOWEDGE = 0x00000100
             }
 
@@ -111,7 +138,13 @@ namespace MultiAPI
             /// </summary>
             public enum ShowWindowCommands : int
             {
+                /// <summary>
+                /// 
+                /// </summary>
                 SW_SHOWNORMAL = 1,
+                /// <summary>
+                /// 
+                /// </summary>
                 SW_SHOWMAXIMIZED = 3
             }
             #endregion
@@ -183,10 +216,7 @@ namespace MultiAPI
             /// </summary>
             /// <param name="hWnd">Само окно</param>
             /// <returns></returns>
-            public static bool Destroy(IntPtr hWnd)
-            {
-                return DestroyWindow(hWnd);
-            }
+            public static bool Destroy(IntPtr hWnd) => DestroyWindow(hWnd);
             #endregion
 
             #region METHOD-BOOL | Move
@@ -212,10 +242,7 @@ namespace MultiAPI
             /// </summary>
             /// <param name="hWindow">Само окно</param>
             /// <returns></returns>
-            public static bool Update(IntPtr hWindow)
-            {
-                return UpdateWindow(hWindow);
-            }
+            public static bool Update(IntPtr hWindow) => UpdateWindow(hWindow);
             #endregion
 
             #region METHOD-BOOL | SetText
@@ -352,8 +379,17 @@ namespace MultiAPI
             /// </summary>
             public enum WindowStyle : int
             {
+                /// <summary>
+                /// 
+                /// </summary>
                 WS_MAXIMIZEBOX = 0x00010000,
+                /// <summary>
+                /// 
+                /// </summary>
                 WS_MINIMIZEBOX = 0x00020000,
+                /// <summary>
+                /// 
+                /// </summary>
                 WS_SYSMENU = 0x00080000
             }
 
@@ -362,9 +398,21 @@ namespace MultiAPI
             /// </summary>
             public enum SCWindowStyle : uint
             {
+                /// <summary>
+                /// 
+                /// </summary>
                 SC_CLOSE = 0xF060,
+                /// <summary>
+                /// 
+                /// </summary>
                 SC_MINIMIZE = 0xF020,
+                /// <summary>
+                /// 
+                /// </summary>
                 SC_MAXIMIZE = 0xF030,
+                /// <summary>
+                /// 
+                /// </summary>
                 SC_SIZE = 0xF000
             }
             #endregion
@@ -374,7 +422,7 @@ namespace MultiAPI
             /// <summary>
             /// Получает hWnd текущего консольного окна
             /// </summary>
-            public static IntPtr GetWindow => GetConsoleWindow();
+            public static IntPtr GetWindow() => GetConsoleWindow();
             #endregion
 
             #region METHOD-SIZE | GetFontSize

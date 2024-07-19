@@ -9,7 +9,7 @@ using System.Text;
  * File:         | Zip.cs
  * Class:        | Zip
  * Project:      | MultiAPI
- * Author:       | Plufik
+ * Author:       | dmitriykotik
  * Version:      | 0.0.0.0
  * VerType:      | major_version.minor_version.patch_version.builds
  * Main file:    | Main.cs

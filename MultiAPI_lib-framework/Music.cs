@@ -6,7 +6,7 @@ using WMPLib;
  * File:         | Music.cs
  * Class:        | Music
  * Project:      | MultiAPI
- * Author:       | Plufik
+ * Author:       | dmitriykotik
  * Version:      | 0.0.0.0
  * VerType:      | major_version.minor_version.patch_version.builds
  * Main file:    | Main.cs
@@ -37,6 +37,7 @@ namespace MultiAPI
         /// Определение конструкции. ( Music nameVar = new Music("C:\\Path\\To\\Music.mp3") )
         /// </summary>
         /// <param name="pathFile">Полный путь до музыкального файла</param>
+        /// <param name="autoStart">Автоматически запустить файл?</param>
         public Music(string pathFile, bool autoStart = false)
         {
             if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003");

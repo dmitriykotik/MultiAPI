@@ -6,7 +6,7 @@ using System.Net.NetworkInformation;
  * File:         | Internet.cs
  * Class:        | Internet
  * Project:      | MultiAPI
- * Author:       | Plufik
+ * Author:       | dmitriykotik
  * Version:      | 0.0.0.0
  * VerType:      | major_version.minor_version.patch_version.builds
  * Main file:    | Main.cs

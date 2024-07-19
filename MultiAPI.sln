@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiAPI_lib-framework", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiAPI_tester-framework", "MultiAPI_tester-framework\MultiAPI_tester-framework.csproj", "{C713803B-4451-47E0-9DB4-0CB33DB6B3B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiAPI_Terminal", "MultiAPI_Terminal\MultiAPI_Terminal.csproj", "{47EBD433-C675-42BF-87A6-D43DECF808B8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,22 +49,6 @@ Global
 		{C713803B-4451-47E0-9DB4-0CB33DB6B3B3}.Release|x64.Build.0 = Release|Any CPU
 		{C713803B-4451-47E0-9DB4-0CB33DB6B3B3}.Release|x86.ActiveCfg = Release|Any CPU
 		{C713803B-4451-47E0-9DB4-0CB33DB6B3B3}.Release|x86.Build.0 = Release|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Debug|x64.Build.0 = Debug|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Debug|x86.Build.0 = Debug|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Release|ARM64.Build.0 = Release|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Release|x64.ActiveCfg = Release|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Release|x64.Build.0 = Release|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Release|x86.ActiveCfg = Release|Any CPU
-		{47EBD433-C675-42BF-87A6-D43DECF808B8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

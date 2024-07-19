@@ -1,10 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.Text.RegularExpressions;
-using Microsoft.Win32;
-using System.Drawing;
-using System.Runtime.InteropServices;
+using System.Collections.Generic;
 using MultiAPI;
+
 
 namespace MultiAPI_Tester
 {
@@ -12,25 +9,27 @@ namespace MultiAPI_Tester
     {
         static void Main(string[] args)
         {
-            //WinAPI.ConsoleWindow.CursorVisibility(false);
-            //WinAPI.ConsoleWindow.ScrollVisibleFalse();
-            //WinAPI.ConsoleWindow.ModifyStyleControlSC(WinAPI.ConsoleWindow.GetWindow, WinAPI.ConsoleWindow.SCWindowStyle.SC_CLOSE);
-            //WinAPI.ConsoleWindow.ModifyStyleControlSC(WinAPI.ConsoleWindow.GetWindow, WinAPI.ConsoleWindow.SCWindowStyle.SC_SIZE);
-            //WinAPI.ConsoleWindow.ModifyStyleControlSC(WinAPI.ConsoleWindow.GetWindow, WinAPI.ConsoleWindow.SCWindowStyle.SC_MAXIMIZE);
-            //WinAPI.ConsoleWindow.ModifyStyleControlSC(WinAPI.ConsoleWindow.GetWindow, WinAPI.ConsoleWindow.SCWindowStyle.SC_MINIMIZE);
-            //WinAPI.ConsoleWindow.ModifyStyleControl(WinAPI.ConsoleWindow.GetWindow, WinAPI.ConsoleWindow.WindowStyle.WS_SYSMENU);
-            Console.WriteLine(WinAPI.Window.GetText(WinAPI.ConsoleWindow.GetWindow, 1024));
-            Console.ReadLine();
-            WinAPI.Window.SetText(WinAPI.ConsoleWindow.GetWindow, "IZI4ELIC");
-            Console.ReadLine();
-            WinAPI.ConsoleWindow.ScrollVisibleTrue();
-            Console.ReadLine();
+            var data = new List<Data> 
+            { 
+                new Data() { Text = "404", Response = "Я вас не понимаю :(", ReturnCode = -1}
+            };
+           
 
-            
+            ChatBot.Initialize(data);
+
+            while (true)
+            {
+                var response = ChatBot.GetResponse(Console.ReadLine().ToLower());
+                Console.WriteLine($@"RESPONSE:
+Response: {response.Response}
+ReturnCode: {response.ReturnCode}");
+            }
         }
-
     }
 
+
 }
+
+
 
 

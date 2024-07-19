@@ -7,7 +7,7 @@ using System;
  * File:         | FTP.cs
  * Class:        | FTP
  * Project:      | MultiAPI
- * Author:       | Plufik
+ * Author:       | dmitriykotik
  * Version:      | 0.0.0.0
  * VerType:      | major_version.minor_version.patch_version.builds
  * Main file:    | Main.cs

@@ -29,14 +29,15 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    - name: Execute unit tests
-      run: dotnet test
-
     - name: Restore the application
       run: dotnet restore $env:Solution_Name
 
     - name: Build the project
       run: dotnet build $env:Solution_Name --configuration ${{ matrix.configuration }}
+
+    - name: Execute unit tests
+      run: dotnet test $env:Test_Project_Path --no-build --verbosity normal
+      timeout-minutes: 10  # Увеличиваем тайм-аут до 10 минут
 
     - name: Pack the project
       run: dotnet pack $env:Solution_Name -c Release -o output

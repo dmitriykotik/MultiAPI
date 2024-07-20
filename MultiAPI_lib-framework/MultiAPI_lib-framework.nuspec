@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
+	<repository url="https://github.com/dmitriykotik/MultiAPI" />
     <id>MultiAPI_Lib</id>
     <version>$version$</version>
     <title>MultiAPI Library</title>

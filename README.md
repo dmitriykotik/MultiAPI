@@ -6,4 +6,4 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
 При возникших вопросах или пожеланиях, вы можете написать на почту multiplayercorporation@gmail.com или создать запрос в **Issues**.
 
 # Документация
-### Документация перенесена на GitBook: https://multiplayer.gitbook.io/multiapi/
+### Документация перенесена на GitBook: https://multiapi.docs.devmp.ru

@@ -30,11 +30,13 @@ using System.Drawing;
 
 namespace MultiAPI
 {
+    #region CLASS | WinAPI
     /// <summary>
     /// Класс взаимодействия с библиотекой WinAPI
     /// </summary>
     public static class WinAPI
     {
+        #region CLASS | Window
         /// <summary>
         /// Взаимодействие с окнами
         /// </summary>
@@ -161,7 +163,7 @@ namespace MultiAPI
             /// <param name="y">Положение окна по оси Y</param>
             /// <param name="width">Размер окна (Ширина)</param>
             /// <param name="height">Размер окна (Высота)</param>
-            /// <returns>hWindows для дальнейшего использования в методах (для переменных укажите тип IntPtr, например: IntPtr windowExample = WinAPI.CreateWindw(...); )</returns>
+            /// <returns>hWindow для дальнейшего использования в методах (для переменных укажите тип IntPtr, например: IntPtr windowExample = WinAPI.Window.Create(...); )</returns>
             public static IntPtr Create(WindowStylesEx windowStyleEx, WindowStyles windowStyle, string className, string windowName, int x, int y, int width, int height)
             {
                 if (string.IsNullOrEmpty(className) || string.IsNullOrEmpty(windowName)) throw new Exception("0x00003");
@@ -274,7 +276,9 @@ namespace MultiAPI
             }
             #endregion
         }
+        #endregion
 
+        #region CLASS | ConsoleWindow
         /// <summary>
         /// Взаимодействие с консольными окнами
         /// </summary>
@@ -453,7 +457,7 @@ namespace MultiAPI
             /// <param name="size_y">Размер в точках по оси Y или в символах если параметр useMetricFont включён</param>
             /// <param name="pos_x">Позиция изображения в точках по оси X или в символах если параметр useMetricFont включён</param>
             /// <param name="pos_y">Позиция изображения в точках по оси X или в символах если параметр useMetricFont включён</param>
-            /// <param name="useMetricFont">Включает использование метрической системы в виде символов (Определяется по размеру шрифту)</param>
+            /// <param name="useMetricFont">Включает использование метрической системы в виде символов (Определяется по размеру шрифта)</param>
             public static void InjectPicture(IntPtr hWnd, string pathToImage, int size_x, int size_y, int pos_x, int pos_y, bool useMetricFont = true)
             {
                 using (Graphics g = Graphics.FromHwnd(hWnd))
@@ -536,5 +540,7 @@ namespace MultiAPI
             }
             #endregion
         }
+        #endregion
     }
+    #endregion
 }

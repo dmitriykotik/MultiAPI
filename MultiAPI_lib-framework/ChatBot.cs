@@ -19,7 +19,7 @@ using Microsoft.ML.Data;
 
 namespace MultiAPI
 {
-
+    #region CLASS | Data
     /// <summary>
     /// Данные для машинного обучения
     /// </summary>
@@ -38,11 +38,13 @@ namespace MultiAPI
         /// </summary>
         public int ReturnCode { get; set; }
     }
+    #endregion
 
+    #region CLASS | Prediction
     /// <summary>
     /// Предсказание
     /// </summary>
-    public class Prediction
+    internal class Prediction
     {
         /// <summary>
         /// 
@@ -50,7 +52,9 @@ namespace MultiAPI
         [ColumnName("PredictedLabel")]
         public string Response { get; set; }
     }
+    #endregion
 
+    #region CLASS | CResponse
     /// <summary>
     /// Возвращаемые данные
     /// </summary>
@@ -65,7 +69,9 @@ namespace MultiAPI
         /// </summary>
         public int ReturnCode { get; set; }
     }
+    #endregion
 
+    #region CLASS | ChatBot
     /// <summary>
     /// Чат-бот
     /// </summary>
@@ -78,8 +84,9 @@ namespace MultiAPI
         /// <summary>
         /// Чат-бот
         /// </summary>
-        static ChatBot() => mlContext = new MLContext(); 
+        static ChatBot() => mlContext = new MLContext();
 
+        #region METHOD-VOID | Initialize
         /// <summary>
         /// Инициализация чат-бота
         /// </summary>
@@ -103,7 +110,9 @@ namespace MultiAPI
 
             predictionEngine = mlContext.Model.CreatePredictionEngine<Data, Prediction>(model);
         }
+        #endregion
 
+        #region METHOD-CResponse | GetResponse
         /// <summary>
         /// Получение ответа от чат-бота с помощью входных данных пользователя.
         /// </summary>
@@ -123,5 +132,7 @@ namespace MultiAPI
                 ReturnCode = matchingData.ReturnCode
             };
         }
+        #endregion
     }
+    #endregion
 }

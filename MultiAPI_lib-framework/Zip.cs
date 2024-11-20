@@ -24,6 +24,7 @@ namespace MultiAPI
     /// <summary>
     /// Действия с файлами и архивами
     /// </summary>
+    [Obsolete("Данный класс или метод больше не поддерживается. Используйте более новый класс Cryptography. Данный элемент будет удалён в ближайшее время.")]
     public static class Zip
     {
 
@@ -35,6 +36,7 @@ namespace MultiAPI
         /// <param name="outputFile">Выходной файл</param>
         /// <param name="password">Пароль на файл</param>
         /// <param name="BufferSize">Размер буфера (При дешифровке файла, размер буфера должен совпадать с размеров буфера при шифровке!!!) (Стандартное значение: 104576)</param>
+        [Obsolete("Данный класс или метод больше не поддерживается. Используйте более новый класс Cryptography. Данный элемент будет удалён в ближайшее время.")]
         public static void EncryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
         {
             if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || string.IsNullOrEmpty(password)) throw new Exception("0x00003");
@@ -74,6 +76,7 @@ namespace MultiAPI
         /// <param name="outputFile">Выходной файл</param>
         /// <param name="password">Пароль</param>
         /// <param name="BufferSize">Размер буфера (При дешифровке файла, размер буфера должен совпадать с размеров буфера при шифровке!!!) (Стандартное значение: 104576)</param>
+        [Obsolete("Данный класс или метод больше не поддерживается. Используйте более новый класс Cryptography. Данный элемент будет удалён в ближайшее время.")]
         public static void DecryptFile(string inputFile, string outputFile, string password, int BufferSize = 104576)
         {
             if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || string.IsNullOrEmpty(password)) throw new Exception("0x00003");
@@ -111,6 +114,7 @@ namespace MultiAPI
         /// </summary>
         /// <param name="pathFoler">Путь до папки с содержимым</param>
         /// <param name="outputArchive">Выходной файл</param>
+        [Obsolete("Данный класс или метод больше не поддерживается. Используйте более новый класс Cryptography. Данный элемент будет удалён в ближайшее время.")]
         public static void create(string pathFoler, string outputArchive)
         {
             if (string.IsNullOrEmpty(pathFoler) || string.IsNullOrEmpty(outputArchive)) throw new Exception("0x00003");
@@ -125,6 +129,7 @@ namespace MultiAPI
         /// </summary>
         /// <param name="pathArchive">Архив для распаковки</param>
         /// <param name="outputFolder">Папка в которую распакуется архив</param>
+        [Obsolete("Данный класс или метод больше не поддерживается. Используйте более новый класс Cryptography. Данный элемент будет удалён в ближайшее время.")]
         public static void unpacking(string pathArchive, string outputFolder)
         {
             if (string.IsNullOrEmpty(pathArchive) || string.IsNullOrEmpty(outputFolder)) throw new Exception("0x00003");

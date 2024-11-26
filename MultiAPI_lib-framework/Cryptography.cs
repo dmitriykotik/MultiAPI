@@ -125,7 +125,7 @@ namespace MultiAPI
         /// <param name="password">Пароль для дешифровки (Например: qwerty123)</param>
         /// <param name="replaceExistsOutputFile">Заменять выходной файл если он уже существует?</param>>
         /// <param name="sizeSalt">Размер соли (Размер должен совпадать с солью зашифрованного файла, по умолчанию 16)</param>
-        static void DecryptFile(string inputFile, string outputFile, string password, bool replaceExistsOutputFile, int sizeSalt = 16)
+        public static void DecryptFile(string inputFile, string outputFile, string password, bool replaceExistsOutputFile, int sizeSalt = 16)
         {
             if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || string.IsNullOrEmpty(password)) throw new Exception("0x00003");
             if (sizeSalt < 16) throw new Exception("0x00006");

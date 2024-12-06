@@ -3,7 +3,7 @@ MultiAPI - Это библиотека и сборка разного ПО (Да
 
 **Если вам понравился данный проект, то поставьте пожалуйста звезду на проекте, на [![GitHub](https://img.shields.io/badge/GitHub-MultiAPI-blue?labelColor=gray&style=flat&link=https://github.com/dmitriykotik/MultiAPI)](https://github.com/dmitriykotik/MultiAPI). Спасибо <3**
 
-При возникших вопросах или пожеланиях, вы можете написать на почту multiplayercorporation@gmail.com или создать запрос в **Issues**.
+При возникших вопросах или пожеланиях, вы можете написать на почту support@devmp.ru или создать запрос в **Issues**.
 
 # Документация
 ### Документация перенесена на GitBook: https://multiapi.docs.devmp.ru

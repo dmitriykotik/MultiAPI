@@ -7,7 +7,7 @@ using System.Threading;
  * Class:        | Basic
  * Project:      | MultiAPI
  * Author:       | dmitriykotik
- * Version:      | 0.1.3.211
+ * Version:      | 0.1.4.212
  * VerType:      | major_version.minor_version.patch_version.build
  * Main file:    | Main.cs
  * [OPEN SOURCE] | +True
@@ -20,7 +20,7 @@ namespace MultiAPI
     #region Assembly Info
     internal class AssemblyI
     {
-        internal const string version = "0.1.3.211";
+        internal const string version = "0.1.4.212";
     }
     #endregion
 

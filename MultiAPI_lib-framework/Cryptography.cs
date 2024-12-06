@@ -158,6 +158,55 @@ namespace MultiAPI
         }
         #endregion
 
+        #region METHOD-STRING | HashPassword
+        /// <summary>
+        /// Хеширование пароля
+        /// </summary>
+        /// <param name="password">Пароль</param>
+        /// <param name="salt">Соль (Для генерации используйте метод GenerateSalt)</param>
+        /// <returns>Хэш пароля</returns>
+        public static string HashPassword(string password, byte[] salt)
+        {
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
+            byte[] hash = pbkdf2.GetBytes(20);
+
+            byte[] hashBytes = new byte[36];
+            Array.Copy(salt, 0, hashBytes, 0, 16);
+            Array.Copy(hash, 0, hashBytes, 16, 20);
+
+            return Convert.ToBase64String(hashBytes);
+        }
+        #endregion
+
+        #region METHOD-BOOL | VerifyPassword
+        /// <summary>
+        /// Проверка пароля по хэшу
+        /// </summary>
+        /// <param name="inputPassword">Пароль</param>
+        /// <param name="inputHash">Хэш</param>
+        /// <param name="sizeSalt">Размер соли (По умолчанию: 16)</param>
+        /// <returns></returns>
+        public static bool VerifyPassword(string inputPassword, string inputHash, int sizeSalt = 16)
+        {
+            byte[] hashBytes = Convert.FromBase64String(inputHash);
+            byte[] salt = new byte[sizeSalt];
+            Array.Copy(hashBytes, 0, salt, 0, 16);
+
+            var pbkdf2 = new Rfc2898DeriveBytes(inputPassword, salt, 10000);
+            byte[] hash = pbkdf2.GetBytes(20);
+
+            for (int i = 0; i < 20; i++)
+            {
+                if (hashBytes[i + 16] != hash[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        #endregion
+
         #region METHOD-BYTE[] | GenerateSalt
         /// <summary>
         /// Генерация соли

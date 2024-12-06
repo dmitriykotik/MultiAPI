@@ -170,7 +170,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegEdit.cs" />
     <Compile Include="WinAPI.cs" />
-    <Compile Include="Zip.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

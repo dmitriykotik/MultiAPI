@@ -1,21 +1,7 @@
 ﻿using System;
-using WMPLib;
-
-/* 
-  =================- INFO -===================
- * File:         | Music.cs
- * Class:        | Music
- * Project:      | MultiAPI
- * Author:       | dmitriykotik
- * Version:      | 0.0.0.0
- * VerType:      | major_version.minor_version.patch_version.builds
- * Main file:    | Main.cs
- * [OPEN SOURCE] | +True
- * [CONSTRUCTOR] | +True
-  ============================================
- */
-
-
+using System.IO;
+using NAudio.Wave;
+using TagLib;
 
 namespace MultiAPI
 {
@@ -25,12 +11,9 @@ namespace MultiAPI
     /// </summary>
     public class Music
     {
-        #region WindowsMediaPlayer | musicPlayer
-        /// <summary>
-        /// Музыкальная конструкция
-        /// </summary>
-        private static WindowsMediaPlayer musicPlayer = new WindowsMediaPlayer();
-        #endregion
+        private IWavePlayer _outputDevice;
+        private MediaFoundationReader _audioFile;
+        private string _currentFile;
 
         #region METHOD-Music | Music
         /// <summary>
@@ -40,111 +23,134 @@ namespace MultiAPI
         /// <param name="autoStart">Автоматически запустить файл?</param>
         public Music(string pathFile, bool autoStart = false)
         {
-            if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003");
-            musicPlayer.URL = pathFile;
-            musicPlayer.settings.autoStart = autoStart;
+            Load(pathFile);
+            if (autoStart)
+            {
+                Play();
+            }
         }
         #endregion
 
-        #region METHOD-VOID | play
+        #region METHOD-VOID | Load
+        /// <summary>
+        /// Загрузка музыкального файла
+        /// </summary>
+        /// <param name="pathFile">Полный путь до музыкального файла</param>
+        public void Load(string pathFile)
+        {
+            if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003");
+            if (!System.IO.File.Exists(pathFile)) throw new FileNotFoundException("File not found.", pathFile);
+
+            _outputDevice?.Stop();
+            _outputDevice?.Dispose();
+            _audioFile?.Dispose();
+
+            _currentFile = pathFile;
+            _audioFile = new MediaFoundationReader(pathFile);
+            _outputDevice = new WaveOutEvent();
+            _outputDevice.Init(_audioFile);
+        }
+        #endregion
+
+        #region METHOD-VOID | Play
         /// <summary>
         /// Воспроизведение музыкального файла из конструкции
         /// </summary>
-        public void play() => musicPlayer.controls.play();
+        public void Play() => _outputDevice?.Play();
         #endregion
 
-        #region METHOD-VOID | stop
+        #region METHOD-VOID | Stop
         /// <summary>
         /// Остановка музыкального файла из конструкции
         /// </summary>
-        public void stop() => musicPlayer.controls.stop();
+        public void Stop() => _outputDevice?.Stop();
         #endregion
 
-        #region METHOD-VOID | pause
+        #region METHOD-VOID | Pause
         /// <summary>
         /// Приостановка музыкального файла из конструкции
         /// </summary>
-        public void pause() => musicPlayer.controls.pause();
-        #endregion 
+        public void Pause() => _outputDevice?.Pause();
+        #endregion
 
-        #region METHOD-VOID | setVolume
+        #region METHOD-VOID | SetVolume
         /// <summary>
         /// Установка громкости музыкальной конструкции
         /// </summary>
         /// <param name="volume">Громкость</param>
-        public void setVolume(int volume) 
-        { 
-            if (volume < 0 || volume > 100) throw new Exception("0x00006");
-            if (string.IsNullOrEmpty(Convert.ToString(volume))) throw new Exception("0x00003");
-            musicPlayer.settings.volume = volume; 
+        public void SetVolume(float volume)
+        {
+            if (_audioFile == null || _outputDevice == null) throw new Exception("Audio not loaded.");
+            if (volume < 0.0f || volume > 1.0f) throw new ArgumentOutOfRangeException(nameof(volume), "Volume must be between 0.0 and 1.0.");
+            _outputDevice.Volume = volume;
         }
         #endregion
 
-        #region METHOD-INT | getVolume
+        #region METHOD-FLOAT | GetVolume
         /// <summary>
         /// Получение текущей громкости музыкальной конструкции
         /// </summary>
         /// <returns></returns>
-        public int getVolume() => musicPlayer.settings.volume;
+        public float GetVolume() => _outputDevice?.Volume ?? 0.0f;
         #endregion
 
-        #region METHOD-DOUBLE | getDuration
+        #region METHOD-TIMESPAN | GetDuration
         /// <summary>
         /// Получение длительности музыкального файла из конструкции
         /// </summary>
         /// <returns>Длительность музыкального файла</returns>
-        public double getDuration() => musicPlayer.currentMedia.duration;
+        public TimeSpan GetDuration() => _audioFile?.TotalTime ?? TimeSpan.Zero;
         #endregion
 
-        #region METHOD-VOID | setPosition
+        #region METHOD-VOID | Seek
         /// <summary>
         /// Установка позиции в музыкальной конструкции
         /// </summary>
         /// <param name="position">Позиция</param>
-        public void setPosition(double position)
+        public void Seek(TimeSpan position)
         {
-            if (position < 0.0 || position > 1.0) throw new Exception("0x00006");
-            if (string.IsNullOrEmpty(Convert.ToString(position))) throw new Exception("0x00003");
-            musicPlayer.controls.currentPosition = position;
+            if (_audioFile == null) throw new Exception("Audio not loaded.");
+            if (position < TimeSpan.Zero || position > _audioFile.TotalTime)
+                throw new ArgumentOutOfRangeException(nameof(position), "Position is out of range.");
+            _audioFile.CurrentTime = position;
         }
         #endregion
 
-        #region METHOD-DOUBLE | getPosition
+        #region METHOD-TIMESPAN | GetPosition
         /// <summary>
         /// Получение текущей позиции в музыкальной конструкции
         /// </summary>
         /// <returns>Позиция в музыкальной конструкции</returns>
-        public double getPosition() => musicPlayer.controls.currentPosition;
+        public TimeSpan GetPosition() => _audioFile?.CurrentTime ?? TimeSpan.Zero;
         #endregion
 
-        #region METHOD-VOID | updatePath
-        /// <summary>
-        /// Изменение музыкального файла в конструкции
-        /// </summary>
-        /// <param name="pathFile">Полный путь до музыкального файла</param>
-        public void updatePath(string pathFile)
-        {
-            if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003");
-            musicPlayer.URL = pathFile;
-        }
-        #endregion
-
-        #region METHOD-STRING | getPath
-        /// <summary>
-        /// Получение текущего музыкального файла (Путь)
-        /// </summary>
-        /// <returns>Путь до музыкального файла</returns>
-        public string getPath() => musicPlayer.URL;
-        #endregion
-
-        #region METHOD-VOID | repeat
+        #region METHOD-VOID | Repeat
         /// <summary>
         /// Повтор песни
         /// </summary>
         /// <param name="turn">true или false. true - включить повтор, false - выключить повтор</param>
-        public void repeat(bool turn) => musicPlayer.settings.setMode("loop", turn);
+        public void Repeat(bool turn)
+        {
+            if (_audioFile == null) return;
+            if (turn)
+            {
+                _audioFile.Position = 0;
+                _outputDevice.PlaybackStopped += (s, e) => { _audioFile.Position = 0; _outputDevice.Play(); };
+            }
+            else
+            {
+                _outputDevice.PlaybackStopped -= (s, e) => { _audioFile.Position = 0; _outputDevice.Play(); };
+            }
+        }
         #endregion
 
+        #region METHOD-STRING | GetPath
+        /// <summary>
+        /// Получение текущего музыкального файла (Путь)
+        /// </summary>
+        /// <returns>Путь до музыкального файла</returns>
+        public string GetPath() => _currentFile;
+        #endregion
     }
     #endregion
 }

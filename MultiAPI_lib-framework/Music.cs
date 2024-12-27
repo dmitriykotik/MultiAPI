@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using NAudio.Wave;
-using TagLib;
 
 namespace MultiAPI
 {
@@ -14,6 +13,14 @@ namespace MultiAPI
         private IWavePlayer _outputDevice;
         private MediaFoundationReader _audioFile;
         private string _currentFile;
+        private float _speed = 1.0f;
+
+        public event Action<float> VolumeChanged;
+        public event Action<float> SpeedChanged;
+        public event Action MusicStarted;
+        public event Action MusicPaused;
+        public event Action MusicStopped; 
+        public event Action MusicFinished;
 
         #region METHOD-Music | Music
         /// <summary>
@@ -39,7 +46,7 @@ namespace MultiAPI
         public void Load(string pathFile)
         {
             if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003");
-            if (!System.IO.File.Exists(pathFile)) throw new FileNotFoundException("File not found.", pathFile);
+            if (!File.Exists(pathFile)) throw new Exception("0x00004");
 
             _outputDevice?.Stop();
             _outputDevice?.Dispose();
@@ -49,6 +56,11 @@ namespace MultiAPI
             _audioFile = new MediaFoundationReader(pathFile);
             _outputDevice = new WaveOutEvent();
             _outputDevice.Init(_audioFile);
+
+            _outputDevice.PlaybackStopped += (sender, e) =>
+            {
+                MusicFinished?.Invoke();
+            };
         }
         #endregion
 
@@ -56,33 +68,46 @@ namespace MultiAPI
         /// <summary>
         /// Воспроизведение музыкального файла из конструкции
         /// </summary>
-        public void Play() => _outputDevice?.Play();
+        public void Play()
+        {
+            _outputDevice?.Play();
+            MusicStarted?.Invoke();
+        }
         #endregion
 
         #region METHOD-VOID | Stop
         /// <summary>
         /// Остановка музыкального файла из конструкции
         /// </summary>
-        public void Stop() => _outputDevice?.Stop();
+        public void Stop()
+        {
+            _outputDevice?.Stop();
+            MusicStopped?.Invoke();
+        }
         #endregion
 
         #region METHOD-VOID | Pause
         /// <summary>
         /// Приостановка музыкального файла из конструкции
         /// </summary>
-        public void Pause() => _outputDevice?.Pause();
+        public void Pause()
+        {
+            _outputDevice?.Pause();
+            MusicPaused?.Invoke();
+        }
         #endregion
 
         #region METHOD-VOID | SetVolume
         /// <summary>
         /// Установка громкости музыкальной конструкции
         /// </summary>
-        /// <param name="volume">Громкость</param>
-        public void SetVolume(float volume)
+        /// <param name="volume">Громкость от 0 до 100</param>
+        public void SetVolume(int volume)
         {
-            if (_audioFile == null || _outputDevice == null) throw new Exception("Audio not loaded.");
-            if (volume < 0.0f || volume > 1.0f) throw new ArgumentOutOfRangeException(nameof(volume), "Volume must be between 0.0 and 1.0.");
-            _outputDevice.Volume = volume;
+            if (_audioFile == null || _outputDevice == null) throw new Exception("Поле или значение не может быть пустым");
+            if (volume < 0 || volume > 100) throw new Exception("0x00006");
+            _outputDevice.Volume = volume / 100.0f;
+            VolumeChanged?.Invoke(_outputDevice.Volume);
         }
         #endregion
 
@@ -90,8 +115,31 @@ namespace MultiAPI
         /// <summary>
         /// Получение текущей громкости музыкальной конструкции
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Громкость от 0 до 1</returns>
         public float GetVolume() => _outputDevice?.Volume ?? 0.0f;
+        #endregion
+
+        #region METHOD-VOID | SetSpeed
+        /// <summary>
+        /// Установка скорости воспроизведения музыкальной конструкции
+        /// </summary>
+        /// <param name="speed">Скорость от 0.5 до 2.0</param>
+        public void SetSpeed(float speed)
+        {
+            if (_audioFile == null) throw new Exception("Поле или значение не может быть пустым");
+            if (speed < 0.5f || speed > 2.0f) throw new Exception("0x00006");
+            _speed = speed;
+            _audioFile.Seek(0, SeekOrigin.Begin);
+            SpeedChanged?.Invoke(speed);
+        }
+        #endregion
+
+        #region METHOD-FLOAT | GetSpeed
+        /// <summary>
+        /// Получение текущей скорости воспроизведения музыкальной конструкции
+        /// </summary>
+        /// <returns>Скорость воспроизведения</returns>
+        public float GetSpeed() => _speed;
         #endregion
 
         #region METHOD-TIMESPAN | GetDuration
@@ -109,9 +157,8 @@ namespace MultiAPI
         /// <param name="position">Позиция</param>
         public void Seek(TimeSpan position)
         {
-            if (_audioFile == null) throw new Exception("Audio not loaded.");
-            if (position < TimeSpan.Zero || position > _audioFile.TotalTime)
-                throw new ArgumentOutOfRangeException(nameof(position), "Position is out of range.");
+            if (_audioFile == null) throw new Exception("0x00003");
+            if (position < TimeSpan.Zero || position > _audioFile.TotalTime) throw new Exception("0x00006");
             _audioFile.CurrentTime = position;
         }
         #endregion

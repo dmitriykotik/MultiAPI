@@ -21,7 +21,7 @@
     <RepositoryUrl>https://github.com/dmitriykotik/MultiAPI</RepositoryUrl>
     <PackageTags>MultiAPI MultiLib MultiAPI_Lib MultiAPI_Lib-framework dmitriykotik</PackageTags>
     <PackageReleaseNotes>Все изменения проекта можно увидеть на GitHub. https://github.com/dmitriykotik/MultiAPI</PackageReleaseNotes>
-    <VersionPrefix>0.1.6.245</VersionPrefix>
+    <VersionPrefix>0.1.6.246</VersionPrefix>
     <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>

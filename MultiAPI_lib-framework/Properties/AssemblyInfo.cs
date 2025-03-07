@@ -12,7 +12,7 @@ using MultiAPI;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MultiPlayer")]
 [assembly: AssemblyProduct("MultiAPI")]
-[assembly: AssemblyCopyright("Copyright © MultiPlayer 2019-2024")]
+[assembly: AssemblyCopyright("Copyright © MultiPlayer 2019-2025")]
 [assembly: AssemblyTrademark("MultiPlayer")]
 [assembly: AssemblyCulture("")]
 

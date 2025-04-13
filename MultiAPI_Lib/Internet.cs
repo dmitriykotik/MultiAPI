@@ -39,20 +39,22 @@ namespace MultiAPI
         }
         #endregion
 
-        #region METHOD-BOOL | ping
+        #region METHOD-BOOL | Ping
         /// <summary>
         /// Проверка доступности сервера или сайта (Может быть не точным, если у пользователя нет интернета)
         /// </summary>
-        /// <param name="url">Адрес сервера/сайта</param>
+        /// <param name="Url">Адрес сервера/сайта</param>
         /// <returns>true - если сервер или сайт доступен, false - если сервер или сайт не доступен</returns>
-        public static bool ping(string url)
+        /// <exception cref="Exceptions.NullField">Нулевое поле</exception>
+        public static bool Ping(string Url)
         {
-            if (string.IsNullOrEmpty(url)) throw new Exception("0x00003");
+            if (string.IsNullOrEmpty(Url)) throw new Exceptions.NullField("Internet.Ping -> string Url");
+
             try
             {
                 using (var ping = new Ping())
                 {
-                    var result = ping.Send(url, 1000);
+                    var result = ping.Send(Url, 1000);
                     return result.Status == IPStatus.Success;
                 }
             }

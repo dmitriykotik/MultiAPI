@@ -20,10 +20,10 @@ namespace MultiAPI
     public class Music
     {
         #region FIELD-Music | Music
-        private IWavePlayer? _outputDevice;
-        private MediaFoundationReader? _audioFile;
-        private string? _currentFile;
-        private float? _speed = 1.0f;
+        private IWavePlayer? _OutputDevice;
+        private MediaFoundationReader? _AudioFile;
+        private string? _CurrentFile;
+        private float? _Speed = 1.0f;
 
         /// <summary>
         /// Если громкость была изменена
@@ -55,12 +55,14 @@ namespace MultiAPI
         /// <summary>
         /// Определение конструкции. ( Music nameVar = new Music("C:\\Path\\To\\Music.mp3") )
         /// </summary>
-        /// <param name="pathFile">Полный путь до музыкального файла</param>
-        /// <param name="autoStart">Автоматически запустить файл?</param>
-        public Music(string pathFile, bool autoStart = false)
+        /// <param name="PathFile">Полный путь до музыкального файла</param>
+        /// <param name="AutoStart">Автоматически запустить файл?</param>
+        public Music(string PathFile, bool AutoStart = false)
         {
-            Load(pathFile);
-            if (autoStart)
+            if (string.IsNullOrEmpty(PathFile)) throw new Exceptions.NullField("Music -> string PathFile");
+            if (!File.Exists(PathFile)) throw new Exceptions.FileNotExists("Music -> PathFile", PathFile);
+            Load(PathFile);
+            if (AutoStart)
             {
                 Play();
             }
@@ -71,25 +73,24 @@ namespace MultiAPI
         /// <summary>
         /// Загрузка музыкального файла
         /// </summary>
-        /// <param name="pathFile">Полный путь до музыкального файла</param>
-        public void Load(string pathFile)
+        /// <param name="PathFile">Полный путь до музыкального файла</param>
+        /// <exception cref="Exceptions.NullField">Нулевое поле</exception>
+        /// <exception cref="Exceptions.FileNotExists">Файл не существует</exception>
+        public void Load(string PathFile)
         {
-            if (string.IsNullOrEmpty(pathFile)) throw new Exception("0x00003");
-            if (!File.Exists(pathFile)) throw new Exception("0x00004");
+            if (string.IsNullOrEmpty(PathFile)) throw new Exceptions.NullField("Music.Load -> string PathFile");
+            if (!FileManager.File.Exists(PathFile)) throw new Exceptions.FileNotExists("Music.Load -> PathFile", PathFile);
 
-            _outputDevice?.Stop();
-            _outputDevice?.Dispose();
-            _audioFile?.Dispose();
+            _OutputDevice?.Stop();
+            _OutputDevice?.Dispose();
+            _AudioFile?.Dispose();
 
-            _currentFile = pathFile;
-            _audioFile = new MediaFoundationReader(pathFile);
-            _outputDevice = new WaveOutEvent();
-            _outputDevice.Init(_audioFile);
+            _CurrentFile = PathFile;
+            _AudioFile = new MediaFoundationReader(PathFile);
+            _OutputDevice = new WaveOutEvent();
+            _OutputDevice.Init(_AudioFile);
 
-            _outputDevice.PlaybackStopped += (sender, e) =>
-            {
-                MusicFinished?.Invoke();
-            };
+            _OutputDevice.PlaybackStopped += (sender, e) => MusicFinished?.Invoke();
         }
         #endregion
 
@@ -99,7 +100,7 @@ namespace MultiAPI
         /// </summary>
         public void Play()
         {
-            _outputDevice?.Play();
+            _OutputDevice?.Play();
             MusicStarted?.Invoke();
         }
         #endregion
@@ -110,7 +111,7 @@ namespace MultiAPI
         /// </summary>
         public void Stop()
         {
-            _outputDevice?.Stop();
+            _OutputDevice?.Stop();
             MusicStopped?.Invoke();
         }
         #endregion
@@ -121,7 +122,7 @@ namespace MultiAPI
         /// </summary>
         public void Pause()
         {
-            _outputDevice?.Pause();
+            _OutputDevice?.Pause();
             MusicPaused?.Invoke();
         }
         #endregion
@@ -130,13 +131,15 @@ namespace MultiAPI
         /// <summary>
         /// Установка громкости музыкальной конструкции
         /// </summary>
-        /// <param name="volume">Громкость от 0 до 100</param>
-        public void SetVolume(int volume)
+        /// <param name="Volume">Громкость от 0 до 100</param>
+        /// <exception cref="Exceptions.NullField">Нулевое поле</exception>
+        /// <exception cref="Exceptions.OutOfBounds">Выход за рамки границ</exception>
+        public void SetVolume(int Volume)
         {
-            if (_audioFile == null || _outputDevice == null) throw new Exception("Поле или значение не может быть пустым");
-            if (volume < 0 || volume > 100) throw new Exception("0x00006");
-            _outputDevice.Volume = volume / 100.0f;
-            VolumeChanged?.Invoke(_outputDevice.Volume);
+            if (_AudioFile == null || _OutputDevice == null) throw new Exceptions.NullField("Music.SetVolume -> (MediaFoundationReader? _AudioFile || IWavePlayer? _OutputDevice)");
+            if (Volume < 0 || Volume > 100) throw new Exceptions.OutOfBounds("Music.SetVolume -> (Volume < 0 || Volume > 100)");
+            _OutputDevice.Volume = Volume / 100.0f;
+            VolumeChanged?.Invoke(_OutputDevice.Volume);
         }
         #endregion
 
@@ -145,21 +148,23 @@ namespace MultiAPI
         /// Получение текущей громкости музыкальной конструкции
         /// </summary>
         /// <returns>Громкость от 0 до 1</returns>
-        public float? GetVolume() => _outputDevice?.Volume ?? 0.0f;
+        public float? GetVolume() => _OutputDevice?.Volume ?? 0.0f;
         #endregion
 
         #region METHOD-VOID | SetSpeed
         /// <summary>
         /// Установка скорости воспроизведения музыкальной конструкции
         /// </summary>
-        /// <param name="speed">Скорость от 0.5 до 2.0</param>
-        public void SetSpeed(float speed)
+        /// <param name="Speed">Скорость от 0.5 до 2.0</param>
+        /// <exception cref="Exceptions.NullField">Нулевое поле</exception>
+        /// <exception cref="Exceptions.OutOfBounds">Выход за рамки границ</exception>
+        public void SetSpeed(float Speed)
         {
-            if (_audioFile == null) throw new Exception("Поле или значение не может быть пустым");
-            if (speed < 0.5f || speed > 2.0f) throw new Exception("0x00006");
-            _speed = speed;
-            _audioFile.Seek(0, SeekOrigin.Begin);
-            SpeedChanged?.Invoke(speed);
+            if (_AudioFile == null) throw new Exceptions.NullField("Music.SetSpeed -> MediaFoundationReader? _AudioFile");
+            if (Speed < 0.5f || Speed > 2.0f) throw new Exceptions.OutOfBounds("Music.SetSpeed -> (Speed < 0.5f || Speed > 2.0f)");
+            _Speed = Speed;
+            _AudioFile.Seek(0, SeekOrigin.Begin);
+            SpeedChanged?.Invoke(Speed);
         }
         #endregion
 
@@ -168,7 +173,7 @@ namespace MultiAPI
         /// Получение текущей скорости воспроизведения музыкальной конструкции
         /// </summary>
         /// <returns>Скорость воспроизведения</returns>
-        public float? GetSpeed() => _speed;
+        public float? GetSpeed() => _Speed;
         #endregion
 
         #region METHOD-TIMESPAN | GetDuration
@@ -176,19 +181,19 @@ namespace MultiAPI
         /// Получение длительности музыкального файла из конструкции
         /// </summary>
         /// <returns>Длительность музыкального файла</returns>
-        public TimeSpan? GetDuration() => _audioFile?.TotalTime ?? TimeSpan.Zero;
+        public TimeSpan? GetDuration() => _AudioFile?.TotalTime ?? TimeSpan.Zero;
         #endregion
 
         #region METHOD-VOID | Seek
         /// <summary>
         /// Установка позиции в музыкальной конструкции
         /// </summary>
-        /// <param name="position">Позиция</param>
-        public void Seek(TimeSpan position)
+        /// <param name="Position">Позиция</param>
+        public void Seek(TimeSpan Position)
         {
-            if (_audioFile == null) throw new Exception("0x00003");
-            if (position < TimeSpan.Zero || position > _audioFile.TotalTime) throw new Exception("0x00006");
-            _audioFile.CurrentTime = position;
+            if (_AudioFile == null) throw new Exceptions.NullField("Music.Seek -> MediaFoundationReader? _AudioFile");
+            if (Position < TimeSpan.Zero || Position > _AudioFile.TotalTime) throw new Exceptions.OutOfBounds("Music.Seek -> (Position < TimeSpan.Zero || Position > _AudioFile.TotalTime)");
+            _AudioFile.CurrentTime = Position;
         }
         #endregion
 
@@ -197,26 +202,26 @@ namespace MultiAPI
         /// Получение текущей позиции в музыкальной конструкции
         /// </summary>
         /// <returns>Позиция в музыкальной конструкции</returns>
-        public TimeSpan? GetPosition() => _audioFile?.CurrentTime ?? TimeSpan.Zero;
+        public TimeSpan? GetPosition() => _AudioFile?.CurrentTime ?? TimeSpan.Zero;
         #endregion
 
         #region METHOD-VOID | Repeat
         /// <summary>
         /// Повтор песни
         /// </summary>
-        /// <param name="turn">true или false. true - включить повтор, false - выключить повтор</param>
-        public void Repeat(bool turn)
+        /// <param name="Turn">true или false. true - включить повтор, false - выключить повтор</param>
+        public void Repeat(bool Turn)
         {
-            if (_outputDevice == null) return;
-            if (_audioFile == null) return;
-            if (turn)
+            if (_OutputDevice == null) return;
+            if (_AudioFile == null) return;
+            if (Turn)
             {
-                _audioFile.Position = 0;
-                _outputDevice.PlaybackStopped += (s, e) => { _audioFile.Position = 0; _outputDevice.Play(); };
+                _AudioFile.Position = 0;
+                _OutputDevice.PlaybackStopped += (s, e) => { _AudioFile.Position = 0; _OutputDevice.Play(); };
             }
             else
             {
-                _outputDevice.PlaybackStopped -= (s, e) => { _audioFile.Position = 0; _outputDevice.Play(); };
+                _OutputDevice.PlaybackStopped -= (s, e) => { _AudioFile.Position = 0; _OutputDevice.Play(); };
             }
         }
         #endregion
@@ -226,7 +231,7 @@ namespace MultiAPI
         /// Получение текущего музыкального файла (Путь)
         /// </summary>
         /// <returns>Путь до музыкального файла</returns>
-        public string? GetPath() => _currentFile;
+        public string? GetPath() => _CurrentFile;
         #endregion
     }
     #endregion

@@ -25,18 +25,19 @@ namespace MultiAPI
         /// <summary>
         /// Генерация пароля со стандартным словарём символов
         /// </summary>
-        /// <param name="length">Длина пароля</param>
+        /// <param name="Length">Длина пароля (Мин. значение: 1)</param>
         /// <returns>Пароль</returns>
-        public static string GenPassword(int length)
+        /// <exception cref="Exceptions.OutOfBounds">Выход за пределы границ</exception>
+        public static string GenPassword(int Length)
         {
-            if (string.IsNullOrEmpty(Convert.ToString(length))) throw new Exception("0x00003");
+            if (Length < 1) throw new Exceptions.OutOfBounds("Generator.GenPassword -> Length < 1");
 
             const string chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-+=%*&?$#";
 
             StringBuilder sb = new StringBuilder();
             Random rnd = new Random();
 
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < Length; i++)
             {
                 int index = rnd.Next(chars.Length);
                 sb.Append(chars[index]);
@@ -47,19 +48,23 @@ namespace MultiAPI
         /// <summary>
         /// Генерация пароля со своим словарём символов
         /// </summary>
-        /// <param name="length">Длина пароля</param>
-        /// <param name="dictionary">Словарь символов</param>
+        /// <param name="Length">Длина пароля</param>
+        /// <param name="Dictionary">Словарь символов</param>
         /// <returns>Пароль</returns>
-        public static string GenPassword(int length, string dictionary)
+        /// <exception cref="Exceptions.NullField">Нулевое поле</exception>
+        /// <exception cref="Exceptions.OutOfBounds">Выход за пределы границ</exception>
+        public static string GenPassword(int Length, string Dictionary)
         {
-            if (string.IsNullOrEmpty(Convert.ToString(length)) || string.IsNullOrEmpty(dictionary)) throw new Exception("0x00003");
+            if (string.IsNullOrEmpty(Dictionary)) throw new Exceptions.NullField("Generator.GenPassword -> string Dictionary");
+            if (Length < 1) throw new Exceptions.OutOfBounds("Generator.GenPassword -> Length < 1");
+
             StringBuilder sb = new StringBuilder();
             Random rnd = new Random();
 
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < Length; i++)
             {
-                int index = rnd.Next(dictionary.Length);
-                sb.Append(dictionary[index]);
+                int index = rnd.Next(Dictionary.Length);
+                sb.Append(Dictionary[index]);
             }
             return sb.ToString();
         }

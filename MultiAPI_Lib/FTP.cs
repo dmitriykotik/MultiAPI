@@ -23,46 +23,49 @@ namespace MultiAPI
     {
 
         #region METHOD-STRING | host, userName, password
-        private string _host;
-        private string _userName;
-        private string _password;
+        private string _Host;
+        private string _UserName;
+        private string _Password;
         #endregion
 
         #region METHOD-FTP | FTP
         /// <summary>
         /// Создание конструкции для управления FTP
         /// </summary>
-        /// <param name="host">Полная ссылка до удалённого файла на FTP сервере (например: ftp://0.0.0.0:21/file.exmp)</param>
-        /// <param name="userName">Вход: Имя пользователя (например: exampleName)</param>
-        /// <param name="password">Вход: Пароль пользователя (например: Ex@mpleP@3w0rd)</param>
-        public FTP(string host, string userName, string password)
+        /// <param name="Host">Полная ссылка до удалённого файла на FTP сервере (например: ftp://0.0.0.0:21/file.exmp)</param>
+        /// <param name="UserName">Вход: Имя пользователя (например: exampleName)</param>
+        /// <param name="Password">Вход: Пароль пользователя (например: Ex@mpleP@3w0rd)</param>
+        /// <exception cref="Exceptions.NullField">Нулевое поле</exception>
+        public FTP(string Host, string UserName, string Password)
         {
-            if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password)) throw new Exception("0x00003");
-            _host = host;
-            _userName = userName;
-            _password = password;
+            if (string.IsNullOrEmpty(Host) || string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password)) throw new Exceptions.NullField("FTP -> (string Host || string UserNmae || string Passowrd)");
+            _Host = Host;
+            _UserName = UserName;
+            _Password = Password;
         }
         #endregion
 
-        #region METHOD-VOID | upload
+        #region METHOD-VOID | Upload
         /// <summary>
         /// Загрузка локального файла на FTP сервер
         /// </summary>
-        /// <param name="localFullPath">Путь до файла на локальном компьютере (например: C:\path\to\file.exmp или: file.exmp)</param>
-        public void upload(string localFullPath)
+        /// <param name="LocalFullPath">Путь до файла на локальном компьютере (например: C:\path\to\file.exmp или: file.exmp)</param>
+        /// <exception cref="Exceptions.NullField">Нулевое поле</exception>
+        /// <exception cref="Exceptions.FileNotExists">Файл не существует</exception>
+        public void Upload(string LocalFullPath)
         {
-            if (string.IsNullOrEmpty(localFullPath)) throw new Exception("0x00003");
-            if (!File.Exists(localFullPath)) throw new Exception("0x00004");
+            if (string.IsNullOrEmpty(LocalFullPath)) throw new Exceptions.NullField("FTP.Upload -> string LocalFullPath");
+            if (!FileManager.File.Exists(LocalFullPath)) throw new Exceptions.FileNotExists("FTP.Upload -> LocalFullPath", LocalFullPath);
 
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(_host);
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(_Host);
 
             request.Method = WebRequestMethods.Ftp.UploadFile;
-            request.Credentials = new NetworkCredential(_userName, _password);
+            request.Credentials = new NetworkCredential(_UserName, _Password);
             request.UsePassive = true;
             request.UseBinary = true;
             request.KeepAlive = false;
 
-            using (Stream inputStream = File.OpenRead(localFullPath))
+            using (Stream inputStream = File.OpenRead(LocalFullPath))
             using (Stream outputStream = request.GetRequestStream())
             {
                 byte[] buffer = new byte[1024];
@@ -72,45 +75,46 @@ namespace MultiAPI
         }
         #endregion
 
-        #region METHOD-VOID | download
+        #region METHOD-VOID | Download
         /// <summary>
         /// Загрузка файла с FTP сервера в локальный файл
         /// </summary>
-        /// <param name="localPath">Полный путь до файла который будет сохранён на локальном компьютере (например: C:\path\to\file.exmp; или: file.exmp)</param>
-        public void download(string localPath)
+        /// <param name="LocalPath">Полный путь до файла который будет сохранён на локальном компьютере (например: C:\path\to\file.exmp; или: file.exmp)</param>
+        /// <exception cref="Exceptions.NullField">Нулевое поле</exception>
+        public void Download(string LocalPath)
         {
-            if (string.IsNullOrEmpty(localPath)) throw new Exception("0x00003");
+            if (string.IsNullOrEmpty(LocalPath)) throw new Exceptions.NullField("FTP.Download -> string LocalPath");
             using (WebClient client = new WebClient())
             {
-                client.Credentials = new NetworkCredential(_userName, _password);
-                client.DownloadFile(_host, localPath);
+                client.Credentials = new NetworkCredential(_UserName, _Password);
+                client.DownloadFile(_Host, LocalPath);
             }
         }
         #endregion
 
-        #region METHOD-VOID | delete
+        #region METHOD-VOID | Delete
         /// <summary>
         /// Удаление файла на FTP сервере
         /// </summary>
-        public void delete()
+        public void Delete()
         {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(_host);
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(_Host);
             request.Method = WebRequestMethods.Ftp.DeleteFile;
-            request.Credentials = new NetworkCredential(_userName, _password);
+            request.Credentials = new NetworkCredential(_UserName, _Password);
             FtpWebResponse response = (FtpWebResponse)request.GetResponse();
             response.Close();
         }
         #endregion
 
-        #region METHOD-BOOL | exists
+        #region METHOD-BOOL | Exists
         /// <summary>
         /// Проверка наличия файла на FTP сервере
         /// </summary>
         /// <returns>true - если файл существует, false - если файл отсутствует.</returns>
-        public bool exists()
+        public bool Exists()
         {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(_host);
-            request.Credentials = new NetworkCredential(_userName, _password);
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(_Host);
+            request.Credentials = new NetworkCredential(_UserName, _Password);
             request.Method = WebRequestMethods.Ftp.GetDateTimestamp;
 
 #pragma warning disable CS8600,CS8602

@@ -13,7 +13,7 @@
     <Authors>dmitriykotik_off</Authors>
     <Company>MultiPlayer</Company>
     <Product>MultiAPI_Lib</Product>
-    <Description>MultiAPI - Это библиотека и сборка разного ПО (Далее "Библиотека") для разработчиков. Работает на .NET 8. Она содержит множество функций чтобы ускорить разработку ПО. Данная библиотека усовершенствованная версия библиотеки MultiLib, MultiAPI подойдёт как начинающим разработчикам, так и профессиональным разработчикам ПО.</Description>
+    <Description>MultiAPI - Это библиотека и сборка разного ПО (Далее "Библиотека") для разработчиков. Работает на .NET 8. Она содержит множество функций чтобы ускорить разработку ПО. MultiAPI подойдёт как начинающим разработчикам, так и профессиональным разработчикам ПО.</Description>
     <Copyright>Copyright © MultiPlayer 2019-2025</Copyright>
     <PackageProjectUrl>https://github.com/dmitriykotik/MultiAPI</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
@@ -21,7 +21,7 @@
     <RepositoryUrl>https://github.com/dmitriykotik/MultiAPI</RepositoryUrl>
     <PackageTags>MultiAPI MultiLib MultiAPI_Lib MultiAPI_Lib-framework dmitriykotik</PackageTags>
     <PackageReleaseNotes>Все изменения проекта можно увидеть на GitHub. https://github.com/dmitriykotik/MultiAPI</PackageReleaseNotes>
-    <VersionPrefix>0.1.6.246</VersionPrefix>
+    <VersionPrefix>0.1.7.292</VersionPrefix>
     <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>

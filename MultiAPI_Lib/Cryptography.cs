@@ -26,24 +26,28 @@ namespace MultiAPI
         /// <summary>
         /// Ручная шифровка УНИКАЛЬНОЙ кодировкой. Работает только с текстовыми файлами.
         /// </summary>
-        /// <param name="inputFile">Входной файл (Например: input.txt)</param>
-        /// <param name="outputFile">Выходной файл (Например: output.txt)</param>
-        /// <param name="inputKeyFile">Входной класс CustomEncode (Например: CustomEncode encode = new CustomEncode("key.import");). Для подробной информации посмотрите документацию.</param>
+        /// <param name="InputFile">Входной файл (Например: input.txt)</param>
+        /// <param name="OutputFile">Выходной файл (Например: output.txt)</param>
+        /// <param name="InputKeyFile">Входной класс CustomEncode (Например: CustomEncode encode = new CustomEncode("key.import");). Для подробной информации посмотрите документацию.</param>
+        /// <param name="FCE">Интерфейс обработки ошибки существования файла. По умолчанию ExampleFCE (см. Документацию)</param>
+        /// <exception cref="Exceptions.NullField">Нулевое поле</exception>
+        /// <exception cref="Exceptions.FileNotExists">Файл не существует</exception>
         #pragma warning disable CS8602
-        public static void EncryptEncode(string inputFile, string outputFile, CustomEncode inputKeyFile)
+        public static void EncryptEncode(string InputFile, string OutputFile, CustomEncode InputKeyFile, IFileException? FCE = null)
         {
-            if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || inputKeyFile == null) throw new Exception("0x00003");
-            if (!File.Exists(inputFile)) throw new Exception("0x00004");
-            if (File.Exists(outputFile)) File.Delete(outputFile);
+            if (string.IsNullOrEmpty(InputFile) || string.IsNullOrEmpty(OutputFile) || InputKeyFile == null) throw new Exceptions.NullField("Cryptography.EncryptEncode -> (string InputFile || string OutputFile || string InputKeyFile) == null");
+            if (!FileManager.File.Exists(InputFile)) throw new Exceptions.FileNotExists("Cryptography.EncryptEncode -> FileManager.File.Exists", InputFile);
+            if (FCE == null) FCE = new ExampleFCE();
+            if (FileManager.File.Exists(OutputFile)) FCE.FileExists(OutputFile);
 
-            string content = File.ReadAllText(inputFile);
-            string encContent = "";
-            foreach (char c in content)
+            string Content = FileManager.File.ReadAllText(InputFile);
+            string EncContent = "";
+            foreach (char c in Content)
             {
-                if (inputKeyFile.get().ContainsKey(c)) encContent += inputKeyFile.get()[c] + " ";
+                if (InputKeyFile.Get().ContainsKey(c)) EncContent += InputKeyFile.Get()[c] + " ";
             }
 
-            File.WriteAllText(outputFile, encContent);
+            FileManager.File.WriteAllText(OutputFile, EncContent);
         }
         #endregion
 
@@ -51,61 +55,68 @@ namespace MultiAPI
         /// <summary>
         /// Расшифровка УНИКАЛЬНОЙ кодировки с помощью файла кодировки. Работает только с текстовыми файлами.
         /// </summary>
-        /// <param name="inputFile">Входной файл (Например: input.txt)</param>
-        /// <param name="outputFile">Выходной файл (Например: output.txt)</param>
-        /// <param name="inputKeyFile">Входной класс CustomEncode (Например: CustomEncode encode = new CustomEncode("key.import");). Для подробной информации посмотрите документацию.</param>
-        public static void DecryptEncode(string inputFile, string outputFile, CustomEncode inputKeyFile)
+        /// <param name="InputFile">Входной файл (Например: input.txt)</param>
+        /// <param name="OutputFile">Выходной файл (Например: output.txt)</param>
+        /// <param name="InputKeyFile">Входной класс CustomEncode (Например: CustomEncode encode = new CustomEncode("key.import");). Для подробной информации посмотрите документацию.</param>
+        /// <param name="FCE">Интерфейс обработки ошибки существования файла. По умолчанию ExampleFCE (см. Документацию)</param>
+        /// <exception cref="Exceptions.NullField">Нулевое поле</exception>
+        /// <exception cref="Exceptions.FileNotExists">Файл не существует</exception>
+        public static void DecryptEncode(string InputFile, string OutputFile, CustomEncode InputKeyFile, IFileException? FCE = null)
         {
-            if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || inputKeyFile == null) throw new Exception("0x00003");
-            if (!File.Exists(inputFile)) throw new Exception("0x00004");
-            if (File.Exists(outputFile)) File.Delete(outputFile);
+            if (string.IsNullOrEmpty(InputFile) || string.IsNullOrEmpty(OutputFile) || InputKeyFile == null) throw new Exceptions.NullField("Cryptography.DecryptEncode -> (string InputFile || string OutputFile || string InputKeyFile) == null");
+            if (!FileManager.File.Exists(InputFile)) throw new Exceptions.FileNotExists("Cryptography.DecryptEncode -> FileManager.File.Exists", InputFile);
+            if (FCE == null) FCE = new ExampleFCE();
+            if (FileManager.File.Exists(OutputFile)) FCE.FileExists(OutputFile);
 
-            string[] content = File.ReadAllText(inputFile).Split(' ');
-            string decContent = "";
-            foreach (string code in content)
+            string[] Content = FileManager.File.ReadAllText(InputFile).Split(' ');
+            string DecContent = "";
+            foreach (string Code in Content)
             {
-                if (inputKeyFile.getReverse().ContainsKey(code)) decContent += inputKeyFile.getReverse()[code];
+                if (InputKeyFile.GetReverse().ContainsKey(Code)) DecContent += InputKeyFile.GetReverse()[Code];
             }
 
-            File.WriteAllText(outputFile, decContent);
+            FileManager.File.WriteAllText(OutputFile, DecContent);
         }
-        #pragma warning restore CS8602
+#pragma warning restore CS8602
         #endregion
 
         #region METHOD-VOID | EncryptFile
         /// <summary>
         /// Шифровка файла
         /// </summary>
-        /// <param name="inputFile">Входной файл (Например: input.zip)</param>
-        /// <param name="outputFile">Выходной файл (Например: output.zip.enc)</param>
-        /// <param name="password">Пароль для шифровки (Например: qwerty123)</param>
-        /// <param name="salt">Соль. Для генерации соли используйте метод GenerateSalt();</param>
-        /// <param name="replaceExistsOutputFile">Заменять выходной файл если он уже существует?</param>>
-        public static void EncryptFile(string inputFile, string outputFile, string password, byte[] salt, bool replaceExistsOutputFile)
+        /// <param name="InputFile">Входной файл (Например: input.zip)</param>
+        /// <param name="OutputFile">Выходной файл (Например: output.zip.enc)</param>
+        /// <param name="Password">Пароль для шифровки (Например: qwerty123)</param>
+        /// <param name="Salt">Соль. Для генерации соли используйте метод GenerateSalt();</param>
+        /// <param name="FCE">Интерфейс обработки ошибки существования файла. По умолчанию ExampleFCE (см. Документацию)</param>
+        /// <exception cref="Exceptions.NullField">Нулевое поле</exception>
+        /// <exception cref="Exceptions.FileNotExists">Файл не существует</exception>
+        public static void EncryptFile(string InputFile, string OutputFile, string Password, byte[] Salt, IFileException? FCE = null)
         {
-            if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || string.IsNullOrEmpty(password) || salt == null) throw new Exception("0x00003");
-            if (!File.Exists(inputFile)) throw new Exception("0x00004");
-            if (File.Exists(outputFile)) { if (!replaceExistsOutputFile) throw new Exception("0x00007"); }
+            if (string.IsNullOrEmpty(InputFile) || string.IsNullOrEmpty(OutputFile) || string.IsNullOrEmpty(Password) || Salt == null) throw new Exceptions.NullField("Cryptography.EncryptFile -> (string InputFile || string OutputFile || string InputKeyFile || byte[] Salt) == null");
+            if (!FileManager.File.Exists(InputFile)) throw new Exceptions.FileNotExists("Cryptography.EncryptFile -> FileManager.File.Exists", InputFile);
+            if (FCE == null) FCE = new ExampleFCE();
+            if (FileManager.File.Exists(OutputFile)) FCE.FileExists(OutputFile);
 
-            byte[] key;
-            using (var keyDerivation = new Rfc2898DeriveBytes(password, salt, 100000, HashAlgorithmName.SHA256)) key = keyDerivation.GetBytes(32);
+            byte[] Key;
+            using (var KeyDerivation = new Rfc2898DeriveBytes(Password, Salt, 100000, HashAlgorithmName.SHA256)) Key = KeyDerivation.GetBytes(32);
 
-            File.Delete(outputFile);
+            File.Delete(OutputFile);
 
-            using (FileStream fs = new FileStream(outputFile, FileMode.Create))
+            using (FileStream fs = new FileStream(OutputFile, FileMode.Create))
             {
-                fs.Write(salt, 0, salt.Length);
+                fs.Write(Salt, 0, Salt.Length);
 
                 using (Aes aes = Aes.Create())
                 {
-                    aes.Key = key;
+                    aes.Key = Key;
                     aes.IV = aes.IV;
 
                     fs.Write(aes.IV, 0, aes.IV.Length);
 
                     using (CryptoStream cryptoStream = new CryptoStream(fs, aes.CreateEncryptor(), CryptoStreamMode.Write))
                     {
-                        using (FileStream inputFileStream = new FileStream(inputFile, FileMode.Open)) inputFileStream.CopyTo(cryptoStream);
+                        using (FileStream InputFileStream = new FileStream(InputFile, FileMode.Open)) InputFileStream.CopyTo(cryptoStream);
                     }
                 }
             }
@@ -116,28 +127,32 @@ namespace MultiAPI
         /// <summary>
         /// Дешифровка файла
         /// </summary>
-        /// <param name="inputFile">Входной файл (Например: output.zip.enc)</param>
-        /// <param name="outputFile">Выходной файл (Например: input.zip)</param>
-        /// <param name="password">Пароль для дешифровки (Например: qwerty123)</param>
-        /// <param name="replaceExistsOutputFile">Заменять выходной файл если он уже существует?</param>>
-        /// <param name="sizeSalt">Размер соли (Размер должен совпадать с солью зашифрованного файла, по умолчанию 16)</param>
-        public static void DecryptFile(string inputFile, string outputFile, string password, bool replaceExistsOutputFile, int sizeSalt = 16)
+        /// <param name="InputFile">Входной файл (Например: output.zip.enc)</param>
+        /// <param name="OutputFile">Выходной файл (Например: input.zip)</param>
+        /// <param name="Password">Пароль для дешифровки (Например: qwerty123)</param>
+        /// <param name="SizeSalt">Размер соли (Размер должен совпадать с солью зашифрованного файла, по умолчанию 16)</param>
+        /// <param name="FCE">Интерфейс обработки ошибки существования файла. По умолчанию ExampleFCE (см. Документацию)</param>
+        /// <exception cref="Exceptions.NullField">Нулевое поле</exception>
+        /// <exception cref="Exceptions.FileNotExists">Файл не существует</exception>
+        /// <exception cref="Exceptions.OutOfBounds">Выход за рамки границ</exception>
+        public static void DecryptFile(string InputFile, string OutputFile, string Password, int SizeSalt = 16, IFileException? FCE = null)
         {
-            if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile) || string.IsNullOrEmpty(password)) throw new Exception("0x00003");
-            if (sizeSalt < 16) throw new Exception("0x00006");
-            if (!File.Exists(inputFile)) throw new Exception("0x00004");
-            if (File.Exists(outputFile)) { if (!replaceExistsOutputFile) throw new Exception("0x00007"); }
+            if (string.IsNullOrEmpty(InputFile) || string.IsNullOrEmpty(OutputFile) || string.IsNullOrEmpty(Password)) throw new Exceptions.NullField("Cryptography.DecryptFile -> (string InputFile || string OutputFile || string Password || int SizeSalt = 16) == null");
+            if (SizeSalt < 16) throw new Exceptions.OutOfBounds("Cryptography.DecryptFile -> SizeSalt < 16");
+            if (!FileManager.File.Exists(InputFile)) throw new Exceptions.FileNotExists("Cryptography.EncryptFile -> FileManager.File.Exists", InputFile);
+            if (FCE == null) FCE = new ExampleFCE();
+            if (FileManager.File.Exists(OutputFile)) FCE.FileExists(OutputFile);
 
-            using (FileStream fs = new FileStream(inputFile, FileMode.Open))
+            using (FileStream fs = new FileStream(InputFile, FileMode.Open))
             {
-                byte[] salt = new byte[sizeSalt];
-                fs.Read(salt, 0, salt.Length);
+                byte[] Salt = new byte[SizeSalt];
+                fs.Read(Salt, 0, Salt.Length);
 
-                byte[] iv = new byte[sizeSalt];
+                byte[] iv = new byte[SizeSalt];
                 fs.Read(iv, 0, iv.Length);
 
                 byte[] key;
-                using (var keyDerivation = new Rfc2898DeriveBytes(password, salt, 100000, HashAlgorithmName.SHA256)) key = keyDerivation.GetBytes(32);
+                using (var keyDerivation = new Rfc2898DeriveBytes(Password, Salt, 100000, HashAlgorithmName.SHA256)) key = keyDerivation.GetBytes(32);
 
                 using (Aes aes = Aes.Create())
                 {
@@ -146,8 +161,8 @@ namespace MultiAPI
 
                     using (CryptoStream cryptoStream = new CryptoStream(fs, aes.CreateDecryptor(), CryptoStreamMode.Read))
                     {
-                        File.Delete(outputFile);
-                        using (FileStream outputFileStream = new FileStream(outputFile, FileMode.Create)) cryptoStream.CopyTo(outputFileStream);
+                        File.Delete(OutputFile);
+                        using (FileStream OutputFileStream = new FileStream(OutputFile, FileMode.Create)) cryptoStream.CopyTo(OutputFileStream);
                     }
                 }
             }
@@ -158,19 +173,22 @@ namespace MultiAPI
         /// <summary>
         /// Хеширование пароля
         /// </summary>
-        /// <param name="password">Пароль</param>
-        /// <param name="salt">Соль (Для генерации используйте метод GenerateSalt)</param>
+        /// <param name="Password">Пароль</param>
+        /// <param name="Salt">Соль (Для генерации используйте метод GenerateSalt)</param>
         /// <returns>Хэш пароля</returns>
-        public static string HashPassword(string password, byte[] salt)
+        /// <exception cref="Exceptions.NullField">Нулевое поле</exception>
+        public static string HashPassword(string Password, byte[] Salt)
         {
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000, HashAlgorithmName.SHA256);
-            byte[] hash = pbkdf2.GetBytes(20);
+            if (string.IsNullOrEmpty(Password) || Salt == null) throw new Exceptions.NullField("Cryptography.HashPassword -> (string Password || byte[] Salt) == null");
 
-            byte[] hashBytes = new byte[36];
-            Array.Copy(salt, 0, hashBytes, 0, 16);
-            Array.Copy(hash, 0, hashBytes, 16, 20);
+            var pbkdf2 = new Rfc2898DeriveBytes(Password, Salt, 10000, HashAlgorithmName.SHA256);
+            byte[] Hash = pbkdf2.GetBytes(20);
 
-            return Convert.ToBase64String(hashBytes);
+            byte[] HashBytes = new byte[36];
+            Array.Copy(Salt, 0, HashBytes, 0, 16);
+            Array.Copy(Hash, 0, HashBytes, 16, 20);
+
+            return Convert.ToBase64String(HashBytes);
         }
         #endregion
 
@@ -178,22 +196,25 @@ namespace MultiAPI
         /// <summary>
         /// Проверка пароля по хэшу
         /// </summary>
-        /// <param name="inputPassword">Пароль</param>
-        /// <param name="inputHash">Хэш</param>
-        /// <param name="sizeSalt">Размер соли (По умолчанию: 16)</param>
-        /// <returns></returns>
-        public static bool VerifyPassword(string inputPassword, string inputHash, int sizeSalt = 16)
+        /// <param name="InputPassword">Пароль</param>
+        /// <param name="InputHash">Хэш</param>
+        /// <param name="SizeSalt">Размер соли (По умолчанию: 16)</param>
+        /// <returns>true - Если пароль верен, иначе false</returns>
+        /// <exception cref="Exceptions.NullField">Нулевое поле</exception>
+        public static bool VerifyPassword(string InputPassword, string InputHash, int SizeSalt = 16)
         {
-            byte[] hashBytes = Convert.FromBase64String(inputHash);
-            byte[] salt = new byte[sizeSalt];
-            Array.Copy(hashBytes, 0, salt, 0, 16);
+            if (string.IsNullOrEmpty(InputPassword) || string.IsNullOrEmpty(InputHash)) throw new Exceptions.NullField("Cryptography.VerifyPassword -> (string InputPassword || string InputHash) == null");
 
-            var pbkdf2 = new Rfc2898DeriveBytes(inputPassword, salt, 10000, HashAlgorithmName.SHA256);
+            byte[] HashBytes = Convert.FromBase64String(InputHash);
+            byte[] Salt = new byte[SizeSalt];
+            Array.Copy(HashBytes, 0, Salt, 0, 16);
+
+            var pbkdf2 = new Rfc2898DeriveBytes(InputPassword, Salt, 10000, HashAlgorithmName.SHA256);
             byte[] hash = pbkdf2.GetBytes(20);
 
             for (int i = 0; i < 20; i++)
             {
-                if (hashBytes[i + 16] != hash[i])
+                if (HashBytes[i + 16] != hash[i])
                 {
                     return false;
                 }
@@ -207,17 +228,18 @@ namespace MultiAPI
         /// <summary>
         /// Генерация соли
         /// </summary>
-        /// <param name="sizeSalt">Размер соли (По умолчанию: 16)</param>
+        /// <param name="SizeSalt">Размер соли (По умолчанию: 16)</param>
         /// <returns>Соль (В байтах) (Можно использовать для шифровки)</returns>
-        public static byte[] GenerateSalt(int sizeSalt = 16)
+        /// <exception cref="Exceptions.OutOfBounds">Выход за рамки границ</exception>
+        public static byte[] GenerateSalt(int SizeSalt = 16)
         {
-            if (sizeSalt < 16) throw new Exception("0x00006");
-            byte[] salt = new byte[sizeSalt];
+            if (SizeSalt < 16) throw new Exceptions.OutOfBounds("Cryptography.GenerateSalt -> SizeSalt < 16");
+            byte[] Salt = new byte[SizeSalt];
             using (var rng = RandomNumberGenerator.Create())
             {
-                rng.GetBytes(salt);
+                rng.GetBytes(Salt);
             }
-            return salt;
+            return Salt;
         }
         #endregion
 
@@ -227,48 +249,48 @@ namespace MultiAPI
         /// </summary>
         public class CustomEncode
         {
-            internal string file;
+            internal string File;
 
             #region METHOD-CustomEncode | CustomEncode
             /// <summary>
             /// Загрузка файла
             /// </summary>
             /// <param name="keyFile">Файл ключа (Если не существует, то он будет создан)</param>
-            public CustomEncode(string keyFile) => file = keyFile;
+            public CustomEncode(string keyFile) => File = keyFile;
             #endregion
 
             #region METHOD-VOID | Create
             /// <summary>
             /// Создать файл кодировки
             /// </summary>
-            /// <param name="customSymbols">Использовать свои символы для кодировки? (null - Не использовать)</param>
-            public void Create(string? customSymbols = null)
+            /// <param name="CustomSymbols">Использовать свои символы для кодировки? (null - Не использовать)</param>
+            public void Create(string? CustomSymbols = null)
             {
-                if (File.Exists(file)) File.Delete(file);
-                var encoding = new Dictionary<char, string>();
-                var usedCodes = new HashSet<string>();
-                string symbols;
+                if (FileManager.File.Exists(File)) FileManager.File.Delete(File);
+                var Encoding = new Dictionary<char, string>();
+                var UsedCodes = new HashSet<string>();
+                string Symbols;
 
-                if (string.IsNullOrEmpty(customSymbols))
-                    symbols = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя"
+                if (string.IsNullOrEmpty(CustomSymbols))
+                    Symbols = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя"
                                       + "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                                       + "0123456789 "
                                       + @""""
                                       + @"@#№$;%`~^:&?*()-_=+[]{}\|'/.,<>"
                                       + "\n";
-                else symbols = customSymbols;
+                else Symbols = CustomSymbols;
 
-                foreach (char c in symbols)
+                foreach (char c in Symbols)
                 {
                     while (true)
                     {
-                        encoding[c] = " ";
-                        usedCodes.Add(" ");
+                        Encoding[c] = " ";
+                        UsedCodes.Add(" ");
                         break;
                     }
                 }
 
-                File.WriteAllText(file, JsonConvert.SerializeObject(encoding, Formatting.Indented));
+                FileManager.File.WriteAllText(File, JsonConvert.SerializeObject(Encoding, Formatting.Indented));
             }
             #endregion
 
@@ -276,44 +298,44 @@ namespace MultiAPI
             /// <summary>
             /// Автоматически сгенерировать файл кодировки
             /// </summary>
-            /// <param name="lengthCode">Размер каждого ключа для символа (По умолчанию: 8)</param>
-            /// <param name="customSymbols">Использовать свои символы для кодировки? (null - Не использовать)</param>
-            /// <param name="customSymbolsCode">Использовать свои символы для генератора пароля? (null - Не использовать)</param>
-            public void CreateAuto(int lengthCode = 8, string? customSymbols = null, string? customSymbolsCode = null)
+            /// <param name="LengthCode">Размер каждого ключа для символа (По умолчанию: 8)</param>
+            /// <param name="CustomSymbols">Использовать свои символы для кодировки? (null - Не использовать)</param>
+            /// <param name="CustomSymbolsCode">Использовать свои символы для генератора пароля? (null - Не использовать)</param>
+            public void CreateAuto(int LengthCode = 8, string? CustomSymbols = null, string? CustomSymbolsCode = null)
             {
-                if (File.Exists(file)) File.Delete(file);
-                var encoding = new Dictionary<char, string>();
-                var usedCodes = new HashSet<string>();
-                string symbols;
-                string symbolsCodes;
+                if (FileManager.File.Exists(File)) FileManager.File.Delete(File);
+                var Encoding = new Dictionary<char, string>();
+                var UsedCodes = new HashSet<string>();
+                string Symbols;
+                string SymbolsCodes;
 
-                if (string.IsNullOrEmpty(customSymbols)) symbols = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя"
+                if (string.IsNullOrEmpty(CustomSymbols)) Symbols = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя"
                                   + "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                                   + "0123456789 "
                                   + @""""
                                   + @"@#№$;%`~^:&?*()-_=+[]{}\|'/.,<>"
                                   + "\n";
-                else symbols = customSymbols;
+                else Symbols = CustomSymbols;
 
-                if (string.IsNullOrEmpty(customSymbolsCode)) symbolsCodes = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                else symbolsCodes = customSymbolsCode;
+                if (string.IsNullOrEmpty(CustomSymbolsCode)) SymbolsCodes = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                else SymbolsCodes = CustomSymbolsCode;
 
-                foreach (char c in symbols)
+                foreach (char c in Symbols)
                 {
                     while (true)
                     {
-                        string rnd = Generator.GenPassword(8, symbolsCodes);
+                        string rnd = Generator.GenPassword(LengthCode, SymbolsCodes);
 
-                        if (!usedCodes.Contains(rnd))
+                        if (!UsedCodes.Contains(rnd))
                         {
-                            encoding[c] = rnd;
-                            usedCodes.Add(rnd);
+                            Encoding[c] = rnd;
+                            UsedCodes.Add(rnd);
                             break;
                         }
                     }
                 }
 
-                File.WriteAllText(file, JsonConvert.SerializeObject(encoding, Formatting.Indented));
+                FileManager.File.WriteAllText(File, JsonConvert.SerializeObject(Encoding, Formatting.Indented));
             }
             #endregion
 
@@ -322,16 +344,16 @@ namespace MultiAPI
             /// ЛОКАЛЬНО: Получить кодировку формата char,string и преобразовать её string,char
             /// </summary>
             /// <returns>Словарь формата string,char</returns>
-            internal Dictionary<string, char>? getReverse()
+            internal Dictionary<string, char>? GetReverse()
             {
-                if (File.Exists(file))
+                if (FileManager.File.Exists(File))
                 {
-                    string json = File.ReadAllText(file);
-                    var dictionary = JsonConvert.DeserializeObject<Dictionary<char, string>>(json);
-                    var reverseDictionary = new Dictionary<string, char>();
-                    if (dictionary != null)
-                        foreach (var kvp in dictionary) reverseDictionary[kvp.Value] = kvp.Key;
-                    return reverseDictionary;
+                    string Json = FileManager.File.ReadAllText(File);
+                    var Dictionary = JsonConvert.DeserializeObject<Dictionary<char, string>>(Json);
+                    var ReverseDictionary = new Dictionary<string, char>();
+                    if (Dictionary != null)
+                        foreach (var kvp in Dictionary) ReverseDictionary[kvp.Value] = kvp.Key;
+                    return ReverseDictionary;
                 }
                 else
                 {
@@ -346,9 +368,9 @@ namespace MultiAPI
             /// ЛОКАЛЬНО: Получить кодировку формата char,string
             /// </summary>
             /// <returns>Словарь формата char,string</returns>
-            internal Dictionary<char, string>? get()
+            internal Dictionary<char, string>? Get()
             {
-                if (File.Exists(file)) return JsonConvert.DeserializeObject<Dictionary<char, string>>(File.ReadAllText(file));
+                if (FileManager.File.Exists(File)) return JsonConvert.DeserializeObject<Dictionary<char, string>>(FileManager.File.ReadAllText(File));
                 else
                 {
                     Create();
@@ -362,9 +384,23 @@ namespace MultiAPI
             /// Получить файл
             /// </summary>
             /// <returns>Путь до файла</returns>
-            public string GetFile() => file;
+            public string GetFile() => File;
             #endregion
 
+        }
+        #endregion
+
+        #region CLASS | ExampleFCE
+        internal class ExampleFCE : IFileException
+        {
+            public void FileExists(string File)
+            {
+                throw new Exceptions.FileExists("Cryptography.File.* -> ?File", File);
+            }
+
+            public void FilesExists(string[] Files){
+                throw new Exceptions.FileExists("Cryptography.File.* -> ?Files", string.Join("; ", Files));
+            }
         }
         #endregion
 

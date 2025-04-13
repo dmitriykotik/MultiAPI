@@ -72,38 +72,38 @@ namespace MultiAPI
     /// </summary>
     public static class ChatBot
     {
-        private static MLContext mlContext;
-        private static PredictionEngine<Data, Prediction>? predictionEngine;
-        private static List<Data>? trainingData;
+        private static MLContext MlContext;
+        private static PredictionEngine<Data, Prediction>? PredictionEngine;
+        private static List<Data>? TrainingData;
 
         /// <summary>
         /// Чат-бот
         /// </summary>
-        static ChatBot() => mlContext = new MLContext();
+        static ChatBot() => MlContext = new MLContext();
 
         #region METHOD-VOID | Initialize
         /// <summary>
         /// Инициализация чат-бота
         /// </summary>
-        /// <param name="trainingData">Данные для машинного обучения</param>
-        public static void Initialize(List<Data> trainingData)
+        /// <param name="TrainingData">Данные для машинного обучения</param>
+        public static void Initialize(List<Data> TrainingData)
         {
-            ChatBot.trainingData = trainingData;
+            ChatBot.TrainingData = TrainingData;
 
-            var trainingDataView = mlContext.Data.LoadFromEnumerable(trainingData);
+            var trainingDataView = MlContext.Data.LoadFromEnumerable(TrainingData);
 
-            var dataProcessPipeline = mlContext.Transforms.Conversion.MapValueToKey("Label", nameof(Data.Response))
-                .Append(mlContext.Transforms.Text.FeaturizeText("TextFeaturized", nameof(Data.Text)))
-                .Append(mlContext.Transforms.Concatenate("Features", "TextFeaturized"));
+            var dataProcessPipeline = MlContext.Transforms.Conversion.MapValueToKey("Label", nameof(Data.Response))
+                .Append(MlContext.Transforms.Text.FeaturizeText("TextFeaturized", nameof(Data.Text)))
+                .Append(MlContext.Transforms.Concatenate("Features", "TextFeaturized"));
 
-            var trainer = mlContext.MulticlassClassification.Trainers.SdcaMaximumEntropy("Label", "Features")
-                .Append(mlContext.Transforms.Conversion.MapKeyToValue("PredictedLabel", "PredictedLabel"));
+            var trainer = MlContext.MulticlassClassification.Trainers.SdcaMaximumEntropy("Label", "Features")
+                .Append(MlContext.Transforms.Conversion.MapKeyToValue("PredictedLabel", "PredictedLabel"));
 
             var trainingPipeline = dataProcessPipeline.Append(trainer);
 
             var model = trainingPipeline.Fit(trainingDataView);
 
-            predictionEngine = mlContext.Model.CreatePredictionEngine<Data, Prediction>(model);
+            PredictionEngine = MlContext.Model.CreatePredictionEngine<Data, Prediction>(model);
         }
         #endregion
 
@@ -111,15 +111,15 @@ namespace MultiAPI
         /// <summary>
         /// Получение ответа от чат-бота с помощью входных данных пользователя.
         /// </summary>
-        /// <param name="userInput">Входные данные пользователя</param>
+        /// <param name="UserInput">Входные данные пользователя</param>
         /// <returns>Возвращает ответ бота с текстом и кодом указанным в данных для машинного обучения. ПРЕДУПРЕЖДЕНИЕ: Если чат-бот не понимает, что ввёл пользователь, то он выберет последний элемент из тренировочных данных!</returns>
-        public static CResponse GetResponse(string userInput)
+        public static CResponse GetResponse(string UserInput)
         {
-            var input = new Data() { Text = userInput };
+            var input = new Data() { Text = UserInput };
 
-            var prediction = predictionEngine?.Predict(input);
+            var prediction = PredictionEngine?.Predict(input);
 
-            var matchingData = trainingData?.Find(data => data.Response == prediction?.Response);
+            var matchingData = TrainingData?.Find(data => data.Response == prediction?.Response);
 
             return new CResponse
             {
